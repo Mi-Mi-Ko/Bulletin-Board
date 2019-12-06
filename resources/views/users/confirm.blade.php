@@ -51,7 +51,7 @@
         </div>
       </div>
       <div class="form-group row justify-content-center">
-        <div class="col-8">
+        <div class="col-4">
           <button type="submit" class="btn btn-success">Create User</button>
           <a href="{{ route('users#create')}}" class="btn btn-primary">Cancel</a>
         </div>

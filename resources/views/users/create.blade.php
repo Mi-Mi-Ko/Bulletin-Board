@@ -70,7 +70,7 @@
         </div>
       </div>
       <div class="form-group row justify-content-center mt-4">
-        <div class="col-md-8 col-sm-6">
+        <div class="col-md-4 col-sm-6">
           <button type="submit" class="btn btn-success">Go to User Confirm Form</button>
           <button type="reset" class="btn btn-primary">Clear</button>
         </div>

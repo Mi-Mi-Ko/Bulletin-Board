@@ -55,11 +55,33 @@ Route::group(['prefix' => 'users'], function () {
         ->middleware('auth');
 
     Route::post('/', 'User\UserController@store')
-        ->name('users#store');
+        ->name('users#store')
+        ->middleware('auth');
 });
 
 Route::group(['prefix' => 'posts'], function () {
+
     Route::get('/', 'Post\PostController@index')
         ->name('index')
+        ->middleware('auth');
+
+    Route::get('/create', 'Post\PostController@create')
+        ->name('posts#create')
+        ->middleware('auth');
+
+    Route::post('/confirm', 'Post\PostController@confirmation')
+        ->name('posts#confirmation')
+        ->middleware('auth');
+
+    Route::get('/{id}', 'Post\PostController@show')
+        ->name('posts#show')
+        ->middleware('auth');
+
+    Route::match(['PUT', 'PATCH'], '/{post}', 'Post\PostController@update')
+        ->name('posts#update')
+        ->middleware('auth');
+
+    Route::post('/', 'Post\PostController@store')
+        ->name('posts#store')
         ->middleware('auth');
 });
