@@ -29,13 +29,33 @@ Route::group(['prefix' => 'login'], function () {
         ->name('login');
 });
 
-Route::get('/logout', 'Auth\LoginController@logout')
+Route::post('/logout', 'Auth\LoginController@logout')
     ->name('logout');
 
 Route::group(['prefix' => 'users'], function () {
+
     Route::get('/', 'User\UserController@index')
         ->name('index')
         ->middleware('auth');
+
+    Route::get('/create', 'User\UserController@create')
+        ->name('users#create')
+        ->middleware('auth');
+
+    Route::post('/confirm', 'User\UserController@confirmation')
+        ->name('users#confirmation')
+        ->middleware('auth');
+
+    Route::get('/{id}', 'User\UserController@show')
+        ->name('users#show')
+        ->middleware('auth');
+
+    Route::match(['PUT', 'PATCH'], '/{user}', 'User\UserController@update')
+        ->name('users#update')
+        ->middleware('auth');
+
+    Route::post('/', 'User\UserController@store')
+        ->name('users#store');
 });
 
 Route::group(['prefix' => 'posts'], function () {
