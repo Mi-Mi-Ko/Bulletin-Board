@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
+use Log;
 
 class UserController extends Controller
 {
@@ -18,15 +20,16 @@ class UserController extends Controller
         return view('users.list');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    // /**
+    //  * Show the form for creating a new resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function create()
+    // {
+    //     //
+    //     return view('users.create');
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -37,6 +40,19 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|max:255',
+            'password' => 'required|numeric',
+            'type' => 'required|max:255',
+            'phone' => 'required|max:255',
+            'dob' => 'required|max:255',
+            'address' => 'required|max:255',
+            'profile' => 'required|max:255',
+        ]);
+        $show = User::create($validatedData);
+
+        return redirect('/users')->with('success', 'User is successfully saved');
     }
 
     /**
@@ -48,6 +64,10 @@ class UserController extends Controller
     public function show($id)
     {
         //
+        $users = User::findOrFail($id);
+        Log::info($users);
+
+        return view('users.update', compact('users'));
     }
 
     /**
@@ -70,7 +90,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Log::info('Calling-----');
+        return view('users.list');
     }
 
     /**
@@ -82,5 +103,17 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function create()
+    {
+        return view('users.create');
+    }
+
+    public function confirmation(Request $request)
+    {
+        $data['users'] = $request;
+        Log::info($data);
+        return view('users.confirm', $data);
     }
 }
