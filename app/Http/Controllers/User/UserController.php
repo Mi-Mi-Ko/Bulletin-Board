@@ -90,7 +90,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Log::info('Calling update function');
+        Log::info('Calling user update function');
         return view('users.list');
     }
 
