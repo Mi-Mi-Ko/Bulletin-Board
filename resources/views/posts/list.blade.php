@@ -3,7 +3,7 @@
 @section('content')
 <div class="card uper">
   <div class="card-header">
-    Users List
+    Posts List
   </div>
   <div class="card-body">
     <div class="uper">
@@ -13,33 +13,29 @@
         </div><br />
       @endif
       <div class="mr-auto mb-4">
-        <a href="{{ route('users#create')}}" class="btn btn-primary">Go to User Creation Form</a>
+        <input type="text" name="title"/>
+        <a href="" class="btn btn-primary">Search</a>
+        <a href="{{ route('posts#create')}}" class="btn btn-primary">Go to Post Creation Form</a>
+        <a href="" class="btn btn-primary">Upload</a>
+        <a href="" class="btn btn-primary">Download</a>
       </div>
       <table class="table table-striped">
         <thead>
           <tr>
-            <td>Name</td>
-            <td>Email</td>
-            <td>Created User</td>
-            <td>Phone</td>
-            <td>Birth Date</td>
-            <td>Address</td>
-            <td>Created Date</td>
-            <td>Updated Date</td>
+            <td>Post Title</td>
+            <td>Post Description</td>
+            <td>Posted User</td>
+            <td>Posted Date</td>
             <td colspan="2">Action</td>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Mi Mi Ko</td>
-            <td>mimiko@gmail.com</td>
+            <td>Title1</td>
+            <td>Description1</td>
             <td>1</td>
-            <td>09421956327</td>
-            <td>1992/12/05</td>
-            <td>Yangon</td>
-            <td>2018/12/05</td>
-            <td>2018/12/05</td>
-            <td><a href="{{ route('users#show',1)}}" class="btn btn-primary">Edit User</a></td>
+            <td>2019/12/06</td>
+            <td><a href="{{ route('posts#show',1)}}" class="btn btn-primary">Edit Post</a></td>
             <td>
               <form action="" method="post">
                 @csrf

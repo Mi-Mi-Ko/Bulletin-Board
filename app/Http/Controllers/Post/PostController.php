@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Post;
 use Illuminate\Http\Request;
+use Log;
 
 class PostController extends Controller
 {
@@ -15,18 +17,19 @@ class PostController extends Controller
     public function index()
     {
         //
-        return view('post.list');
+        return view('posts.list');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    // /**
+    //  * Show the form for creating a new resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function create()
+    // {
+    //     //
+    //     return view('posts.create');
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -37,6 +40,19 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|max:255',
+            'password' => 'required|numeric',
+            'type' => 'required|max:255',
+            'phone' => 'required|max:255',
+            'dob' => 'required|max:255',
+            'address' => 'required|max:255',
+            'profile' => 'required|max:255',
+        ]);
+        $show = Post::create($validatedData);
+
+        return redirect('/posts')->with('success', 'Post is successfully saved');
     }
 
     /**
@@ -48,6 +64,10 @@ class PostController extends Controller
     public function show($id)
     {
         //
+        $posts = Post::findOrFail($id);
+        Log::info($posts);
+
+        return view('posts.update', compact('posts'));
     }
 
     /**
@@ -70,7 +90,8 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Log::info('Calling post update function');
+        return view('posts.list');
     }
 
     /**
@@ -82,5 +103,17 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function create()
+    {
+        return view('posts.create');
+    }
+
+    public function confirmation(Request $request)
+    {
+        $data['posts'] = $request;
+        Log::info($data);
+        return view('posts.confirm', $data);
     }
 }

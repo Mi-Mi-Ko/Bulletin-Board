@@ -9,7 +9,7 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
-[*.{yml,yaml,html,css.js}]
+[*.{yml,yaml,html,css,js}]
 indent_size = 2
 
 [**.php]
