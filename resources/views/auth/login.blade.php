@@ -3,7 +3,7 @@
 @section('content')
 <div class="card uper">
   <div class="card-header">
-    Login Form
+    ログイン画面
   </div>
   <div class="card-body">
     <div class="panel panel-default justify-content-center">
@@ -16,7 +16,7 @@
         <form class="form-horizontal p-4" method="POST" action="{{ route('login') }}">
           {{ csrf_field() }}
           <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} row justify-content-center">
-            <label for="email" class="col-md-2 col-form-label">Email</label>
+            <label for="email" class="col-md-2 col-form-label">メールアドレス</label>
             <div class="col-md-6">
               <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
               @if ($errors->has('email'))
@@ -28,7 +28,7 @@
           </div>
 
           <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} row justify-content-center">
-            <label for="password" class="col-md-2 control-label">Password</label>
+            <label for="password" class="col-md-2 control-label">パスワード</label>
             <div class="col-md-6">
                 <input id="password" type="password" class="form-control" name="password" required>
                 @if ($errors->has('password'))
@@ -63,7 +63,7 @@
             <div class="form-group row justify-content-center mb-0">
               <div class="col-md-6 offset-md-4 mb-2">
                 <button type="submit" class="btn btn-primary">
-                  {{ __('Login') }}
+                  {{ __('ログイン') }}
                 </button>
             </div>
           </div>

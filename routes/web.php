@@ -29,6 +29,15 @@ Route::group(['prefix' => 'login'], function () {
         ->name('login');
 });
 
+Route::group(['prefix' => 'password'], function () {
+    Route::get('/reset/{id}', 'Auth\ResetPasswordController@showResetForm')
+        ->name('password#showResetForm')
+        ->middleware('auth');
+    Route::post('/reset', 'Auth\ResetPasswordController@update')
+        ->name('password#update')
+        ->middleware('auth');
+});
+
 Route::post('/logout', 'Auth\LoginController@logout')
     ->name('logout');
 
@@ -50,6 +59,14 @@ Route::group(['prefix' => 'users'], function () {
         ->name('users#show')
         ->middleware('auth');
 
+    Route::get('/profile/{id}', 'User\UserController@profile')
+        ->name('users#profile')
+        ->middleware('auth');
+
+    Route::any('/{id}/updateConfirmation', 'User\UserController@updateConfirmation')
+        ->name('users#updateConfirmation')
+        ->middleware('auth');
+
     Route::match(['PUT', 'PATCH'], '/{user}', 'User\UserController@update')
         ->name('users#update')
         ->middleware('auth');
@@ -60,6 +77,14 @@ Route::group(['prefix' => 'users'], function () {
 });
 
 Route::group(['prefix' => 'posts'], function () {
+
+    Route::get('/importView', 'Post\PostController@getCsv')
+        ->name('posts#getCsv')
+        ->middleware('auth');
+
+    Route::post('/import', 'Post\PostController@import')
+        ->name('posts#import')
+        ->middleware('auth');
 
     Route::get('/', 'Post\PostController@index')
         ->name('index')
@@ -75,6 +100,10 @@ Route::group(['prefix' => 'posts'], function () {
 
     Route::get('/{id}', 'Post\PostController@show')
         ->name('posts#show')
+        ->middleware('auth');
+
+    Route::any('/{id}/updateConfirmation', 'Post\PostController@updateConfirmation')
+        ->name('posts#updateConfirmation')
         ->middleware('auth');
 
     Route::match(['PUT', 'PATCH'], '/{post}', 'Post\PostController@update')
