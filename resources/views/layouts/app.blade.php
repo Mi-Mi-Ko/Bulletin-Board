@@ -25,7 +25,8 @@
         <nav class="navbar navbar-expand-md navbar-light bg-success shadow-sm">
             <div class="container">
                 <a class="navbar-brand project-title" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                  <i class="fas fa-home"></i>
+                  {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -37,13 +38,22 @@
                     <div class="left-sidebar">
                         <ul class="nav" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/users') }}">Users</a>
+                                <a class="nav-link" href="{{ url('/users') }}">
+                                <i class="fas fa-users"></i>
+                                  ユーザー
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/shows') }}">User</a>
+                                <a class="nav-link" href="{{ route('users#profile',1)}}">
+                                <i class="fas fa-user"></i>
+                                  ユーザー
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/posts') }}">Post</a>
+                                <a class="nav-link" href="{{ url('/posts') }}">
+                                <i class="fas fa-clipboard"></i>
+                                  投稿
+                                </a>
                                 <!-- <a class="nav-link" id="post-tab" data-toggle="tab" href="{{ url('/post') }}" role="tab" aria-controls="post" aria-selected="false">Post</a> -->
                             </li>
                         </ul>
@@ -63,18 +73,18 @@
                                 </li>
                             @endif -->
                         @else
-                            {{ Auth::user()->name }} <span class="caret"></span>
-
-                            <div class="ml-3 logout-section">
-                                <a class="logout-btn" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                        document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                </form>
-                            </div>
+                          {{ Auth::user()->name }} <span class="caret"></span>
+                          <div class="ml-3 logout-section">
+                              <a class="logout-btn" href="{{ route('logout') }}"
+                                      onclick="event.preventDefault();
+                                                      document.getElementById('logout-form').submit();">
+                                <i class="fas fa-sign-out-alt"></i>
+                                {{ __('ログアウト') }}
+                              </a>
+                              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                      @csrf
+                              </form>
+                          </div>
                         @endguest
                     </ul>
                 </div>

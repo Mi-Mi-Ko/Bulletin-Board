@@ -71,6 +71,21 @@ class UserController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function profile($id)
+    {
+        //
+        $users = User::findOrFail($id);
+        Log::info($users);
+
+        return view('users.profile', compact('users'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -79,6 +94,20 @@ class UserController extends Controller
     public function edit($id)
     {
         //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateConfirmation(Request $request, $id)
+    {
+        $data['users'] = $request;
+        Log::info($data);
+        return view('users.updateConfirm', $data);
     }
 
     /**

@@ -3,11 +3,11 @@
 @section('content')
 <div class="card uper">
   <div class="card-header">
-    投稿確認
+    投稿編集確認
   </div>
   <div class="card-body">
     <form method="post" action="{{ route('posts#store') }}">
-    @csrf
+      @csrf
       <div class="form-group row justify-content-center pt-4">
         <label for="title" class="col-md-2 col-4 col-form-label">タイトル</label>
         <div class="col-md-6 col-8">
@@ -21,9 +21,15 @@
         </div>
       </div>
       <div class="form-group row justify-content-center">
+        <label for="description" class="col-md-2 col-4 col-form-label">ステータス</label>
+        <div class="col-md-6 col-8">
+        <input type="text" readonly class="form-control-plaintext" value="{{$posts->title}}" name="name" >
+        </div>
+      </div>
+      <div class="form-group row justify-content-center">
         <div class="col-md-4">
-          <button type="submit" class="btn btn-success">投稿作成</button>
-          <a href="{{ route('posts#create')}}" class="btn btn-primary">キャンセル</a>
+          <button type="submit" class="btn btn-success">投稿編集</button>
+          <a href="{{ route('posts#update', $posts->id)}}" class="btn btn-primary">キャンセル</a>
         </div>
       </div>
     </form>

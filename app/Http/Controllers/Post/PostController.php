@@ -80,7 +80,19 @@ class PostController extends Controller
     {
         //
     }
-
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateConfirmation(Request $request, $id)
+    {
+        $data['posts'] = $request;
+        Log::info($data);
+        return view('posts.updateConfirm', $data);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -115,5 +127,19 @@ class PostController extends Controller
         $data['posts'] = $request;
         Log::info($data);
         return view('posts.confirm', $data);
+    }
+
+    public function getCsv()
+    {
+        //
+        Log::info("Upload view comming");
+        return view('posts.upload');
+    }
+    public function import(Request $request)
+    {
+        Log::info("Import Action comming");
+        $data['posts'] = $request;
+        Log::info($data);
+        return view('posts.list');
     }
 }
