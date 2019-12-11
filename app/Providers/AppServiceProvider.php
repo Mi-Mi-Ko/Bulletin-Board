@@ -15,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind('App\Contracts\Services\Auth\LoginServiceInterface', 'App\Services\Auth\LoginService');
+        $this->app->bind('App\Contracts\Dao\Auth\LoginDaoInterface', 'App\Dao\Auth\LoginDao');
         // Dao Registration
         $this->app->bind('App\Contracts\Dao\Auth\AuthDaoInterface', 'App\Dao\Auth\AuthDao');
         $this->app->bind('App\Contracts\Dao\User\UserDaoInterface', 'App\Dao\User\UserDao');

@@ -11,7 +11,7 @@
   </div><br />
 @endif
 <div class="card uper">
-  <div class="card-header">
+  <div class="card-header font-weight-bold">
     ユーザー作成
   </div>
   <div class="card-body">
