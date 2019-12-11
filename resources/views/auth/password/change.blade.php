@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="card uper">
-  <div class="card-header">
+  <div class="card-header font-weight-bold">
     パスワード更新
   </div>
   <div class="card-body">

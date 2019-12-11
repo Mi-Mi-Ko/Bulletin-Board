@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="card uper">
-  <div class="card-header">
+  <div class="card-header font-weight-bold">
     投稿確認
   </div>
   <div class="card-body">
