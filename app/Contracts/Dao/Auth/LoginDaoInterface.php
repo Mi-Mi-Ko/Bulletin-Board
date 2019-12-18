@@ -4,6 +4,6 @@ namespace App\Contracts\Dao\Auth;
 
 interface LoginDaoInterface
 {
+    //get manage user by email
     public function getManageUser($email);
-    // public function saveLoginHis($email, $ip, $result);
 }

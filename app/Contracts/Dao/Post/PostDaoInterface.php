@@ -4,6 +4,9 @@ namespace App\Contracts\Dao\Post;
 
 interface PostDaoInterface
 {
-    //get user list
-    public function getUserList();
+    //get post list
+    public function getPostList();
+
+    //update post by id
+    public function updatePost($request, $id);
 }

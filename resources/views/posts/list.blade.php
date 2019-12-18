@@ -14,7 +14,7 @@
       @endif
       <div class="form-row mb-4">
         <div class="form-group col-md-2">
-        <input type="text" class="form-control" placeholder="タイトル">
+          <input type="text" class="form-control" placeholder="タイトル">
         </div>
         <div class="form-group col-md-2">
           <a href="" class="btn btn-primary">検索</a>
@@ -29,43 +29,40 @@
           <a href="" class="btn btn-primary">ダウンロード</a>
         </div>
         <div class="table-responsive">
-          <table class="table table-bordered table-striped">
-            <thead>
+          <table class="table table-bordered table-striped text-center">
+            <thead class="bg-primary font-weight-bold">
               <tr>
-                <td>投稿タイトル</td>
-                <td>投稿デスクリプション</td>
+                <td>タイトル</td>
+                <td>Status</td>
+                <td>デスクリプション</td>
                 <td>投稿したユーザー</td>
                 <td>投稿した日</td>
                 <td colspan="2">アクション</td>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Title1</td>
-                <td>Description1</td>
-                <td>1</td>
-                <td>2019/12/06</td>
-                <td class="text-center">
-                  <a href="{{ route('posts#show',1)}}" class="btn btn-primary">
-                    <i class="fas fa-edit"></i>
-                      編集
-                  </a>
-                </td>
-                <td class="text-center">
-                  <form action="" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger" type="submit">
-                    <i class="fas fa-trash-alt"></i>
-                      削除
-                    </button>
-                  </form>
-                </td>
-              </tr>
+              @foreach($posts as $post)
+                <tr>
+                  <td>{{ $post->title }}</td>
+                  <td>{{ $post->status }}</td>
+                  <td class="text-left">{{ $post->description }}</td>
+                  <td>{{ $post->create_user_id }}</td>
+                  <td>{{ $post->created_at }}</td>
+                  <td><a href="{{ route('posts#update', $post->id) }}" class="btn btn-primary">編集</a></td>
+                  <td>
+                    <form action="{{ route('posts#destroy', $post->id) }}" method="post">
+                      @csrf
+                      @method('DELETE')
+                      <button class="btn btn-danger" type="submit">削除</button>
+                    </form>
+                  </td>
+                </tr>
+              @endforeach
             </tbody>
           </table>
+          {{ $posts->links() }}
         </div>
-    <div>
+      <div>
   </div>
 </div>
 @endsection

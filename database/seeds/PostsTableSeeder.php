@@ -12,12 +12,30 @@ class PostsTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('posts')->insert([
-            'title' => 'What is Laravel',
-            'description' => 'Laravel is a PHP framework',
-            'status' => '1',
-            'create_user_id' => "1",
-            'updated_user_id' => "1",
-        ]);
+        DB::table('posts')->insert(
+            [
+                [
+                    'title' => 'What is Laravel',
+                    'description' => 'Laravel is a PHP framework...',
+                    'status' => '1',
+                    'create_user_id' => "1",
+                    'updated_user_id' => "1",
+                ],
+                [
+                    'title' => 'What is PHP',
+                    'description' => 'PHP is a server side script language...',
+                    'status' => '0',
+                    'create_user_id' => "1",
+                    'updated_user_id' => "1",
+                ],
+                [
+                    'title' => 'What is Java',
+                    'description' => 'Java is a ...',
+                    'status' => '1',
+                    'create_user_id' => "1",
+                    'updated_user_id' => "1",
+                ],
+            ]
+        );
     }
 }

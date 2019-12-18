@@ -2,3 +2,8 @@
   background:#ccebff;
 }
 
+.preview_img {
+  display: none;
+  visibility: hidden;
+  position: absolute;
+}

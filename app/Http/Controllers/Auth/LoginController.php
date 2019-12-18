@@ -22,8 +22,9 @@ class LoginController extends Controller
     {
         $this->loginService = $loginService;
     }
+
     /**
-     * show login form
+     * Show login form
      *
      * @return void
      */
@@ -33,7 +34,7 @@ class LoginController extends Controller
     }
 
     /**
-     * login
+     * Login
      *
      * @param Request $request
      * @return void
@@ -43,7 +44,6 @@ class LoginController extends Controller
         Log::info('Calling login from controller...');
         $validator = $this->validateForm($request);
         if ($validator->fails()) {
-            Log::info('Calling login from fail...');
             return redirect()->back()->withInput()->withErrors($validator);
         }
         $result = $this->loginService->login($request);
@@ -55,7 +55,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Validate request
+     * Validate login request
      *
      * @param Request $request
      * @return void
