@@ -2,37 +2,92 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Contracts\Services\User\UserServiceInterface;
 use App\Http\Controllers\Controller;
 use App\User;
+use File;
 use Illuminate\Http\Request;
 use Log;
+use Redirect;
+use Response;
+use Validator;
 
 class UserController extends Controller
 {
+    private $userService;
+
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
+     *
+     * @param EventServiceInterface $eventService
+     */
+    public function __construct(UserServiceInterface $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    /**
+     * Display a listing of user.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         //
-        return view('users.list');
+        $users = $this->userService->getUserList();
+        Log::info('Return Data::');
+        return view('users.list', compact('users'));
     }
 
-    // /**
-    //  * Show the form for creating a new resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function create()
-    // {
-    //     //
-    //     return view('users.create');
-    // }
+    /**
+     * Show user creating view
+     *
+     * @param  int
+     * @return
+     */
+    public function create()
+    {
+        return view('users.create');
+    }
 
     /**
-     * Store a newly created resource in storage.
+     * Validation and go to user confirmation form
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    public function confirmation(Request $request)
+    {
+        Log::info($request);
+        $validator = $this->validateForm($request);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+        $data['users'] = $request;
+        return view('users.confirm', $data);
+    }
+
+    /**
+     * Validate user request
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function validateForm(Request $request)
+    {
+        $rules = [
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
+            'profile' => 'required',
+            'type' => 'required',
+            'dob' => 'required|date_format:Y/m/d',
+        ];
+        return Validator::make($request->all(), $rules);
+    }
+
+    /**
+     * Store
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -40,23 +95,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|max:255',
-            'password' => 'required|numeric',
-            'type' => 'required|max:255',
-            'phone' => 'required|max:255',
-            'dob' => 'required|max:255',
-            'address' => 'required|max:255',
-            'profile' => 'required|max:255',
-        ]);
-        $show = User::create($validatedData);
+        Log::info('Calling store in controller...');
+        Log::info($request->file('profile'));
 
+        if ($files = $request->file('profile')) {
+            $destinationPath = 'public/image/'; // upload path
+            $profileImage = $files->getClientOriginalExtension();
+            $files->move($destinationPath, $profileImage);
+        }
+        // $show = User::create($validatedData);
         return redirect('/users')->with('success', 'User is successfully saved');
     }
 
     /**
-     * Display the specified resource.
+     * Show user update view
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -65,13 +117,47 @@ class UserController extends Controller
     {
         //
         $users = User::findOrFail($id);
-        Log::info($users);
-
         return view('users.update', compact('users'));
     }
 
     /**
-     * Display the specified resource.
+     * Show user update confirmation view
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateConfirmation(Request $request, $id)
+    {
+        $data['user'] = $request;
+        return view('users.updateConfirm', $data);
+    }
+
+    /**
+     * Update user resources
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return
+     */
+    public function update(Request $request, $id)
+    {
+        return view('users.list');
+    }
+
+    /**
+     * Delete user resources
+     *
+     * @param  int  $id
+     * @return
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
+    /**
+     * Display user profile view
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -80,69 +166,6 @@ class UserController extends Controller
     {
         //
         $users = User::findOrFail($id);
-        Log::info($users);
-
         return view('users.profile', compact('users'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function updateConfirmation(Request $request, $id)
-    {
-        $data['users'] = $request;
-        Log::info($data);
-        return view('users.updateConfirm', $data);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        Log::info('Calling user update function');
-        return view('users.list');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function create()
-    {
-        return view('users.create');
-    }
-
-    public function confirmation(Request $request)
-    {
-        $data['users'] = $request;
-        Log::info($data);
-        return view('users.confirm', $data);
     }
 }

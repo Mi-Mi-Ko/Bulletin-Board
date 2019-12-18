@@ -9,6 +9,7 @@
     <form method="post" action="{{ route('users#updateConfirmation', $users->id) }}" id="update-form">
       @csrf
       @method('PATCH')
+      {{$users}}
       <div class="form-group row justify-content-center pt-4">
         <label for="name" class="col-sm-2 col-form-label">名前</label>
         <div class="col-sm-10 col-md-6">
@@ -25,9 +26,14 @@
         <label for="type" class="col-sm-2 col-form-label">タイプ</label>
           <div class="col-sm-10 col-md-6">
             <select class="form-control" name="type">
-              <option>Select type</option>
-              <option value="0">Admin</option>
-              <option value="1">User</option>
+              <option>タイプ選択</option>
+              @if ($users->type == 0)
+                <option value="0" selected>管理者</option>
+                <option value="1"　>ユーザー</option>
+              @else
+              　<option value="0">管理者</option>
+                <option value="1" selected>ユーザー</option>
+              @endif
             </select>
           </div>
       </div>
@@ -38,20 +44,20 @@
         </div>
       </div>
       <div class="form-group row justify-content-center justify-content-center">
-        <label for="dob" class="col-md-2 col-sm-4 col-form-label">誕生日</label>
+        <label for="dob" class="col-md-2 col-sm-4 col-form-label">生年日</label>
         <div class="col-md-6 col-sm-6">
-          <input type="text" class="form-control" name="dob" value="{{ $users->dob }}" placeholder="誕生日">
+          <input type="text" class="form-control" name="dob" value="{{ $users->dob }}" placeholder="生年日">
         </div>
       </div>
       <div class="form-group row justify-content-center">
         <label for="address" class="col-sm-2 col-form-label">住所</label>
         <div class="col-sm-10 col-md-6">
-          <textarea class="form-control" name="address" rows="3" justify-content-centers="3" placeholder="住所">{{ $users->address }}</textarea>
+          <textarea class="form-control" rows="3" justify-content-centers="3" name="address" placeholder="住所">{{ $users->address }}</textarea>
         </div>
       </div>
       <div class="form-group row justify-content-center">
         <div class="col-sm-8 col-md-8">
-          <a class="btn btn-link" href="{{ route('password#showResetForm',$users->id)}}">パスワード変更</a>
+          <a class="btn btn-link" href="{{ route('password#showResetForm',$users->id) }}">パスワード変更</a>
         </div>
       </div>
       <div class="form-group row justify-content-center mt-4">

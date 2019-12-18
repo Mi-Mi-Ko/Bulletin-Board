@@ -20,9 +20,9 @@
         </div>
       </div>
       <div class="form-group row justify-content-center">
-        <label for="confirmPassword" class="col-md-2 col-4 col-form-label">確認パスワード</label>
+        <label for="password_confirmation" class="col-md-2 col-4 col-form-label">確認パスワード</label>
         <div class="col-md-6 col-8">
-          <input type="password" class="form-control" name="confirmPassword">
+          <input type="password" class="form-control" name="password_confirmation">
         </div>
       </div>
       <div class="form-group row justify-content-center pt-2">

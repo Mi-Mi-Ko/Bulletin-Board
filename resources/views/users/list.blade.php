@@ -27,18 +27,19 @@
         </div>
         <div class="form-group col-md-4">
           <a href="" class="btn btn-primary">検索</a>
-          <a href="{{ route('users#create')}}" class="btn btn-primary">ユーザー作成画面へ</a>
+          <a href="{{ route('users#create') }}" class="btn btn-primary">ユーザー登録画面へ</a>
         </div>
       </div>
       <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-          <thead>
+        <table class="table table-bordered table-striped text-center">
+          <thead class="bg-primary font-weight-bold">
             <tr>
               <td>名前</td>
+              <td>タイプ</td>
               <td>メールアドレス</td>
               <td>作成ユーザー</td>
               <td>電話番号</td>
-              <td>誕生日</td>
+              <td>生年日</td>
               <td>住所</td>
               <td>作成日</td>
               <td>更新日</td>
@@ -46,23 +47,25 @@
             </tr>
           </thead>
           <tbody>
+            @foreach($users as $user)
             <tr>
-              <td>Mi Mi Ko</td>
-              <td>mimiko@gmail.com</td>
-              <td>1</td>
-              <td>09421956327</td>
-              <td>1992/12/05</td>
-              <td>Yangon</td>
-              <td>2018/12/05</td>
-              <td>2018/12/05</td>
-              <td class="text-center">
-                <a href="{{ route('users#show',1)}}" class="btn btn-primary">
+              <td> {{ $user->name }} </td>
+              <td> {{ $user->type }} </td>
+              <td> {{ $user->email }} </td>
+              <td> {{ $user->create_user_id }} </td>
+              <td> {{ $user->phone }} </td>
+              <td> {{ $user->dob }} </td>
+              <td> {{ $user->address }} </td>
+              <td> {{ $user->created_at }} </td>
+              <td> {{ $user->updated_at }} </td>
+              <td>
+                <a href="{{ route('users#show', $user->id) }}" class="btn btn-primary">
                 <i class="fas fa-edit"></i>
                   編集
                 </a>
               </td>
-              <td class="text-center">
-                <form action="" method="post">
+              <td>
+                <form action="{{ route('users#destroy', $user->id) }}" method="post">
                   @csrf
                   @method('DELETE')
                   <button class="btn btn-danger" type="submit">
@@ -72,8 +75,10 @@
                 </form>
               </td>
             </tr>
+            @endforeach
           </tbody>
         </table>
+        {{ $users->links() }}
       </div>
     <div>
   </div>

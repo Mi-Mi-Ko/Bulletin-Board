@@ -2,37 +2,83 @@
 
 namespace App\Http\Controllers\Post;
 
+use App\Contracts\Services\Post\PostServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
 use Log;
+use Validator;
 
 class PostController extends Controller
 {
+    private $postService;
+
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
+     *
+     * @param PostServiceInterface $postService
+     */
+    public function __construct(PostServiceInterface $postService)
+    {
+        $this->postService = $postService;
+    }
+
+    /**
+     * Display a listing post
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         //
-        return view('posts.list');
+        $posts = $this->postService->getPostList();
+        Log::info('Return Data::');
+        return view('posts.list', compact('posts'));
     }
 
-    // /**
-    //  * Show the form for creating a new resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function create()
-    // {
-    //     //
-    //     return view('posts.create');
-    // }
+    /**
+     * Show post creating view
+     *
+     * Return void
+     */
+    public function create()
+    {
+        return view('posts.create');
+    }
 
     /**
-     * Store a newly created resource in storage.
+     * Validation and go to post confirmation view
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    public function confirmation(Request $request)
+    {
+        $validator = $this->validateForm($request);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+        $data['posts'] = $request;
+        return view('posts.confirm', $data);
+    }
+
+    /**
+     * Validate post request
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function validateForm(Request $request)
+    {
+        $rules = [
+            'title' => 'required|max:255',
+            'description' => 'required',
+        ];
+        return Validator::make($request->all(), $rules);
+    }
+
+    /**
+     * Store post resources
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -40,26 +86,26 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|max:255',
-            'password' => 'required|numeric',
-            'type' => 'required|max:255',
-            'phone' => 'required|max:255',
-            'dob' => 'required|max:255',
-            'address' => 'required|max:255',
-            'profile' => 'required|max:255',
-        ]);
-        $show = Post::create($validatedData);
+        // $validatedData = $request->validate([
+        //     'name' => 'required|max:255',
+        //     'email' => 'required|max:255',
+        //     'password' => 'required|numeric',
+        //     'type' => 'required|max:255',
+        //     'phone' => 'required|max:255',
+        //     'dob' => 'required|max:255',
+        //     'address' => 'required|max:255',
+        //     'profile' => 'required|max:255',
+        // ]);
+        // $show = Post::create($validatedData);
 
         return redirect('/posts')->with('success', 'Post is successfully saved');
     }
 
     /**
-     * Display the specified resource.
+     * Show post updating view
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function show($id)
     {
@@ -71,30 +117,21 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-    /**
-     * Update the specified resource in storage.
+     * Show post update confirmation view
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function updateConfirmation(Request $request, $id)
     {
-        $data['posts'] = $request;
+        $data['post'] = $request;
         Log::info($data);
         return view('posts.updateConfirm', $data);
     }
+
     /**
-     * Update the specified resource in storage.
+     * Update post resources
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -103,11 +140,17 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         Log::info('Calling post update function');
-        return view('posts.list');
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required|max:255',
+        ]);
+        $posts = $this->postService->updatePost($validatedData, $id);
+        Log::info('Return Data::');
+        return redirect('/posts')->with('success', '投稿を登録しました。');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete post resources
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -117,24 +160,25 @@ class PostController extends Controller
         //
     }
 
-    public function create()
-    {
-        return view('posts.create');
-    }
-
-    public function confirmation(Request $request)
-    {
-        $data['posts'] = $request;
-        Log::info($data);
-        return view('posts.confirm', $data);
-    }
-
+    /**
+     * Show post csv importing view
+     *
+     * @param
+     * @return
+     */
     public function getCsv()
     {
         //
         Log::info("Upload view comming");
         return view('posts.upload');
     }
+
+    /**
+     *
+     *
+     * @param
+     * @return
+     */
     public function import(Request $request)
     {
         Log::info("Import Action comming");

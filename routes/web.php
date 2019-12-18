@@ -1,26 +1,12 @@
 <?php
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
+/**
+ * Login Routes
  */
-
 Route::get('/', function () {
     return view('auth.login');
 });
-
 Route::Get('password/forget', 'Auth\LoginController@showLinkRequestForm')
     ->name('password.request');
-
-/**
- * Login routes
- */
 Route::group(['prefix' => 'login'], function () {
     Route::get('/', 'Auth\LoginController@showLogin')
         ->name('showLogin');
@@ -28,9 +14,16 @@ Route::group(['prefix' => 'login'], function () {
         ->name('login');
 });
 
+/**
+ * Logout Routes
+ */
 Route::post('/logout', 'Auth\LoginController@logout')
     ->name('logout');
 
+/**
+ * User Routes Group
+ * Allow Admin Role
+ */
 Route::group(['middleware' => 'admin'], function () {
     Route::group(['prefix' => 'users'], function () {
         Route::get('/create', 'User\UserController@create')
@@ -42,6 +35,10 @@ Route::group(['middleware' => 'admin'], function () {
     });
 });
 
+/**
+ * User Profile Routes
+ * Allow User Role
+ */
 Route::group(['middleware' => 'user'], function () {
     Route::group(['prefix' => 'users'], function () {
         Route::get('/profile/{id}', 'User\UserController@profile')
@@ -49,6 +46,10 @@ Route::group(['middleware' => 'user'], function () {
     });
 });
 
+/**
+ * User And Post Routes Group
+ * Allow Login User
+ */
 Route::group(['middleware' => 'login'], function () {
     Route::group(['prefix' => 'users'], function () {
         Route::get('/', 'User\UserController@index')
@@ -57,8 +58,10 @@ Route::group(['middleware' => 'login'], function () {
             ->name('users#show');
         Route::any('/{id}/updateConfirmation', 'User\UserController@updateConfirmation')
             ->name('users#updateConfirmation');
-        Route::match(['PUT', 'PATCH'], '/{user}', 'User\UserController@update')
+        Route::match(['PUT', 'PATCH'], '/{id}', 'User\UserController@update')
             ->name('users#update');
+        Route::DELETE('/{id}', 'User\UserController@destroy')
+            ->name('users#destroy');
     });
     Route::group(['prefix' => 'posts'], function () {
         Route::get('/', 'Post\PostController@index')
@@ -79,6 +82,8 @@ Route::group(['middleware' => 'login'], function () {
             ->name('posts#updateConfirmation');
         Route::match(['PUT', 'PATCH'], '/{post}', 'Post\PostController@update')
             ->name('posts#update');
+        Route::DELETE('/{id}', 'Post\PostController@destroy')
+            ->name('posts#destroy');
     });
     Route::group(['prefix' => 'password'], function () {
         Route::get('/reset/{id}', 'Auth\ResetPasswordController@showResetForm')

@@ -3,17 +3,19 @@
 namespace App\Dao\User;
 
 use App\Contracts\Dao\User\UserDaoInterface;
-use App\Models\User;
+use App\User;
+use Log;
 
 class UserDao implements UserDaoInterface
 {
     /**
-     * Get Operator List
-     * @param Object
-     * @return $operatorList
+     * Get user list
+     *
+     * @return $userList
      */
     public function getUserList()
     {
-        return User::get();
+        Log::info("Get from database in UserDao.php.");
+        return User::paginate(5);
     }
 }

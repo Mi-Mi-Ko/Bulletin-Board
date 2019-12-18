@@ -9,7 +9,7 @@
       <div class="panel panel-default justify-content-center">
         <div class="panel-body">
           <form class="form-horizontal p-2" novalidate method="POST" action="{{ route('login') }}">
-            {{ csrf_field() }}
+            @csrf
             @if($errors->has('error_msg'))
               <div class="row">
                 <div class="col-md-4">
@@ -22,7 +22,7 @@
             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} row justify-content-center">
               <label for="email" class="col-md-2 col-form-label">メールアドレス</label>
               <div class="col-md-6">
-                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" autofocus>
                 @if ($errors->has('email'))
                   <span class="help-block text-danger">
                     <strong>{{ $errors->first('email') }}</strong>
@@ -33,12 +33,12 @@
             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} row justify-content-center">
               <label for="password" class="col-md-2 control-label">パスワード</label>
               <div class="col-md-6">
-                  <input id="password" type="password" class="form-control" name="password" required>
-                  @if ($errors->has('password'))
-                    <span class="help-block text-danger">
-                      <strong>{{ $errors->first('password') }}</strong>
-                    </span>
-                  @endif
+                <input id="password" type="password" class="form-control" name="password">
+                @if ($errors->has('password'))
+                  <span class="help-block text-danger">
+                    <strong>{{ $errors->first('password') }}</strong>
+                  </span>
+                @endif
               </div>
             </div>
               <div class="form-group row justify-content-center">
@@ -53,12 +53,12 @@
               </div>
               <div class="form-group row justify-content-center">
                 <div class="col-md-6 offset-md-4 mb-2">
-                    @if (Route::has('password.request'))
-                      <a class="btn btn-link p-0 mb-1" href="{{ route('password.request') }}">
-                        {{ __('forget password?') }}
-                      </a>
-                    @endif
-                  </div>
+                  @if (Route::has('password.request'))
+                    <a class="btn btn-link p-0 mb-1" href="{{ route('password.request') }}">
+                      {{ __('forget password?') }}
+                    </a>
+                  @endif
+                </div>
               </div>
               <div class="form-group row justify-content-center mb-0">
                 <div class="col-md-6 offset-md-4 mb-2">
