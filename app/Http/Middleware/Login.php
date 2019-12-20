@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Route;
-use Log;
 use Session;
 
 class Login
@@ -18,7 +17,6 @@ class Login
      */
     public function handle($request, Closure $next)
     {
-        Log::info('Have login?');
         if (Session::has('LOGIN_USER')) {
             return $next($request);
         } else {

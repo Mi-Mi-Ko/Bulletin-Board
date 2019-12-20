@@ -6,13 +6,12 @@
     投稿確認
   </div>
   <div class="card-body">
-  {{$posts}}
     <form method="post" action="{{ route('posts#store') }}">
     @csrf
       <div class="form-group row justify-content-center pt-4">
         <label for="title" class="col-md-2 col-4 col-form-label">タイトル</label>
         <div class="col-md-6 col-8">
-          <input type="text" readonly class="form-control-plaintext" value="{{ $posts->title }}" name="name" >
+          <input type="text" readonly class="form-control-plaintext" value="{{ $posts->title }}" name="title" >
         </div>
       </div>
       <div class="form-group row justify-content-center">

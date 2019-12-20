@@ -8,7 +8,7 @@ $factory->define(Post::class, function (Faker $faker) {
     return [
         'title' => $faker->title,
         'description' => $faker->text,
-        'status' => '1',
+        'status' => '0',
         'create_user_id' => "2",
         'updated_user_id' => "2",
     ];

@@ -44,7 +44,7 @@
                   </li>
                   @if (Session::get('LOGIN_USER')->type == '1')
                   <li class="nav-item">
-                    <a class="nav-link" href="{{ route('users#profile',1) }}">
+                    <a class="nav-link" href="{{ route('users#profile', Session::get('LOGIN_USER')->id) }}">
                     <i class="fas fa-user"></i>
                       ユーザー
                     </a>
@@ -94,4 +94,9 @@
         reader.readAsDataURL(input.files[0]);
     }
  }
+ window.setTimeout(function() {
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove();
+    });
+}, 3000);
 </script>

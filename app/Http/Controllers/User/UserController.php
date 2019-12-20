@@ -25,7 +25,14 @@ class UserController extends Controller
     {
         $this->userService = $userService;
     }
-
+    public function getUserService()
+    {
+        return $userService;
+    }
+    public function setUserService($service)
+    {
+        $userService = $service;
+    }
     /**
      * Display a listing of user.
      *
@@ -33,7 +40,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        //getenv('LOCALE')
         $users = $this->userService->getUserList();
         Log::info('Return Data::');
         return view('users.list', compact('users'));
@@ -104,7 +111,7 @@ class UserController extends Controller
             $files->move($destinationPath, $profileImage);
         }
         // $show = User::create($validatedData);
-        return redirect('/users')->with('success', 'User is successfully saved');
+        return redirect('/users')->with('success', 'ユーザーを登録しました。');
     }
 
     /**
@@ -165,7 +172,7 @@ class UserController extends Controller
     public function profile($id)
     {
         //
-        $users = User::findOrFail($id);
-        return view('users.profile', compact('users'));
+        $user = User::findOrFail($id);
+        return view('users.profile', compact('user'));
     }
 }

@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Post;
 
 use App\Contracts\Services\Post\PostServiceInterface;
+use App\Exports\PostsExport;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
 use Log;
+use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 
 class PostController extends Controller
 {
+    /**
+     * Private variable $postService
+     */
     private $postService;
 
     /**
@@ -30,16 +35,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
         $posts = $this->postService->getPostList();
-        Log::info('Return Data::');
         return view('posts.list', compact('posts'));
     }
 
     /**
      * Show post creating view
      *
-     * Return void
+     * @return void
      */
     public function create()
     {
@@ -54,27 +57,12 @@ class PostController extends Controller
      */
     public function confirmation(Request $request)
     {
-        $validator = $this->validateForm($request);
+        $validator = $this->validateInputForm($request);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
         $data['posts'] = $request;
         return view('posts.confirm', $data);
-    }
-
-    /**
-     * Validate post request
-     *
-     * @param Request $request
-     * @return void
-     */
-    private function validateForm(Request $request)
-    {
-        $rules = [
-            'title' => 'required|max:255',
-            'description' => 'required',
-        ];
-        return Validator::make($request->all(), $rules);
     }
 
     /**
@@ -85,20 +73,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // $validatedData = $request->validate([
-        //     'name' => 'required|max:255',
-        //     'email' => 'required|max:255',
-        //     'password' => 'required|numeric',
-        //     'type' => 'required|max:255',
-        //     'phone' => 'required|max:255',
-        //     'dob' => 'required|max:255',
-        //     'address' => 'required|max:255',
-        //     'profile' => 'required|max:255',
-        // ]);
-        // $show = Post::create($validatedData);
-
-        return redirect('/posts')->with('success', 'Post is successfully saved');
+        $post = $this->postService->store($request->except('_token'));
+        return redirect('/posts')->with('success', '投稿を登録しました。');
     }
 
     /**
@@ -109,11 +85,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
-        $posts = Post::findOrFail($id);
-        Log::info($posts);
-
-        return view('posts.update', compact('posts'));
+        $post = $this->postService->getPostById($id);
+        return view('posts.update', compact('post'));
     }
 
     /**
@@ -125,8 +98,11 @@ class PostController extends Controller
      */
     public function updateConfirmation(Request $request, $id)
     {
+        $validator = $this->validateUpdateForm($request);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
         $data['post'] = $request;
-        Log::info($data);
         return view('posts.updateConfirm', $data);
     }
 
@@ -139,14 +115,8 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Log::info('Calling post update function');
-        $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required|max:255',
-        ]);
-        $posts = $this->postService->updatePost($validatedData, $id);
-        Log::info('Return Data::');
-        return redirect('/posts')->with('success', '投稿を登録しました。');
+        $this->postService->updatePost($request->except('_method', '_token', 'id'), $id);
+        return redirect('/posts')->with('success', '投稿を更新しました。');
     }
 
     /**
@@ -157,7 +127,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->postService->delete($id);
+        return redirect('/posts')->with('success', '投稿を削除しました。');
     }
 
     /**
@@ -181,9 +152,49 @@ class PostController extends Controller
      */
     public function import(Request $request)
     {
-        Log::info("Import Action comming");
+        Log::info("Calling import-----");
         $data['posts'] = $request;
         Log::info($data);
         return view('posts.list');
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function export()
+    {
+        Log::info("Calling export-----");
+        // $this->postService->export();
+        return Excel::download(new PostsExport, 'posts.xlsx');
+    }
+
+    /**
+     * Validate post input request
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function validateInputForm(Request $request)
+    {
+        $rules = [
+            'title' => 'required|max:255|unique:posts',
+            'description' => 'required',
+        ];
+        return Validator::make($request->all(), $rules);
+    }
+
+    /**
+     * Validate post update request
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function validateUpdateForm(Request $request)
+    {
+        $rules = [
+            'title' => 'required|max:255|unique:posts,title,' . $request->id,
+            'description' => 'required',
+        ];
+        return Validator::make($request->all(), $rules);
     }
 }

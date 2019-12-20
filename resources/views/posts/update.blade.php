@@ -6,36 +6,46 @@
     投稿編集
   </div>
   <div class="card-body">
-    {{$posts}}
-    <form method="post" action="{{ route('posts#updateConfirmation', $posts->id) }}" id="update-form">
+    <form method="post" action="{{ route('posts#updateConfirmation', $post->id) }}" id="update-form">
       @csrf
-      @method('PATCH')
+      @method('PUT')
       <div class="form-group row justify-content-center pt-4">
         <label for="title" class="col-sm-2 col-form-label">タイトル</label>
         <div class="col-sm-10 col-md-6">
-          <input type="text" class="form-control" name="title" value="{{ $posts->title }}" placeholder="タイトル">
+          <input type="text" class="form-control" name="title" value="{{ $post->title }}" placeholder="タイトル">
+          @if ($errors->has('title'))
+            <span class="help-block text-danger">
+              <strong>{{ $errors->first('title') }}</strong>
+            </span>
+          @endif
         </div>
       </div>
       <div class="form-group row justify-content-center">
         <label for="description" class="col-sm-2 col-form-label">デスクリプション</label>
         <div class="col-sm-10 col-md-6">
-        <textarea class="form-control" rows="3" justify-content-centers="3" name="description" placeholder="デスクリプション">{{ $posts->description }}</textarea>
+          <textarea class="form-control" rows="3" justify-content-centers="3" name="description" placeholder="デスクリプション">{{ $post->description }}</textarea>
+          @if ($errors->has('description'))
+            <span class="help-block text-danger">
+              <strong>{{ $errors->first('description') }}</strong>
+            </span>
+          @endif
         </div>
       </div>
       <div class="form-group row justify-content-center">
-        <label for="description" class="col-sm-2 col-form-label">ステータス</label>
+        <label for="status" class="col-sm-2 col-form-label">ステータス</label>
         <div class="col-sm-10 col-md-6">
-        @if ($posts->status == 1)
+          @if ($post->status === 1)
+            <div class="custom-control custom-switch">
+              <input type="checkbox" checked class="custom-control-input" id="status" name="status">
+              <label class="custom-control-label" for="status"></label>
+            </div>
+          @else
           <div class="custom-control custom-switch">
-            <input type="checkbox" checked class="custom-control-input" id="status" name="status">
+            <input type="checkbox" class="custom-control-input" id="status" name="status">
             <label class="custom-control-label" for="status"></label>
           </div>
-        @else
-        <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="status" name="status">
-          <label class="custom-control-label" for="status"></label>
-        </div>
-        @endif
+          @endif
+          <input type="hidden" name="id" value="{{ $post->id }}">
         </div>
       </div>
       <div class="form-group row justify-content-center">

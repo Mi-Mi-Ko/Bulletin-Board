@@ -16,6 +16,6 @@ class UserDao implements UserDaoInterface
     public function getUserList()
     {
         Log::info("Get from database in UserDao.php.");
-        return User::paginate(5);
+        return User::paginate(10);
     }
 }

@@ -6,9 +6,8 @@
     ユーザー編集
   </div>
   <div class="card-body">
-    <form method="post" action="{{ route('users#updateConfirmation', $users->id) }}" id="update-form">
+    <form method="put" action="{{ route('users#updateConfirmation', $users->id) }}" id="update-form">
       @csrf
-      @method('PATCH')
       {{$users}}
       <div class="form-group row justify-content-center pt-4">
         <label for="name" class="col-sm-2 col-form-label">名前</label>
