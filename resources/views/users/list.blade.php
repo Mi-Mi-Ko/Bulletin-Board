@@ -25,14 +25,17 @@
         <div class="form-group col-md-2">
           <input type="text" class="form-control" placeholder="Created To">
         </div>
-        <div class="form-group col-md-4">
-          <a href="" class="btn btn-primary">検索</a>
+        <div class="form-group col-md-2 text-center">
+          <a href="" class="btn btn-primary pl-4 pr-4">検索</a>
+        </div>
+        <div class="form-group col-md-2">
           <a href="{{ route('users#create') }}" class="btn btn-primary">ユーザー登録画面へ</a>
         </div>
       </div>
       <div class="table-responsive">
-        <table class="table table-bordered table-striped text-center">
-          <thead class="bg-primary font-weight-bold">
+        {{ $users->links() }}
+        <table class="table table-bordered table-striped table-hover table-sm text-center">
+          <thead class="bg-info font-weight-bold">
             <tr>
               <td>名前</td>
               <td>タイプ</td>
@@ -59,7 +62,7 @@
               <td> {{ $user->created_at }} </td>
               <td> {{ $user->updated_at }} </td>
               <td>
-                <a href="{{ route('users#show', $user->id) }}" class="btn btn-primary">
+                <a href="{{ route('users#show', $user->id) }}" class="btn btn-info">
                 <i class="fas fa-edit"></i>
                   編集
                 </a>
@@ -78,7 +81,6 @@
             @endforeach
           </tbody>
         </table>
-        {{ $users->links() }}
       </div>
     <div>
   </div>

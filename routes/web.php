@@ -1,18 +1,23 @@
 <?php
+
 /**
  * Login Routes
  */
 Route::get('/', function () {
     return view('auth.login');
 });
-Route::Get('password/forget', 'Auth\LoginController@showLinkRequestForm')
-    ->name('password.request');
 Route::group(['prefix' => 'login'], function () {
     Route::get('/', 'Auth\LoginController@showLogin')
         ->name('showLogin');
     Route::post('/', 'Auth\LoginController@login')
         ->name('login');
 });
+
+/**
+ * Forget Password Routes
+ */
+Route::get('password/forget', 'Auth\LoginController@showLinkRequestForm')
+    ->name('password.request');
 
 /**
  * Logout Routes
@@ -58,9 +63,9 @@ Route::group(['middleware' => 'login'], function () {
             ->name('users#show');
         Route::any('/{id}/updateConfirmation', 'User\UserController@updateConfirmation')
             ->name('users#updateConfirmation');
-        Route::match(['PUT', 'PATCH'], '/{id}', 'User\UserController@update')
+        Route::put('/{id}', 'User\UserController@update')
             ->name('users#update');
-        Route::DELETE('/{id}', 'User\UserController@destroy')
+        Route::delete('/{id}', 'User\UserController@destroy')
             ->name('users#destroy');
     });
     Route::group(['prefix' => 'posts'], function () {
@@ -76,13 +81,15 @@ Route::group(['middleware' => 'login'], function () {
             ->name('posts#getCsv');
         Route::post('/import', 'Post\PostController@import')
             ->name('posts#import');
+        Route::get('/export', 'Post\PostController@export')
+            ->name('posts#export');
         Route::get('/{id}', 'Post\PostController@show')
             ->name('posts#show');
         Route::any('/{id}/updateConfirmation', 'Post\PostController@updateConfirmation')
             ->name('posts#updateConfirmation');
-        Route::match(['PUT', 'PATCH'], '/{post}', 'Post\PostController@update')
+        Route::put('/{post}', 'Post\PostController@update')
             ->name('posts#update');
-        Route::DELETE('/{id}', 'Post\PostController@destroy')
+        Route::delete('/{id}', 'Post\PostController@destroy')
             ->name('posts#destroy');
     });
     Route::group(['prefix' => 'password'], function () {

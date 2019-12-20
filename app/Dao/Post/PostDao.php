@@ -15,8 +15,31 @@ class PostDao implements PostDaoInterface
      */
     public function getPostList()
     {
-        Log::info("Get from database in PostDao.php.");
-        return Post::paginate(5);
+        return Post::paginate(10);
+    }
+
+    /**
+     * Store post
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function store($request)
+    {
+        Log::info("Store post");
+        Log::info($request);
+        Post::create($request);
+    }
+
+    /**
+     * Get Post by id
+     *
+     * @return $post
+     */
+    public function getPostById($id)
+    {
+        $post = Post::findOrFail($id);
+        return $post;
     }
 
     /**
@@ -27,9 +50,18 @@ class PostDao implements PostDaoInterface
      */
     public function updatePost($request, $id)
     {
-        Log::info("Update Post to database in PostDao.php.");
-        // Log::info($request);
-        // Log::info($id);
         Post::whereId($id)->update($request);
+    }
+
+    /**
+     * Delete post
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function delete($id)
+    {
+        $post = Post::findOrFail($id);
+        $post->delete();
     }
 }

@@ -11,6 +11,9 @@ use Validator;
 
 class LoginController extends Controller
 {
+    /**
+     * fdjfeojpeoijdes
+     */
     private $loginService;
 
     /**
@@ -41,7 +44,6 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        Log::info('Calling login from controller...');
         $validator = $this->validateForm($request);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
@@ -51,7 +53,7 @@ class LoginController extends Controller
             return redirect()->back()->withInput()->withErrors(['error_msg' => $result]);
         }
         Session::put('LOGIN_USER', $result);
-        return view('users.list');
+        return redirect('/users');
     }
 
     /**

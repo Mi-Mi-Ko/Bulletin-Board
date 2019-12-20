@@ -8,9 +8,10 @@
   <div class="card-body">
     <div class="uper">
       @if(session()->get('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {{ session()->get('success') }}
-        </div><br />
+        </div>
       @endif
       <div class="form-row mb-4">
         <div class="form-group col-md-2">
@@ -26,14 +27,15 @@
           <a href="{{ route('posts#getCsv')}}" class="btn btn-primary">アップロード</a>
         </div>
         <div class="form-group col-md-2">
-          <a href="" class="btn btn-primary">ダウンロード</a>
+          <a href="{{ route('posts#export')}}" class="btn btn-primary">ダウンロード</a>
         </div>
         <div class="table-responsive">
-          <table class="table table-bordered table-striped text-center">
-            <thead class="bg-primary font-weight-bold">
+          {{ $posts->links() }}
+          <table class="table table-bordered table-striped table-hover table-sm text-center">
+            <thead class="bg-info font-weight-bold">
               <tr>
                 <td>タイトル</td>
-                <td>Status</td>
+                <td>ステータス</td>
                 <td>デスクリプション</td>
                 <td>投稿したユーザー</td>
                 <td>投稿した日</td>
@@ -48,19 +50,24 @@
                   <td class="text-left">{{ $post->description }}</td>
                   <td>{{ $post->create_user_id }}</td>
                   <td>{{ $post->created_at }}</td>
-                  <td><a href="{{ route('posts#update', $post->id) }}" class="btn btn-primary">編集</a></td>
+                  <td>
+                    <a href="{{ route('posts#update', $post->id) }}" class="btn btn-info">
+                      <i class="fas fa-edit"></i>編集
+                    </a>
+                  </td>
                   <td>
                     <form action="{{ route('posts#destroy', $post->id) }}" method="post">
                       @csrf
                       @method('DELETE')
-                      <button class="btn btn-danger" type="submit">削除</button>
+                      <button class="btn btn-danger" type="submit">
+                        <i class="fas fa-trash-alt"></i>削除
+                      </button>
                     </form>
                   </td>
                 </tr>
               @endforeach
             </tbody>
           </table>
-          {{ $posts->links() }}
         </div>
       <div>
   </div>
