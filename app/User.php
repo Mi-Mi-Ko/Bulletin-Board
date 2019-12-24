@@ -27,4 +27,5 @@ class User extends Model
     protected $hidden = [
         'password',
     ];
+    protected $dates = ['dob'];
 }

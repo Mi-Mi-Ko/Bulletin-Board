@@ -6,14 +6,14 @@
     ユーザー登録
   </div>
   <div class="card-body">
-    <form action="{{ route('users#confirmation') }}" class="rounded" method="post" id="create-form">
+    <form action="{{ route('users#confirmation') }}"  method="POST" enctype="multipart/form-data" id="create-form">
       @csrf
-      @if($errors->has('error_msg'))
+      @if($errors)
         <div class="row">
           <div class="col-md-4">
           </div>
           <div class="alert alert-light text-danger font-weight-bold col-md-6" role="alert">
-            {{ $errors->first('error_msg') }}
+            {{ $errors }}
           </div>
         </div>
       @endif
@@ -98,7 +98,7 @@
         <label for="address" class="col-md-2 col-sm-4 col-form-label">プロファイル</label>
         <div class="col-md-6 col-sm-6">
           <input type="file" class="form-control mb-4" id="profile" onchange="loadPreview(this);" name="profile">
-          <img id="preview_img" src="" style="display: none;" width="200" height="150"/>
+          <img id="previewImage" src="" style="display: none;" width="200" height="150"/>
           @if ($errors->has('profile'))
             <span class="help-block text-danger">
               <strong>{{ $errors->first('profile') }}</strong>

@@ -7,9 +7,12 @@ use App\Http\Controllers\Controller;
 use App\User;
 use File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Log;
 use Redirect;
 use Response;
+use Session;
+use Storage;
 use Validator;
 
 class UserController extends Controller
@@ -66,33 +69,23 @@ class UserController extends Controller
     public function confirmation(Request $request)
     {
         Log::info($request);
-        $validator = $this->validateForm($request);
+        $validator = $this->validateInputForm($request);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-        $data['users'] = $request;
+        if ($files = $request->file('profile')) {
+            $userId = Session::get('LOGIN_USER')->id;
+            $isExit = File::exists(public_path() . "/images/$userId");
+            if (!$isExit) {
+                Storage::makeDirectory(public_path() . "/images/$userId");
+            }
+            $image = $request->profile->store("public/images/$userId");
+            $imageName = $request->profile->getClientOriginalName();
+            $request->profile->move(public_path("images/$userId"), $imageName);
+        }
+        $data['user'] = $request;
         return view('users.confirm', $data);
     }
-
-    /**
-     * Validate user request
-     *
-     * @param Request $request
-     * @return void
-     */
-    private function validateForm(Request $request)
-    {
-        $rules = [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
-            'profile' => 'required',
-            'type' => 'required',
-            'dob' => 'required|date_format:Y/m/d',
-        ];
-        return Validator::make($request->all(), $rules);
-    }
-
     /**
      * Store
      *
@@ -101,16 +94,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        Log::info('Calling store in controller...');
-        Log::info($request->file('profile'));
+        $request->merge(['password' => Hash::make($request->password)]);
 
-        if ($files = $request->file('profile')) {
-            $destinationPath = 'public/image/'; // upload path
-            $profileImage = $files->getClientOriginalExtension();
-            $files->move($destinationPath, $profileImage);
-        }
-        // $show = User::create($validatedData);
+        $this->userService->storeUser($request->except('_token'));
+
         return redirect('/users')->with('success', 'ユーザーを登録しました。');
     }
 
@@ -122,9 +109,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
-        $users = User::findOrFail($id);
-        return view('users.update', compact('users'));
+        $user = $this->userService->getUserById($id);
+        return view('users.update', compact('user'));
     }
 
     /**
@@ -136,6 +122,10 @@ class UserController extends Controller
      */
     public function updateConfirmation(Request $request, $id)
     {
+        $validator = $this->validateUpdateForm($request);
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
         $data['user'] = $request;
         return view('users.updateConfirm', $data);
     }
@@ -149,7 +139,10 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return view('users.list');
+        Log::info('Calling user update');
+        Log::info($request);
+        $this->userService->updateUser($request->except('_token'), $id);
+        return redirect('/users')->with('success', 'ユーザーを更新しました。');
     }
 
     /**
@@ -162,7 +155,6 @@ class UserController extends Controller
     {
         //
     }
-
     /**
      * Display user profile view
      *
@@ -174,5 +166,34 @@ class UserController extends Controller
         //
         $user = User::findOrFail($id);
         return view('users.profile', compact('user'));
+    }
+    /**
+     * Validate user request
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function validateInputForm(Request $request)
+    {
+        $rules = [
+            'name' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed|min:8|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
+            'profile' => 'required',
+            'type' => 'required',
+            'dob' => 'required|date_format:Y/m/d',
+        ];
+        return Validator::make($request->all(), $rules);
+    }
+
+    private function validateUpdateForm(Request $request)
+    {
+        $rules = [
+            'name' => 'required|unique:users,name,' . $request->id,
+            'email' => 'required|email|unique:users,email,' . $request->id,
+            'type' => 'required',
+            'dob' => 'required|date_format:Y/m/d',
+        ];
+        return Validator::make($request->all(), $rules);
     }
 }

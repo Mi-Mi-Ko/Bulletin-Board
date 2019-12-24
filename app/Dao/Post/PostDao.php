@@ -15,22 +15,20 @@ class PostDao implements PostDaoInterface
      */
     public function getPostList()
     {
-        return Post::paginate(10);
+        return Post::paginate(5);
     }
-
     /**
      * Store post
      *
      * @param Request $request
      * @return void
      */
-    public function store($request)
+    public function storePost($request)
     {
         Log::info("Store post");
         Log::info($request);
         Post::create($request);
     }
-
     /**
      * Get Post by id
      *
@@ -41,7 +39,6 @@ class PostDao implements PostDaoInterface
         $post = Post::findOrFail($id);
         return $post;
     }
-
     /**
      * Update post
      *
@@ -52,14 +49,13 @@ class PostDao implements PostDaoInterface
     {
         Post::whereId($id)->update($request);
     }
-
     /**
      * Delete post
      *
      * @param Request $request
      * @return void
      */
-    public function delete($id)
+    public function deletePost($id)
     {
         $post = Post::findOrFail($id);
         $post->delete();

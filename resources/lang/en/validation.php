@@ -132,6 +132,7 @@ return [
     'custom' => [
         'email' => [
             'required' => 'メールアドレスが必要です。',
+            'unique' => 'メールアドレスは既に存在しています。',
         ],
         'password' => [
             'required' => 'パスワードが必要です。',
@@ -140,6 +141,7 @@ return [
         ],
         'name' => [
             'required' => '名前が必要です。',
+            'unique' => '名前は既に存在しています。',
         ],
         'dob' => [
             'date_format' => 'YYYY/MM/DDの形で入力してください。',

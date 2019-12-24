@@ -8,7 +8,13 @@
   <div class="card-body">
     <form">
       @csrf
-      <div class="form-group row justify-content-md-center justify-content-sm-start pt-4">
+      <div class="form-group row justify-content-center">
+        <label for="profile" class="col-8 col-form-label"></label>
+        <div class="col-4">
+          <img src="{{ $user->profile }}" alt="Image" width="200" height="150"/>
+        </div>
+      </div>
+      <div class="form-group row justify-content-md-center justify-content-sm-start">
         <label for="name" class="col-4 col-sm-2 col-form-label ">名前</label>
         <div class="col-8 col-sm-6">
           <input type="text" readonly class="form-control-plaintext" value="{{ $user->name }}" name="name" >

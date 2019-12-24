@@ -5,6 +5,7 @@ namespace App\Services\User;
 use App\Contracts\Dao\User\UserDaoInterface;
 use App\Contracts\Services\User\UserServiceInterface;
 use Log;
+use Session;
 
 class UserService implements UserServiceInterface
 {
@@ -19,7 +20,6 @@ class UserService implements UserServiceInterface
     {
         $this->userDao = $userDao;
     }
-
     /**
      * login
      *
@@ -29,8 +29,45 @@ class UserService implements UserServiceInterface
     public function getUserList()
     {
         $result = $this->userDao->getUserList();
-        Log::info('User Service');
-        Log::info($result);
+        return $result;
+    }
+    /**
+     * store user
+     *
+     * @param Request $request
+     * @return obj [OR] null
+     */
+    public function storeUser($request)
+    {
+        $request["create_user_id"] = Session::get('LOGIN_USER')->id;
+        $request["updated_user_id"] = Session::get('LOGIN_USER')->id;
+        $request["created_at"] = date('Y-m-d H:i:s');
+        $result = $this->userDao->storeUser($request);
+        return $result;
+    }
+    /**
+     * get user by id
+     *
+     * @param Request $id
+     * @return obj
+     */
+    public function getUserById($id)
+    {
+        Log::info('gey User by id');
+        $result = $this->userDao->getUserById($id);
+        return $result;
+    }
+    /**
+     * update user
+     *
+     * @param Request $request, $id
+     * @return obj [OR] null
+     */
+    public function updateUser($request, $id)
+    {
+        $request["updated_user_id"] = Session::get('LOGIN_USER')->id;
+        $request["updated_at"] = date('Y-m-d H:i:s');
+        $result = $this->userDao->updateUser($request, $id);
         return $result;
     }
 }

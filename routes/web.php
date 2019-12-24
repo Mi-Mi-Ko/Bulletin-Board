@@ -25,6 +25,7 @@ Route::get('password/forget', 'Auth\LoginController@showLinkRequestForm')
 Route::post('/logout', 'Auth\LoginController@logout')
     ->name('logout');
 
+Route::post('save-photo', 'User\UserController@save');
 /**
  * User Routes Group
  * Allow Admin Role
@@ -63,7 +64,7 @@ Route::group(['middleware' => 'login'], function () {
             ->name('users#show');
         Route::any('/{id}/updateConfirmation', 'User\UserController@updateConfirmation')
             ->name('users#updateConfirmation');
-        Route::put('/{id}', 'User\UserController@update')
+        Route::post('/{id}', 'User\UserController@update')
             ->name('users#update');
         Route::delete('/{id}', 'User\UserController@destroy')
             ->name('users#destroy');
@@ -89,8 +90,8 @@ Route::group(['middleware' => 'login'], function () {
             ->name('posts#updateConfirmation');
         Route::put('/{post}', 'Post\PostController@update')
             ->name('posts#update');
-        Route::delete('/{id}', 'Post\PostController@destroy')
-            ->name('posts#destroy');
+        Route::delete('/{id}', 'Post\PostController@deletePost')
+            ->name('posts#deletePost');
     });
     Route::group(['prefix' => 'password'], function () {
         Route::get('/reset/{id}', 'Auth\ResetPasswordController@showResetForm')
