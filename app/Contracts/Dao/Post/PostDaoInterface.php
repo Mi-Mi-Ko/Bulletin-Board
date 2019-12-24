@@ -8,7 +8,7 @@ interface PostDaoInterface
     public function getPostList();
 
     //store post
-    public function store($request);
+    public function storePost($request);
 
     //get post by id
     public function getPostById($id);
@@ -17,5 +17,5 @@ interface PostDaoInterface
     public function updatePost($request, $id);
 
     //delete post
-    public function delete($id);
+    public function deletePost($id);
 }

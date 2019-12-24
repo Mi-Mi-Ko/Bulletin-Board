@@ -57,7 +57,7 @@
               <td> {{ $user->email }} </td>
               <td> {{ $user->create_user_id }} </td>
               <td> {{ $user->phone }} </td>
-              <td> {{ $user->dob }} </td>
+              <td> {{ $user->dob->format('Y/m/d') }} </td>
               <td> {{ $user->address }} </td>
               <td> {{ $user->created_at }} </td>
               <td> {{ $user->updated_at }} </td>

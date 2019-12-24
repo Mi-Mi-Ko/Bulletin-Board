@@ -56,7 +56,7 @@
                     </a>
                   </td>
                   <td>
-                    <form action="{{ route('posts#destroy', $post->id) }}" method="post">
+                    <form action="{{ route('posts#deletePost', $post->id) }}" method="post">
                       @csrf
                       @method('DELETE')
                       <button class="btn btn-danger" type="submit">

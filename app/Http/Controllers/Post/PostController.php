@@ -73,7 +73,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $post = $this->postService->store($request->except('_token'));
+        $post = $this->postService->storePost($request->except('_token'));
         return redirect('/posts')->with('success', '投稿を登録しました。');
     }
 
@@ -125,9 +125,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deletePost($id)
     {
-        $this->postService->delete($id);
+        $this->postService->deletePost($id);
         return redirect('/posts')->with('success', '投稿を削除しました。');
     }
 

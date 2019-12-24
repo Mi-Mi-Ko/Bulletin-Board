@@ -6,10 +6,22 @@
     ユーザー編集確認
   </div>
   <div class="card-body">
-    <form method="put" action="{{ route('users#update', $user->id) }}">
+    <form method="post" action="{{ route('users#update', $user->id) }}" enctype="multipart/form-data">
       @csrf
-        <div class="form-group row justify-content-md-center pt-4">
-          <label for="name" class="col-4 col-sm-2 col-form-label ">名前</label>
+        <div class="form-group row justify-content-center">
+          <label for="profile" class="col-8 col-form-label bg-success"></label>
+          <div class="col-4 bg-danger">
+            @if($user->profile)
+              <input type="hidden" class="form-control" id="profile" name="profile" value="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}">
+              <img src="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}" alt="Image" width="200" height="150"/>
+            @else
+              <img src="{{ $user->hiddenProfile }}" alt="Image" width="200" height="150"/>
+              <input type="hidden" class="form-control" id="profile" name="profile" value="{{ $user->hiddenProfile }}">
+            @endif
+          </div>
+        </div>
+        <div class="form-group row justify-content-md-center">
+          <label for="name" class="col-4 col-sm-2 col-form-label">名前</label>
           <div class="col-8 col-sm-6">
             <input type="text" readonly class="form-control-plaintext" value="{{ $user->name }}" name="name" >
           </div>
@@ -23,11 +35,13 @@
         <div class="form-group row justify-content-md-center">
           <label for="type" class="col-4 col-sm-2 col-form-label">タイプ</label>
             <div class="col-8 col-sm-6">
-              @if ($user->type == 0)
-              <input type="text" readonly class="form-control-plaintext" value="管理者" name="type">
-              @else
-              <input type="text" readonly class="form-control-plaintext" value="ユーザー" name="type">
-              @endif
+              <select disabled class="form-control">
+                @if ($user->type == 0)
+                  <option value="0" seleted name="type">管理者</option>
+                @else
+                  <option value="1" seleted name="type">ユーザー</option>
+                @endif
+            </select>
             </div>
         </div>
         <div class="form-group row justify-content-md-center">
@@ -52,7 +66,7 @@
           <label class="col-sm-2"></label>
           <div class="col-sm-10 col-md-6">
             <button type="submit" class="btn btn-success">ユーザー編集</button>
-            <a href="{{ route('users#update', $user->id) }}" class="btn btn-primary">キャンセル</a>
+            <a onClick="window.history.back()" class="btn btn-primary">キャンセル</a>
           </div>
         </div>
     </form>

@@ -81,7 +81,7 @@
 </html>
 <script>
   function loadPreview(input, id) {
-    id = id || '#preview_img';
+    id = id || '#previewImage';
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -94,9 +94,9 @@
         reader.readAsDataURL(input.files[0]);
     }
  }
- window.setTimeout(function() {
-    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove();
-    });
-}, 3000);
+//  window.setTimeout(function() {
+//     $(".alert").fadeTo(500, 0).slideUp(500, function(){
+//         $(this).remove();
+//     });
+// }, 3000);
 </script>

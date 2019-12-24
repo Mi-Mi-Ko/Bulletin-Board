@@ -38,12 +38,12 @@ class PostService implements PostServiceInterface
      * @param Request $request
      * @return obj [OR] null
      */
-    public function store($request)
+    public function storePost($request)
     {
         $request["create_user_id"] = Session::get('LOGIN_USER')->id;
         $request["updated_user_id"] = Session::get('LOGIN_USER')->id;
         $request["created_at"] = date('Y-m-d H:i:s');
-        $result = $this->postDao->store($request);
+        $result = $this->postDao->storePost($request);
         return $result;
     }
     /**
@@ -76,8 +76,8 @@ class PostService implements PostServiceInterface
      * @param Request $request, $id
      * @return obj [OR] null
      */
-    public function delete($id)
+    public function deletePost($id)
     {
-        $result = $this->postDao->delete($id);
+        $result = $this->postDao->deletePost($id);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Route;
-use Log;
 use Session;
 
 class Admin
@@ -18,7 +17,6 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        Log::info('Admin middleware checking');
         if (Session::has('LOGIN_USER')) {
             $type = Session::get('LOGIN_USER')->type;
             $currentRoute = Route::getRoutes()->match($request)->getName();

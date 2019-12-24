@@ -15,7 +15,37 @@ class UserDao implements UserDaoInterface
      */
     public function getUserList()
     {
-        Log::info("Get from database in UserDao.php.");
-        return User::paginate(10);
+
+        return User::paginate(5);
+    }
+    /**
+     * Store user
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function storeUser($request)
+    {
+        return User::create($request);
+    }
+    /**
+     * Get User by id
+     *
+     * @return $user
+     */
+    public function getUserById($id)
+    {
+        Log::info("getUserById in UserDao.php.");
+        return User::findOrFail($id);
+    }
+    /**
+     * Update user
+     *
+     * @param Request $request, $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUser($request, $id)
+    {
+        User::whereId($id)->update($request);
     }
 }
