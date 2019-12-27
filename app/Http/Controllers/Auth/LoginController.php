@@ -52,8 +52,23 @@ class LoginController extends Controller
         if (is_string($result)) {
             return redirect()->back()->withInput()->withErrors(['error_msg' => $result]);
         }
+
+        // $request->merge(['password' => Crypt::decrypt($request->password)]);
+
         Session::put('LOGIN_USER', $result);
         return redirect('/users');
+    }
+
+    /**
+     * Logout
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function logout(Request $request)
+    {
+        Session::forget('LOGIN_USER');
+        return redirect('/');
     }
 
     /**

@@ -12,6 +12,7 @@
           <label for="profile" class="col-8 col-form-label bg-success"></label>
           <div class="col-4 bg-danger">
             @if($user->profile)
+            {{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}
               <input type="hidden" class="form-control" id="profile" name="profile" value="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}">
               <img src="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}" alt="Image" width="200" height="150"/>
             @else

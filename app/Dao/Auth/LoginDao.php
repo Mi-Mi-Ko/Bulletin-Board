@@ -5,6 +5,7 @@ namespace App\Dao\Auth;
 use App\Contracts\Dao\Auth\LoginDaoInterface;
 use App\User;
 use Log;
+use Session;
 
 class LoginDao implements LoginDaoInterface
 {
@@ -16,7 +17,19 @@ class LoginDao implements LoginDaoInterface
      */
     public function getManageUser($email)
     {
-        Log::info('call getManageUser from LoginDao');
         return User::where('email', $email)->first();
     }
+    /**
+     * Change password
+     *
+     * @param string $request
+     * @return void
+     */
+    public function changePassword($request)
+    {
+        Log::info("changePassword=>");
+        Log::info($request);
+        User::find(Session::get('LOGIN_USER')->id)->update($request);
+    }
+
 }

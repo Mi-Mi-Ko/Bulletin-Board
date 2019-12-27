@@ -29,9 +29,7 @@ class LoginService implements LoginServiceInterface
      */
     public function login($request)
     {
-
         $result = $this->loginDao->getManageUser($request->email);
-        Log::info($result);
         if (!empty($result)) {
             if (Hash::check($request->password, $result->password)) {
                 return $this->getLoginUser($result);
@@ -40,6 +38,21 @@ class LoginService implements LoginServiceInterface
         } else {
             return trans('messages.no_exist');
         }
+    }
+
+    /**
+     * Change Password
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function changePassword($request)
+    {
+        $request["updated_at"] = date('Y-m-d H:i:s');
+        Log::info('Service=======');
+        Log::info($request);
+        $param = ['password' => $request->password, 'updated_at' => $request->updated_at];
+        $result = $this->loginDao->changePassword($param);
     }
 
     /**

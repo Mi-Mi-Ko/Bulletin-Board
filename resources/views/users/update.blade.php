@@ -6,7 +6,6 @@
     ユーザー編集
   </div>
   <div class="card-body">
-    <!-- <form method="put" action="{{ route('users#updateConfirmation', $user->id) }}" id="update-form"> -->
     <form action="{{ route('users#updateConfirmation', $user->id) }}"  method="POST" enctype="multipart/form-data" id="update-form">
       @csrf
       <div class="form-group row justify-content-center">
@@ -85,14 +84,16 @@
         <label for="address" class="col-md-2 col-sm-4 col-form-label">プロファイル</label>
         <div class="col-md-6 col-sm-6">
           <input type="file" class="form-control mb-4" id="profile" onchange="loadPreview(this);" name="profile">
-          <img id="previewImage" src="" style="display: none;" width="200" height="150"/>
+          <img class="form-control" id="previewImage" src="" style="display: none;" width="200" height="150"/>
         </div>
       </div>
-      <div class="form-group row justify-content-center">
-        <div class="col-sm-8 col-md-8">
-          <a class="btn btn-link" href="{{ route('password#showResetForm',$user->id) }}">パスワード変更</a>
+      @if (Session::get('LOGIN_USER')->id === $user->id)
+        <div class="form-group row justify-content-center">
+          <div class="col-sm-8 col-md-8">
+            <a class="btn btn-link" href="{{ route('password#showChangePasswordForm',$user->id) }}">パスワード変更</a>
+          </div>
         </div>
-      </div>
+      @endif
       <div class="form-group row justify-content-center mt-4">
         <label class="col-sm-2"></label>
         <div class="col-sm-10 col-md-6">

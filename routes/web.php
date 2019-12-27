@@ -19,12 +19,6 @@ Route::group(['prefix' => 'login'], function () {
 Route::get('password/forget', 'Auth\LoginController@showLinkRequestForm')
     ->name('password.request');
 
-/**
- * Logout Routes
- */
-Route::post('/logout', 'Auth\LoginController@logout')
-    ->name('logout');
-
 Route::post('save-photo', 'User\UserController@save');
 /**
  * User Routes Group
@@ -66,8 +60,8 @@ Route::group(['middleware' => 'login'], function () {
             ->name('users#updateConfirmation');
         Route::post('/{id}', 'User\UserController@update')
             ->name('users#update');
-        Route::delete('/{id}', 'User\UserController@destroy')
-            ->name('users#destroy');
+        Route::delete('/{id}', 'User\UserController@delete')
+            ->name('users#delete');
     });
     Route::group(['prefix' => 'posts'], function () {
         Route::get('/', 'Post\PostController@index')
@@ -90,13 +84,15 @@ Route::group(['middleware' => 'login'], function () {
             ->name('posts#updateConfirmation');
         Route::put('/{post}', 'Post\PostController@update')
             ->name('posts#update');
-        Route::delete('/{id}', 'Post\PostController@deletePost')
-            ->name('posts#deletePost');
+        Route::delete('/{id}', 'Post\PostController@delete')
+            ->name('posts#delete');
     });
     Route::group(['prefix' => 'password'], function () {
-        Route::get('/reset/{id}', 'Auth\ResetPasswordController@showResetForm')
-            ->name('password#showResetForm');
-        Route::post('/reset', 'Auth\ResetPasswordController@update')
-            ->name('password#update');
+        Route::get('/change/{id}', 'Auth\ResetPasswordController@showChangePasswordForm')
+            ->name('password#showChangePasswordForm');
+        Route::post('/change', 'Auth\ResetPasswordController@change')
+            ->name('password#change');
     });
+    Route::post('/logout', 'Auth\LoginController@logout')
+        ->name('logout');
 });

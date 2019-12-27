@@ -9,8 +9,11 @@ use Session;
 
 class PostService implements PostServiceInterface
 {
+    /**
+     * Private variable $postDao
+     *
+     */
     private $postDao;
-
     /**
      * Constructor
      *
@@ -20,7 +23,6 @@ class PostService implements PostServiceInterface
     {
         $this->postDao = $postDao;
     }
-
     /**
      * get post list
      *
@@ -73,8 +75,8 @@ class PostService implements PostServiceInterface
     /**
      * delete post
      *
-     * @param Request $request, $id
-     * @return obj [OR] null
+     * @param $id
+     * @return void
      */
     public function deletePost($id)
     {

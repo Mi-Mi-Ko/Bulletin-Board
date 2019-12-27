@@ -45,7 +45,12 @@
             <tbody>
               @foreach($posts as $post)
                 <tr>
-                  <td>{{ $post->title }}</td>
+                  <td>
+                    <a href="javascript:;" data-toggle="modal" onclick="viewPostData({{$post}})"
+                      data-target="#postDetailModal">
+                      {{ $post->title }}
+                    </a>
+                  </td>
                   <td>{{ $post->status }}</td>
                   <td class="text-left">{{ $post->description }}</td>
                   <td>{{ $post->create_user_id }}</td>
@@ -56,13 +61,9 @@
                     </a>
                   </td>
                   <td>
-                    <form action="{{ route('posts#deletePost', $post->id) }}" method="post">
-                      @csrf
-                      @method('DELETE')
-                      <button class="btn btn-danger" type="submit">
-                        <i class="fas fa-trash-alt"></i>削除
-                      </button>
-                    </form>
+                    <a href="javascript:;" data-toggle="modal" onclick="deletePostData({{$post}})"
+                      data-target="#postDeleteModal" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>削除
+                    </a>
                   </td>
                 </tr>
               @endforeach
@@ -70,6 +71,73 @@
           </table>
         </div>
       <div>
+  </div>
+</div>
+<div class="modal fade" id="postDeleteModal" tabindex="-1" role="dialog" aria-labelledby="postDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="" id="deletePostForm" method="post">
+      {{ csrf_field() }}
+      {{ method_field('DELETE') }}
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title font-weight-bold" id="postDeleteModalLabel"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center font-weight-bold p-4">
+          投稿（<strong id="title"></strong>）を削除します。</br>
+          よろしいですか？
+        </div>
+        <div class="modal-footer border-0 mt-4 justify-content-center">
+          <button type="button" class="btn btn-success" data-dismiss="modal">いいえ</button>
+          <button type="submit" class="btn btn-danger"　onclick="postDeletFormSubmit()">はい</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal fade" id="postDetailModal" tabindex="-1" role="dialog" aria-labelledby="postDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-bold" id="postDetailModalLabel">投稿明細</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <div class="col-4">
+              <label for="postTitle" class="col-form-label">タイトル:</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control-plaintext" readonly id="postTitle">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <label for="postDescription" class="col-form-label">デスクリプション:</label>
+            </div>
+            <div class="col-8">
+              <textarea class="form-control-plaintext" rows="3" readonly id="postDescription"></textarea>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <label for="postStatus" class="col-form-label">ステータス:</label>
+            </div>
+            <div class="col-8">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" disabled id="postStatus">
+                <label class="custom-control-label" for="status"></label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 @endsection

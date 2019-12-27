@@ -9,8 +9,11 @@ use Session;
 
 class UserService implements UserServiceInterface
 {
+    /**
+     * Private variable $userDao
+     *
+     */
     private $userDao;
-
     /**
      * Constructor
      *
@@ -69,5 +72,15 @@ class UserService implements UserServiceInterface
         $request["updated_at"] = date('Y-m-d H:i:s');
         $result = $this->userDao->updateUser($request, $id);
         return $result;
+    }
+    /**
+     * delete user
+     *
+     * @param $id
+     * @return void
+     */
+    public function deleteUser($id)
+    {
+        $result = $this->userDao->deleteUser($id);
     }
 }

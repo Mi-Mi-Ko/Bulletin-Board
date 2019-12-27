@@ -8,15 +8,6 @@
   <div class="card-body">
     <form action="{{ route('users#confirmation') }}"  method="POST" enctype="multipart/form-data" id="create-form">
       @csrf
-      @if($errors)
-        <div class="row">
-          <div class="col-md-4">
-          </div>
-          <div class="alert alert-light text-danger font-weight-bold col-md-6" role="alert">
-            {{ $errors }}
-          </div>
-        </div>
-      @endif
       <div class="form-group row justify-content-center pt-4">
         <label for="name" class="col-md-2 col-sm-4 col-form-label">名前</label>
         <div class="col-md-6 col-sm-6">
@@ -80,7 +71,7 @@
       <div class="form-group row justify-content-center">
         <label for="dob" class="col-md-2 col-sm-4 col-form-label">生年日</label>
         <div class="col-md-6 col-sm-6">
-          <input type="text" class="form-control" value="{{ old('dob') }}" name="dob" placeholder="生年日">
+          <input type="text" class="form-control" format="yyyy/mm/dd" value="{{ old('dob') }}" name="dob" placeholder="生年日">
           @if ($errors->has('dob'))
             <span class="help-block text-danger">
               <strong>{{ $errors->first('dob') }}</strong>

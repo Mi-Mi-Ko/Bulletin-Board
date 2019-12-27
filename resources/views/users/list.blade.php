@@ -52,7 +52,12 @@
           <tbody>
             @foreach($users as $user)
             <tr>
-              <td> {{ $user->name }} </td>
+              <td>
+                <a href="javascript:;" data-toggle="modal" onclick="viewUserData({{$user}})"
+                      data-target="#userDetailModal">
+                      {{ $user->name }}
+                </a>
+              </td>
               <td> {{ $user->type }} </td>
               <td> {{ $user->email }} </td>
               <td> {{ $user->create_user_id }} </td>
@@ -68,21 +73,96 @@
                 </a>
               </td>
               <td>
-                <form action="{{ route('users#destroy', $user->id) }}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <button class="btn btn-danger" type="submit">
-                  <i class="fas fa-trash-alt"></i>
-                    削除
-                  </button>
-                </form>
-              </td>
+                <a href="javascript:;" data-toggle="modal" onclick="deleteUserData({{$user}})"
+                    data-target="#userDeleteModal" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>削除
+                  </a>
+                </td>
             </tr>
             @endforeach
           </tbody>
         </table>
       </div>
     <div>
+  </div>
+</div>
+<div class="modal fade" id="userDeleteModal" tabindex="-1" role="dialog" aria-labelledby="userDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="" id="deletUserForm" method="post">
+      {{ csrf_field() }}
+      {{ method_field('DELETE') }}
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title font-weight-bold" id="userDeleteModalLabel"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center font-weight-bold p-4">
+          ユーザー（<strong id="userName"></strong>）を削除します。</br>
+          よろしいですか？
+        </div>
+        <div class="modal-footer border-0 mt-4 justify-content-center">
+          <button type="button" class="btn btn-success" data-dismiss="modal">いいえ</button>
+          <button type="submit" class="btn btn-danger"　onclick="userDeletFormSubmit()">はい</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-bold" id="userDetailModalLabel">ユーザー明細</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <div class="col-4">
+              <label for="userNamae" class="col-form-label">名前:</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control-plaintext" readonly id="userNamae">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <label for="userEmail" class="col-form-label">メールアドレス:</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control-plaintext" readonly id="userEmail">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <label for="userPhone" class="col-form-label">電話番号:</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control-plaintext" readonly id="userPhone">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <label for="userDob" class="col-form-label">生年日:</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control-plaintext" readonly id="userDob">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <label for="userAddress" class="col-form-label">住所:</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control-plaintext" readonly id="userAddress">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 @endsection

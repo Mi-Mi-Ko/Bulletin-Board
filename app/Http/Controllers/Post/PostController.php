@@ -125,7 +125,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deletePost($id)
+    public function delete($id)
     {
         $this->postService->deletePost($id);
         return redirect('/posts')->with('success', '投稿を削除しました。');
@@ -169,7 +169,7 @@ class PostController extends Controller
     }
 
     /**
-     * Validate post input request
+     * Validate post input form request
      *
      * @param Request $request
      * @return void
@@ -184,7 +184,7 @@ class PostController extends Controller
     }
 
     /**
-     * Validate post update request
+     * Validate post update form request
      *
      * @param Request $request
      * @return void

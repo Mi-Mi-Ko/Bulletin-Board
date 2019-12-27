@@ -16,7 +16,7 @@ class UserDao implements UserDaoInterface
     public function getUserList()
     {
 
-        return User::paginate(5);
+        return User::paginate(10);
     }
     /**
      * Store user
@@ -26,6 +26,8 @@ class UserDao implements UserDaoInterface
      */
     public function storeUser($request)
     {
+        Log::info('storeUser=>');
+        Log::info($request);
         return User::create($request);
     }
     /**
@@ -47,5 +49,16 @@ class UserDao implements UserDaoInterface
     public function updateUser($request, $id)
     {
         User::whereId($id)->update($request);
+    }
+    /**
+     * Delete post
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
     }
 }

@@ -60,7 +60,7 @@
       <div class="form-group row justify-content-md-center">
         <label for="dob" class="col-4 col-sm-2 col-form-label">生年日</label>
         <div class="col-8 col-sm-6">
-          <input type="text" readonly class="form-control-plaintext" value="{{ $user->dob }}" name="dob">
+          <input type="text" readonly class="form-control-plaintext" format="yyyy/mm/dd" value="{{ $user->dob }}" name="dob">
         </div>
       </div>
       <div class="form-group row justify-content-md-center">

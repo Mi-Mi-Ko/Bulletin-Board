@@ -8,7 +8,7 @@
   <div class="card-body">
     <form action="{{ route('posts#confirmation') }}" method="post" id="create-form">
     @csrf
-      @if($errors->has('error_msg'))
+      <!-- @if($errors->has('error_msg'))
         <div class="row">
           <div class="col-md-4">
           </div>
@@ -16,7 +16,7 @@
             {{ $errors->first('error_msg') }}
           </div>
         </div>
-      @endif
+      @endif -->
       <div class="form-group row justify-content-center pt-4">
         <label for="title" class="col-md-2 col-sm-4 col-form-label">タイトル</label>
         <div class="col-md-6 col-sm-6">
