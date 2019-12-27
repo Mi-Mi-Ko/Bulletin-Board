@@ -139,8 +139,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Log::info('Calling user update');
-        Log::info($request);
         $this->userService->updateUser($request->except('_token'), $id);
         return redirect('/users')->with('success', 'ユーザーを更新しました。');
     }
@@ -149,11 +147,12 @@ class UserController extends Controller
      * Delete user resources
      *
      * @param  int  $id
-     * @return
+     * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $this->userService->deleteUser($id);
+        return redirect('/users')->with('success', 'ユーザーを削除しました。');
     }
     /**
      * Display user profile view
@@ -163,12 +162,11 @@ class UserController extends Controller
      */
     public function profile($id)
     {
-        //
-        $user = User::findOrFail($id);
+        $user = $this->userService->getUserById($id);
         return view('users.profile', compact('user'));
     }
     /**
-     * Validate user request
+     * Validate user input form request
      *
      * @param Request $request
      * @return void
@@ -181,18 +179,25 @@ class UserController extends Controller
             'password' => 'required|confirmed|min:8|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
             'profile' => 'required',
             'type' => 'required',
-            'dob' => 'required|date_format:Y/m/d',
+            'dob' => 'required',
+            // 'dob' => 'required|date_format:Y/m/d',
         ];
         return Validator::make($request->all(), $rules);
     }
-
+    /**
+     * Validate user update form request
+     *
+     * @param Request $request
+     * @return void
+     */
     private function validateUpdateForm(Request $request)
     {
         $rules = [
             'name' => 'required|unique:users,name,' . $request->id,
             'email' => 'required|email|unique:users,email,' . $request->id,
             'type' => 'required',
-            'dob' => 'required|date_format:Y/m/d',
+            'dob' => 'required',
+            // 'dob' => 'required|date_format:Y/m/d',
         ];
         return Validator::make($request->all(), $rules);
     }

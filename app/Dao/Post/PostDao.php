@@ -15,7 +15,7 @@ class PostDao implements PostDaoInterface
      */
     public function getPostList()
     {
-        return Post::paginate(5);
+        return Post::paginate(10);
     }
     /**
      * Store post
