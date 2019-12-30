@@ -3,6 +3,7 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
+    <i class="fas fa-users"></i>
     ユーザー一覧
   </div>
   <div class="card-body">
@@ -12,41 +13,45 @@
           {{ session()->get('success') }}
         </div><br />
       @endif
-      <div class="form-row mb-4">
-        <div class="form-group col-md-2">
-          <input type="text" class="form-control" placeholder="名前">
+      <form action="{{ route('users#search') }}" method="post">
+        {{ csrf_field() }}
+        <div class="form-row mb-4">
+          <div class="form-group col-md-2">
+            <input type="text" name="name" class="form-control" value="" placeholder="名前">
+          </div>
+          <div class="form-group col-md-2">
+            <input type="text" name="email" class="form-control" value="" placeholder="メールアドレス">
+          </div>
+          <div class="form-group col-md-2">
+            <input type="text" name="from" class="form-control" value="" placeholder="Created From">
+          </div>
+          <div class="form-group col-md-2">
+            <input type="text" name="to" class="form-control" value="" placeholder="Created To">
+          </div>
+          <div class="form-group col-md-2 text-center">
+            <button type="submit" class="btn btn-primary pl-4 pr-4">
+              検索<span class="glyphicon glyphicon-search"></span>
+            </button>
+          </div>
+          <div class="form-group col-md-2">
+            <a href="{{ route('users#create') }}" class="btn btn-primary">ユーザー登録画面へ</a>
+          </div>
         </div>
-        <div class="form-group col-md-2">
-          <input type="text" class="form-control" placeholder="メールアドレス">
-        </div>
-        <div class="form-group col-md-2">
-          <input type="text" class="form-control" placeholder="Created From">
-        </div>
-        <div class="form-group col-md-2">
-          <input type="text" class="form-control" placeholder="Created To">
-        </div>
-        <div class="form-group col-md-2 text-center">
-          <a href="" class="btn btn-primary pl-4 pr-4">検索</a>
-        </div>
-        <div class="form-group col-md-2">
-          <a href="{{ route('users#create') }}" class="btn btn-primary">ユーザー登録画面へ</a>
-        </div>
-      </div>
+      </form>
       <div class="table-responsive">
         {{ $users->links() }}
-        <table class="table table-bordered table-striped table-hover table-sm text-center">
-          <thead class="bg-info font-weight-bold">
+        <table class="table table-bordered table-striped table-hover">
+          <thead class="bg-info font-weight-bold text-center">
             <tr>
-              <td>名前</td>
-              <td>タイプ</td>
-              <td>メールアドレス</td>
-              <td>作成ユーザー</td>
-              <td>電話番号</td>
-              <td>生年日</td>
-              <td>住所</td>
-              <td>作成日</td>
-              <td>更新日</td>
-              <td colspan="2">アクション</td>
+              <td width="8%">名前</td>
+              <td width="10%">メールアドレス</td>
+              <td width="10%">作成ユーザー</td>
+              <td width="8%">電話番号</td>
+              <td width="8%">生年日</td>
+              <td width="18%">住所</td>
+              <td width="8%">作成日</td>
+              <td width="10%">更新日</td>
+              <td width="10%" colspan="2">アクション</td>
             </tr>
           </thead>
           <tbody>
@@ -58,7 +63,6 @@
                       {{ $user->name }}
                 </a>
               </td>
-              <td> {{ $user->type }} </td>
               <td> {{ $user->email }} </td>
               <td> {{ $user->create_user_id }} </td>
               <td> {{ $user->phone }} </td>

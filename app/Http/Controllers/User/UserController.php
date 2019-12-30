@@ -45,7 +45,20 @@ class UserController extends Controller
     {
         //getenv('LOCALE')
         $users = $this->userService->getUserList();
-        Log::info('Return Data::');
+        Log::info("Return Data");
+        Log::info($users);
+        return view('users.list', compact('users'));
+    }
+
+    /**
+     * Display a listing of user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        Log::info("In Controller-----");
+        $users = $this->userService->searchUserList($request->except('_token'));
         return view('users.list', compact('users'));
     }
 

@@ -1,5 +1,5 @@
-.app-body {
-  background:#ccebff;
+.container {
+  margin: 0;
 }
 
 .previewImage {
@@ -7,3 +7,41 @@
   visibility: hidden;
   position: absolute;
 }
+
+.navbar {
+  margin-left: 200px;
+  z-index: 10;
+  background-color: #f8fafc;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.sidebar {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background: #2f353a;
+}
+
+.content {
+  margin-left: 200px;
+  clear: both;
+  top: 50px;
+  position: relative;
+}
+
+ul li a {
+  display: block;
+  color: #fff;
+  font-size: 15px;
+ }
+
+ ul li a:hover, ul li a:focus {
+  background-color:#20a8d8;
+  color: #fff;
+ }

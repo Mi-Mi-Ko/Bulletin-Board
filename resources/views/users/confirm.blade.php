@@ -3,6 +3,7 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
+    <i class="fas fa-user"></i>
     ユーザー確認
   </div>
   <div class="card-body">

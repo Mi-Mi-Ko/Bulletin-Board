@@ -18,4 +18,7 @@ interface UserServiceInterface
 
     //delete user
     public function deleteUser($id);
+
+    //search user list
+    public function searchUserList($request);
 }

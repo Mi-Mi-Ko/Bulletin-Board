@@ -3,6 +3,7 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
+    <i class="fas fa-clipboard"></i>
     投稿一覧
   </div>
   <div class="card-body">
@@ -31,15 +32,14 @@
         </div>
         <div class="table-responsive">
           {{ $posts->links() }}
-          <table class="table table-bordered table-striped table-hover table-sm text-center">
+          <table class="table table-bordered table-striped table-hover text-center">
             <thead class="bg-info font-weight-bold">
               <tr>
-                <td>タイトル</td>
-                <td>ステータス</td>
-                <td>デスクリプション</td>
-                <td>投稿したユーザー</td>
-                <td>投稿した日</td>
-                <td colspan="2">アクション</td>
+                <td width="10%">タイトル</td>
+                <td width="60%">デスクリプション</td>
+                <td width="10%">投稿したユーザー</td>
+                <td width="10%">投稿した日</td>
+                <td width="10%" colspan="2">アクション</td>
               </tr>
             </thead>
             <tbody>
@@ -51,9 +51,8 @@
                       {{ $post->title }}
                     </a>
                   </td>
-                  <td>{{ $post->status }}</td>
                   <td class="text-left">{{ $post->description }}</td>
-                  <td>{{ $post->create_user_id }}</td>
+                  <td>{{ $post->name }}</td>
                   <td>{{ $post->created_at }}</td>
                   <td>
                     <a href="{{ route('posts#update', $post->id) }}" class="btn btn-info">
