@@ -22,42 +22,19 @@
   </head>
   <body class="app-body">
     <div id="app">
-      <nav class="navbar navbar-expand-md navbar-light bg-success shadow-sm">
+      <nav class="navbar navbar-expand-md navbar-light shadow-sm">
         <div class="container">
           <a class="navbar-brand project-title" href="{{ url('/') }}">
             <i class="fas fa-home"></i>
-            {{ config('app.name', 'Bulletin-Board') }}
+            <span class="font-weight-bold">
+              {{ config('app.name', 'Bulletin-Board') }}
+            </span>
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
           </button>
           @if (Session::has('LOGIN_USER'))
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <!-- Left Side Of Navbar -->
-              <div class="left-sidebar">
-                <ul class="nav" id="myTab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/users') }}">
-                    <i class="fas fa-users"></i>
-                      ユーザー
-                    </a>
-                  </li>
-                  @if (Session::get('LOGIN_USER')->type == '1')
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ route('users#profile', Session::get('LOGIN_USER')->id) }}">
-                    <i class="fas fa-user"></i>
-                      ユーザー
-                    </a>
-                  </li>
-                  @endif
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/posts') }}">
-                    <i class="fas fa-clipboard"></i>
-                      投稿
-                    </a>
-                  </li>
-                </ul>
-              </div>
               <ul class="navbar-nav ml-auto">
                 {{ Session::get('LOGIN_USER')->name }}
                 <div class="ml-3 logout-section">
@@ -73,8 +50,36 @@
           @endif
         </div>
       </nav>
-      <div class="container mt-4">
-        @yield('content')
+      <div class="sidebar">
+        @if (Session::has('LOGIN_USER'))
+          <ul class="nav flex-column pt-4">
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ url('/users') }}">
+                <i class="fas fa-users"></i>
+                &nbsp;ユーザー
+              </a>
+            </li>
+            @if (Session::get('LOGIN_USER')->type === '1')
+              <li class="nav-item pt-2">
+                <a class="nav-link" href="{{ route('users#profile', Session::get('LOGIN_USER')->id) }}">
+                  <i class="fas fa-user"></i>
+                  &nbsp;ユーザー
+                </a>
+              </li>
+            @endif
+            <li class="nav-item pt-2">
+              <a class="nav-link" href="{{ url('/posts') }}">
+                <i class="fas fa-clipboard"></i>
+                &nbsp;投稿
+              </a>
+            </li>
+          </ul>
+        @endif
+      </div>
+      <div class="content">
+        <div class="container-fluid mt-4">
+          @yield('content')
+        </div>
       </div>
     </div>
   </body>

@@ -35,6 +35,18 @@ class UserService implements UserServiceInterface
         return $result;
     }
     /**
+     * search
+     *
+     * @param Request $request
+     * @return obj [OR] null
+     */
+    public function searchUserList($request)
+    {
+        Log::info("In service");
+        $result = $this->userDao->searchUserList($request["name"], $request["email"], $request["from"], $request["to"]);
+        return $result;
+    }
+    /**
      * store user
      *
      * @param Request $request

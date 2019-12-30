@@ -3,14 +3,15 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
+    <i class="fas fa-user"></i>
     ユーザー編集確認
   </div>
   <div class="card-body">
     <form method="post" action="{{ route('users#update', $user->id) }}" enctype="multipart/form-data">
       @csrf
         <div class="form-group row justify-content-center">
-          <label for="profile" class="col-8 col-form-label bg-success"></label>
-          <div class="col-4 bg-danger">
+          <label for="profile" class="col-8 col-form-label"></label>
+          <div class="col-4">
             @if($user->profile)
             {{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}
               <input type="hidden" class="form-control" id="profile" name="profile" value="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}">

@@ -54,6 +54,8 @@ Route::group(['middleware' => 'login'], function () {
     Route::group(['prefix' => 'users'], function () {
         Route::get('/', 'User\UserController@index')
             ->name('users#index');
+        Route::any('/search', 'User\UserController@search')
+            ->name('users#search');
         Route::get('/{id}', 'User\UserController@show')
             ->name('users#show');
         Route::any('/{id}/updateConfirmation', 'User\UserController@updateConfirmation')

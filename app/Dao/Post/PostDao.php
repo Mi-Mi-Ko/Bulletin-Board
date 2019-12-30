@@ -15,7 +15,11 @@ class PostDao implements PostDaoInterface
      */
     public function getPostList()
     {
-        return Post::paginate(10);
+        return Post::leftjoin('users', function ($leftjoin) {
+            $leftjoin->on('posts.create_user_id', '=', 'users.id');
+        })
+            ->select('posts.*', 'users.name')
+            ->paginate(10);
     }
     /**
      * Store post

@@ -18,4 +18,7 @@ interface UserDaoInterface
 
     //delete user
     public function deleteUser($id);
+
+    // search user list
+    public function searchUserList($name, $email, $from, $to);
 }

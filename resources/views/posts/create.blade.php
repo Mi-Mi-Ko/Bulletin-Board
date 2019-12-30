@@ -3,6 +3,7 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
+    <i class="fas fa-clipboard"></i>
     投稿登録
   </div>
   <div class="card-body">
