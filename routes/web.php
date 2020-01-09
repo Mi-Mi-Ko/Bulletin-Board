@@ -1,27 +1,11 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
- */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 /**
- * Login routes
+ * Login Routes
  */
-// Route::Get('/login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::Get('password/reset', 'Auth\LoginController@showLinkRequestForm')->name('password.request');
-// Route::Post('/login', 'Auth\LoginController@login');
-
+Route::get('/', function () {
+    return view('auth.login');
+});
 Route::group(['prefix' => 'login'], function () {
     Route::get('/', 'Auth\LoginController@showLogin')
         ->name('showLogin');
@@ -29,37 +13,90 @@ Route::group(['prefix' => 'login'], function () {
         ->name('login');
 });
 
-Route::post('/logout', 'Auth\LoginController@logout')
-    ->name('logout');
+/**
+ * Forget Password Routes
+ */
+Route::get('password/forget', 'Auth\LoginController@showLinkRequestForm')
+    ->name('password.request');
 
-Route::group(['prefix' => 'users'], function () {
-
-    Route::get('/', 'User\UserController@index')
-        ->name('index')
-        ->middleware('auth');
-
-    Route::get('/create', 'User\UserController@create')
-        ->name('users#create')
-        ->middleware('auth');
-
-    Route::post('/confirm', 'User\UserController@confirmation')
-        ->name('users#confirmation')
-        ->middleware('auth');
-
-    Route::get('/{id}', 'User\UserController@show')
-        ->name('users#show')
-        ->middleware('auth');
-
-    Route::match(['PUT', 'PATCH'], '/{user}', 'User\UserController@update')
-        ->name('users#update')
-        ->middleware('auth');
-
-    Route::post('/', 'User\UserController@store')
-        ->name('users#store');
+Route::post('save-photo', 'User\UserController@save');
+/**
+ * User Routes Group
+ * Allow For Admin
+ */
+Route::group(['middleware' => 'admin'], function () {
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/create', 'User\UserController@create')
+            ->name('users#create');
+        Route::post('/confirm', 'User\UserController@confirmation')
+            ->name('users#confirmation');
+        Route::post('/', 'User\UserController@store')
+            ->name('users#store');
+    });
 });
 
-Route::group(['prefix' => 'posts'], function () {
-    Route::get('/', 'Post\PostController@index')
-        ->name('index')
-        ->middleware('auth');
+/**
+ * User Profile Routes
+ * Allow For User
+ */
+Route::group(['middleware' => 'user'], function () {
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/profile/{id}', 'User\UserController@profile')
+            ->name('users#profile');
+    });
+});
+
+/**
+ * User And Post Routes Group
+ * Allow For Login User
+ */
+Route::group(['middleware' => 'login'], function () {
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/', 'User\UserController@index')
+            ->name('users#index');
+        Route::any('/search', 'User\UserController@search')
+            ->name('users#search');
+        Route::get('/{id}', 'User\UserController@show')
+            ->name('users#show');
+        Route::any('/{id}/updateConfirmation', 'User\UserController@updateConfirmation')
+            ->name('users#updateConfirmation');
+        Route::post('/{id}', 'User\UserController@update')
+            ->name('users#update');
+        Route::delete('/{id}', 'User\UserController@delete')
+            ->name('users#delete');
+    });
+    Route::group(['prefix' => 'posts'], function () {
+        Route::get('/', 'Post\PostController@index')
+            ->name('posts#index');
+        Route::any('/search', 'Post\PostController@search')
+            ->name('posts#search');
+        Route::get('/create', 'Post\PostController@create')
+            ->name('posts#create');
+        Route::post('/confirm', 'Post\PostController@confirmation')
+            ->name('posts#confirmation');
+        Route::post('/', 'Post\PostController@store')
+            ->name('posts#store');
+        Route::get('/importView', 'Post\PostController@getCsv')
+            ->name('posts#getCsv');
+        Route::post('/import', 'Post\PostController@import')
+            ->name('posts#import');
+        Route::get('/export', 'Post\PostController@export')
+            ->name('posts#export');
+        Route::get('/{id}', 'Post\PostController@show')
+            ->name('posts#show');
+        Route::any('/{id}/updateConfirmation', 'Post\PostController@updateConfirmation')
+            ->name('posts#updateConfirmation');
+        Route::put('/{post}', 'Post\PostController@update')
+            ->name('posts#update');
+        Route::delete('/{id}', 'Post\PostController@delete')
+            ->name('posts#delete');
+    });
+    Route::group(['prefix' => 'password'], function () {
+        Route::get('/change/{id}', 'Auth\ResetPasswordController@showChangePasswordForm')
+            ->name('password#showChangePasswordForm');
+        Route::post('/change', 'Auth\ResetPasswordController@change')
+            ->name('password#change');
+    });
+    Route::post('/logout', 'Auth\LoginController@logout')
+        ->name('logout');
 });

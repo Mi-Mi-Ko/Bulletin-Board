@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Contracts\Dao\Admin;
+namespace App\Contracts\Dao\Auth;
 
 interface LoginDaoInterface
 {
+    //get manage user by email
     public function getManageUser($email);
-    // public function saveLoginHis($email, $ip, $result);
+
+    //change password
+    public function changePassword($request);
 }

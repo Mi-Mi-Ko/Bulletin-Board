@@ -1,78 +1,108 @@
 @extends('layouts.app')
 
 @section('content')
-@if ($errors->any())
-  <div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-          <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-  </div><br />
-@endif
 <div class="card uper">
-  <div class="card-header">
-    User Creation
+  <div class="card-header font-weight-bold">
+    <a href="{{ url('/users') }}"><i class="fas fa-user"></i>ユーザー一覧 </a>
+    <span>/ ユーザー登録</span>
   </div>
   <div class="card-body">
-    <form action="{{ route('users#confirmation') }}" method="post" id="create-form">
-    @csrf
+    <form action="{{ route('users#confirmation') }}"  method="POST" enctype="multipart/form-data" id="create-form">
+      @csrf
       <div class="form-group row justify-content-center pt-4">
-          <label for="name" class="col-md-2 col-sm-4 col-form-label">Name</label>
+        <label for="name" class="col-md-2 col-sm-4 col-form-label">名前</label>
+        <div class="col-md-6 col-sm-6">
+          <input type="text" class="form-control" value="{{ old('name') }}" name="name" placeholder="名前">
+          @if ($errors->has('name'))
+            <span class="help-block text-danger">
+              <strong>{{ $errors->first('name') }}</strong>
+            </span>
+          @endif
+        </div>
+      </div>
+      <div class="form-group row justify-content-center">
+        <label for="email" class="col-md-2 col-sm-4 col-form-label">メールアドレス</label>
+        <div class="col-md-6 col-sm-6">
+          <input type="email" class="form-control" value="{{ old('email') }}" name="email" placeholder="メールアドレス">
+          @if ($errors->has('email'))
+            <span class="help-block text-danger">
+              <strong>{{ $errors->first('email') }}</strong>
+            </span>
+          @endif
+        </div>
+      </div>
+      <div class="form-group row justify-content-center">
+        <label for="password" class="col-md-2 col-sm-4 col-form-label">パスワード</label>
+        <div class="col-md-6 col-sm-6">
+          <input type="password" class="form-control" value="{{ old('password') }}" name="password" placeholder="パスワード">
+          @if ($errors->has('password'))
+            <span class="help-block text-danger">
+              <strong>{{ $errors->first('password') }}</strong>
+            </span>
+          @endif
+        </div>
+      </div>
+      <div class="form-group row justify-content-center">
+        <label for="password_confirmation " class="col-md-2 col-sm-4 col-form-label">確認パスワード</label>
+        <div class="col-md-6 col-sm-6">
+          <input type="password" class="form-control" value="{{ old('password_confirmation') }}" name="password_confirmation" placeholder="確認パスワード">
+        </div>
+      </div>
+      <div class="form-group row justify-content-center">
+        <label for="type" class="col-md-2 col-sm-4 col-form-label">タイプ</label>
           <div class="col-md-6 col-sm-6">
-            <input type="text" class="form-control" name="name" placeholder="Name">
-          </div>
-        </div>
-      <div class="form-group row justify-content-center">
-        <label for="email" class="col-md-2 col-sm-4 col-form-label">Email Address</label>
-        <div class="col-md-6 col-sm-6">
-          <input type="email" class="form-control" name="email" placeholder="Email Addtess">
-        </div>
-      </div>
-      <div class="form-group row justify-content-center">
-        <label for="password" class="col-md-2 col-sm-4 col-form-label">Password</label>
-        <div class="col-md-6 col-sm-6">
-          <input type="password" class="form-control" name="password" placeholder="Password">
-        </div>
-      </div>
-      <div class="form-group row justify-content-center">
-        <label for="confirmpassword" class="col-md-2 col-sm-4 col-form-label">Confirm Password</label>
-        <div class="col-md-6 col-sm-6">
-          <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm Password">
-        </div>
-      </div>
-      <div class="form-group row justify-content-center">
-        <label for="type" class="col-md-2 col-sm-4 col-form-label">Type</label>
-          <div class="col-md-6 col-sm-6">
-            <select class="form-control" name="type">
-              <option>Select type</option>
-              <option value="0">Admin</option>
-              <option value="1">User</option>
+            <select class="form-control" name="type" value="{{ old('type') }}">
+              <option value="">タイプ選択</option>
+              <option value="0">管理者</option>
+              <option value="1">ユーザー</option>
             </select>
+            @if ($errors->has('type'))
+            <span class="help-block text-danger">
+              <strong>{{ $errors->first('type') }}</strong>
+            </span>
+            @endif
           </div>
       </div>
       <div class="form-group row justify-content-center">
-        <label for="phone" class="col-md-2 col-sm-4 col-form-label">Phone</label>
+        <label for="phone" class="col-md-2 col-sm-4 col-form-label">電話番号</label>
         <div class="col-md-6 col-sm-6">
-          <input type="text" class="form-control" name="phone" placeholder="Phone">
+          <input type="text" class="form-control" value="{{ old('phone') }}" name="phone" placeholder="電話番号">
         </div>
       </div>
       <div class="form-group row justify-content-center">
-        <label for="dob" class="col-md-2 col-sm-4 col-form-label">Date of Birth</label>
+        <label for="dob" class="col-md-2 col-sm-4 col-form-label">生年日</label>
         <div class="col-md-6 col-sm-6">
-          <input type="text" class="form-control" name="dob" placeholder="Date of Birth">
+          <input type="text" class="form-control" format="yyyy/mm/dd" value="{{ old('dob') }}" name="dob" placeholder="生年日">
+          @if ($errors->has('dob'))
+            <span class="help-block text-danger">
+              <strong>{{ $errors->first('dob') }}</strong>
+            </span>
+          @endif
         </div>
       </div>
       <div class="form-group row justify-content-center">
-        <label for="address" class="col-md-2 col-sm-4 col-form-label">Address</label>
+        <label for="address" class="col-md-2 col-sm-4 col-form-label">住所</label>
         <div class="col-md-6 col-sm-6">
-          <textarea type="text" class="form-control" name="address" rows="3" placeholder="Address"></textarea>
+          <textarea type="text" class="form-control" rows="3" name="address" placeholder="住所">{{ old('address') }}</textarea>
+        </div>
+      </div>
+      <div class="form-group row justify-content-center">
+        <label for="address" class="col-md-2 col-sm-4 col-form-label">プロファイル</label>
+        <div class="col-md-6 col-sm-6">
+          <input type="file" class="form-control mb-4" id="profile" onchange="loadPreview(this);" name="profile">
+          <img id="previewImage" src="" style="display: none;" width="200" height="150"/>
+          @if ($errors->has('profile'))
+            <span class="help-block text-danger">
+              <strong>{{ $errors->first('profile') }}</strong>
+            </span>
+          @endif
         </div>
       </div>
       <div class="form-group row justify-content-center mt-4">
-        <div class="col-md-8 col-sm-6">
-          <button type="submit" class="btn btn-success">Go to User Confirm Form</button>
-          <button type="reset" class="btn btn-primary">Clear</button>
+        <label class="col-md-2 col-sm-4"></label>
+        <div class="col-md-6 col-sm-6">
+          <button type="submit" class="btn btn-success">ユーザー確認画面へ</button>
+          <button type="reset" class="btn btn-primary">クリア</button>
         </div>
       </div>
     </form>

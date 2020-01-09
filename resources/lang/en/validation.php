@@ -11,7 +11,7 @@ return [
     | the validator class. Some of these rules have multiple versions such
     | as the size rules. Feel free to tweak each of these messages here.
     |
-    */
+     */
 
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
@@ -39,7 +39,7 @@ return [
     'digits_between' => 'The :attribute must be between :min and :max digits.',
     'dimensions' => 'The :attribute has invalid image dimensions.',
     'distinct' => 'The :attribute field has a duplicate value.',
-    'email' => 'The :attribute must be a valid email address.',
+    'email' => 'Email Address should be email form.',
     'ends_with' => 'The :attribute must end with one of the following: :values',
     'exists' => 'The selected :attribute is invalid.',
     'file' => 'The :attribute must be a file.',
@@ -127,11 +127,50 @@ return [
     | convention "attribute.rule" to name the lines. This makes it quick to
     | specify a specific custom language line for a given attribute rule.
     |
-    */
+     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'email' => [
+            'required' => 'Email address is required.',
+            'unique' => 'Email address must be unique.',
+        ],
+        'password' => [
+            'required' => 'Password is required.',
+            'confirmed' => 'Password and Confirm Password must be same.',
+            'regex' => 'Must contain at least 1 Uppercase and 1 Numeric.',
+        ],
+        'current_password' => [
+            'required' => 'Current Password is required.',
+        ],
+        'new_password' => [
+            'required' => 'New Password is required.',
+            'regex' => 'Must contain at least 1 Uppercase and 1 Numeric.',
+        ],
+        'password_confirmation' => [
+            'same' => 'New password and Confirm password must be same',
+        ],
+        'name' => [
+            'required' => 'Name is required',
+            'unique' => 'This name is exit.',
+        ],
+        'dob' => [
+            'date_format' => 'Pleas enter with YYYY/MM/DD format',
+            'required' => 'Dob is required.',
+        ],
+        'profile' => [
+            'required' => 'Profile is required',
+            'mimes' => 'Please upload with (jpeg,jpg,png) extension.',
+        ],
+        'type' => [
+            'required' => 'Type is required',
+        ],
+        'title' => [
+            'required' => 'Title is required.',
+            'max' => 'Title must be less than 255.',
+            'unique' => 'This title is exit.',
+        ],
+        'description' => [
+            'required' => 'Description is requlired.',
         ],
     ],
 
@@ -144,7 +183,7 @@ return [
     | with something more reader friendly such as "E-Mail Address" instead
     | of "email". This simply helps us make our message more expressive.
     |
-    */
+     */
 
     'attributes' => [],
 
