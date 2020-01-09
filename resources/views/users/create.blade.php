@@ -3,8 +3,8 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
-    <i class="fas fa-user"></i>
-    ユーザー登録
+    <a href="{{ url('/users') }}"><i class="fas fa-user"></i>ユーザー一覧 </a>
+    <span>/ ユーザー登録</span>
   </div>
   <div class="card-body">
     <form action="{{ route('users#confirmation') }}"  method="POST" enctype="multipart/form-data" id="create-form">

@@ -3,8 +3,8 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
-    <i class="fas fa-user"></i>
-    ユーザー編集
+    <a href="{{ url('/users') }}"><i class="fas fa-user"></i>ユーザー一覧 </a>
+    <span>/ ユーザー編集</span>
   </div>
   <div class="card-body">
     <form action="{{ route('users#updateConfirmation', $user->id) }}"  method="POST" enctype="multipart/form-data" id="update-form">
@@ -85,7 +85,7 @@
         <label for="address" class="col-md-2 col-sm-4 col-form-label">プロファイル</label>
         <div class="col-md-6 col-sm-6">
           <input type="file" class="form-control mb-4" id="profile" onchange="loadPreview(this);" name="profile">
-          <img class="form-control" id="previewImage" src="" style="display: none;" width="200" height="150"/>
+          <img id="previewImage" src="" style="display: none;" width="200" height="150"/>
         </div>
       </div>
       @if (Session::get('LOGIN_USER')->id === $user->id)

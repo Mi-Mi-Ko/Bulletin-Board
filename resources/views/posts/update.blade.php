@@ -3,8 +3,8 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
-    <i class="fas fa-clipboard"></i>
-    投稿編集
+    <a href="{{ url('/posts') }}"><i class="fas fa-clipboard"></i>投稿一覧 </a>
+    <span>/ 投稿編集</span>
   </div>
   <div class="card-body">
     <form method="post" action="{{ route('posts#updateConfirmation', $post->id) }}" id="update-form">

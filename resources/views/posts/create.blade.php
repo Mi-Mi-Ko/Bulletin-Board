@@ -3,21 +3,12 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
-    <i class="fas fa-clipboard"></i>
-    投稿登録
+    <a href="{{ url('/posts') }}"><i class="fas fa-clipboard"></i>投稿一覧 </a>
+    <span>/ 投稿登録</span>
   </div>
   <div class="card-body">
     <form action="{{ route('posts#confirmation') }}" method="post" id="create-form">
     @csrf
-      <!-- @if($errors->has('error_msg'))
-        <div class="row">
-          <div class="col-md-4">
-          </div>
-          <div class="alert alert-light text-danger font-weight-bold col-md-6" role="alert">
-            {{ $errors->first('error_msg') }}
-          </div>
-        </div>
-      @endif -->
       <div class="form-group row justify-content-center pt-4">
         <label for="title" class="col-md-2 col-sm-4 col-form-label">タイトル</label>
         <div class="col-md-6 col-sm-6">

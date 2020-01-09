@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\User;
 use File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Log;
 use Redirect;
 use Response;
@@ -36,6 +35,7 @@ class UserController extends Controller
     {
         $userService = $service;
     }
+
     /**
      * Display a listing of user.
      *
@@ -43,10 +43,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //getenv('LOCALE')
         $users = $this->userService->getUserList();
-        Log::info("Return Data");
-        Log::info($users);
         return view('users.list', compact('users'));
     }
 
@@ -57,8 +54,11 @@ class UserController extends Controller
      */
     public function search(Request $request)
     {
-        Log::info("In Controller-----");
+        $this->checkRequest($request);
         $users = $this->userService->searchUserList($request->except('_token'));
+        Log::info("Return Data in Controller");
+        Log::info($users);
+        $users->appends(request()->all())->render();
         return view('users.list', compact('users'));
     }
 
@@ -81,7 +81,6 @@ class UserController extends Controller
      */
     public function confirmation(Request $request)
     {
-        Log::info($request);
         $validator = $this->validateInputForm($request);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
@@ -99,18 +98,16 @@ class UserController extends Controller
         $data['user'] = $request;
         return view('users.confirm', $data);
     }
+
     /**
-     * Store
+     * Store user
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $request->merge(['password' => Hash::make($request->password)]);
-
         $this->userService->storeUser($request->except('_token'));
-
         return redirect('/users')->with('success', 'ユーザーを登録しました。');
     }
 
@@ -167,6 +164,7 @@ class UserController extends Controller
         $this->userService->deleteUser($id);
         return redirect('/users')->with('success', 'ユーザーを削除しました。');
     }
+
     /**
      * Display user profile view
      *
@@ -178,6 +176,7 @@ class UserController extends Controller
         $user = $this->userService->getUserById($id);
         return view('users.profile', compact('user'));
     }
+
     /**
      * Validate user input form request
      *
@@ -190,13 +189,14 @@ class UserController extends Controller
             'name' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:8|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
-            'profile' => 'required',
+            'profile' => 'required|mimes:jpeg,jpg,png|max:512000',
             'type' => 'required',
             'dob' => 'required',
-            // 'dob' => 'required|date_format:Y/m/d',
+            'dob' => 'required|date_format:Y/m/d',
         ];
         return Validator::make($request->all(), $rules);
     }
+
     /**
      * Validate user update form request
      *
@@ -208,10 +208,33 @@ class UserController extends Controller
         $rules = [
             'name' => 'required|unique:users,name,' . $request->id,
             'email' => 'required|email|unique:users,email,' . $request->id,
+            'profile' => 'mimes:jpeg,jpg,png|max:512000',
             'type' => 'required',
             'dob' => 'required',
-            // 'dob' => 'required|date_format:Y/m/d',
+            'dob' => 'required|date_format:Y/m/d',
         ];
         return Validator::make($request->all(), $rules);
+    }
+
+    /**
+     * Check Request key is missing
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function checkRequest($request)
+    {
+        if ($request->missing('name')) {
+            $request["name"] = null;
+        }
+        if ($request->missing('email')) {
+            $request["email"] = null;
+        }
+        if ($request->missing('from')) {
+            $request["from"] = null;
+        }
+        if ($request->missing('to')) {
+            $request["to"] = null;
+        }
     }
 }

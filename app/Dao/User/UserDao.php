@@ -16,7 +16,7 @@ class UserDao implements UserDaoInterface
     public function getUserList()
     {
 
-        return User::paginate(10);
+        return User::paginate(config('constant.PAGINATION_RECORDS'));
     }
     /**
      * Search user list
@@ -26,7 +26,6 @@ class UserDao implements UserDaoInterface
     public function searchUserList($name, $email, $from, $to)
     {
         Log::info('In Dao');
-        Log::info($name);
         $usersQuery = User::query();
         if ($name) {
             $usersQuery->where('name', 'like', '%' . $name . '%');
@@ -38,25 +37,8 @@ class UserDao implements UserDaoInterface
             $usersQuery->whereBetween('created_at', [$from, $to]);
         }
 
-        return $usersQuery->paginate(10);
+        return $usersQuery->paginate(config('constant.PAGINATION_RECORDS'));
     }
-
-    // $usersQuery = Users::query();
-
-    // $start_date = (!empty($_GET["start_date"])) ? ($_GET["start_date"]) : ('');
-    // $end_date = (!empty($_GET["end_date"])) ? ($_GET["end_date"]) : ('');
-
-    // if($start_date &amp;&amp; $end_date){
-
-    //  $start_date = date('Y-m-d', strtotime($start_date));
-    //  $end_date = date('Y-m-d', strtotime($end_date));
-
-    //  $usersQuery->whereRaw("date(users.created_at) >= '" . $start_date . "' AND date(users.created_at) <= '" . $end_date . "'");
-    // }
-    // $users = $usersQuery->select('*');
-    // return datatables()->of($users)
-    //     ->make(true);
-
     /**
      * Store user
      *
@@ -85,6 +67,8 @@ class UserDao implements UserDaoInterface
      */
     public function updateUser($request, $id)
     {
+        Log::info('In Dao Request Data====>');
+        Log::info($request);
         User::whereId($id)->update($request);
     }
     /**

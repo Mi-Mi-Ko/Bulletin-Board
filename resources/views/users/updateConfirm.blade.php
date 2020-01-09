@@ -3,7 +3,6 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
-    <i class="fas fa-user"></i>
     ユーザー編集確認
   </div>
   <div class="card-body">
@@ -13,12 +12,11 @@
           <label for="profile" class="col-8 col-form-label"></label>
           <div class="col-4">
             @if($user->profile)
-            {{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}
               <input type="hidden" class="form-control" id="profile" name="profile" value="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}">
               <img src="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}" alt="Image" width="200" height="150"/>
             @else
               <img src="{{ $user->hiddenProfile }}" alt="Image" width="200" height="150"/>
-              <input type="hidden" class="form-control" id="profile" name="profile" value="{{ $user->hiddenProfile }}">
+              <input type="hidden" id="profile" name="profile" value="{{ $user->hiddenProfile }}">
             @endif
           </div>
         </div>
@@ -39,11 +37,12 @@
             <div class="col-8 col-sm-6">
               <select disabled class="form-control">
                 @if ($user->type == 0)
-                  <option value="0" seleted name="type">管理者</option>
+                  <option value="0" selected>管理者</option>
                 @else
-                  <option value="1" seleted name="type">ユーザー</option>
+                  <option value="1" selected>ユーザー</option>
                 @endif
-            </select>
+              </select>
+              <input type="hidden" id="type" name="type" value="{{ $user->type }}">
             </div>
         </div>
         <div class="form-group row justify-content-md-center">

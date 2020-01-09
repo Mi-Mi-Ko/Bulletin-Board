@@ -11,7 +11,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="//code.jquery.com/jquery-1.11.3.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -23,23 +22,42 @@
   </head>
   <body class="app-body">
     <div id="app">
-        @if(Request::path() === '/' || Request::path() === 'login')
-          <nav class="navbar navbar-expand-md navbar-light shadow-sm">
-        @else
-          <nav class="navbar navbar-expand-md navbar-light shadow-sm navbar-margin">
-        @endif
+      <nav class="navbar navbar-expand-md navbar-light bg-success shadow-sm">
         <div class="container">
-          <a class="navbar-brand project-title" href="{{ url('/users') }}">
+          <a class="navbar-brand project-title" href="{{ url('/') }}">
             <i class="fas fa-home"></i>
-            <span class="font-weight-bold">
-              {{ config('app.name', 'Bulletin-Board') }}
-            </span>
+            {{ config('app.name', 'Bulletin-Board') }}
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
           </button>
           @if (Session::has('LOGIN_USER'))
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <!-- Left Side Of Navbar -->
+              <div class="left-sidebar">
+                <ul class="nav" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/users') }}">
+                    <i class="fas fa-users"></i>
+                      ユーザー
+                    </a>
+                  </li>
+                  @if (Session::get('LOGIN_USER')->type == '1')
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ route('users#profile', Session::get('LOGIN_USER')->id) }}">
+                    <i class="fas fa-user"></i>
+                      ユーザー
+                    </a>
+                  </li>
+                  @endif
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/posts') }}">
+                    <i class="fas fa-clipboard"></i>
+                      投稿
+                    </a>
+                  </li>
+                </ul>
+              </div>
               <ul class="navbar-nav ml-auto">
                 {{ Session::get('LOGIN_USER')->name }}
                 <div class="ml-3 logout-section">
@@ -55,53 +73,8 @@
           @endif
         </div>
       </nav>
-      @if(Request::path() === '/' || Request::path() === 'login')
-      @else
-        <div class="sidebar">
-          @if (Session::has('LOGIN_USER'))
-            <ul class="nav flex-column pt-4">
-            @if (Request::segment(1) === 'users' && Request::segment(2) !== 'profile')
-              <li class="myNav-item active">
-            @else
-              <li class="myNav-item">
-            @endif
-                <a class="nav-link" href="{{ url('/users') }}">
-                  <i class="fas fa-users"></i>&nbsp;ユーザー
-                </a>
-              </li>
-              @if (Session::get('LOGIN_USER')->type === '1')
-              @if (Request::segment(2) === 'profile')
-              <li class="myNav-item active">
-              @else
-                <li class="myNav-item">
-              @endif
-                  <a class="nav-link" href="{{ route('users#profile', Session::get('LOGIN_USER')->id) }}">
-                    <i class="fas fa-user"></i>&nbsp;ユーザー
-                  </a>
-                </li>
-              @endif
-              @if (Request::segment(1) === 'posts')
-                <li class="myNav-item active">
-              @else
-                <li class="myNav-item">
-              @endif
-                <a class="nav-link" href="{{ url('/posts') }}">
-                  <i class="fas fa-clipboard"></i>&nbsp;投稿
-                </a>
-              </li>
-            </ul>
-          @endif
-        </div>
-      @endif
-      @if(Request::path() === '/' || Request::path() === 'login')
-        <div class="content pt-4">
-          <div class="container m-auto">
-      @else
-        <div class="content content-margin pt-4">
-          <div class="container-fluid">
-      @endif
-            @yield('content')
-          </div>
+      <div class="container mt-4">
+        @yield('content')
       </div>
     </div>
   </body>
@@ -156,8 +129,6 @@
     $("#userAddress").val(user.address);
     $("#userDob").val(userDob);
     $("#userPhone").val(user.phone);
-    // $("#profile").attr('src', user.profile);
-    // $("#profile").css("border-radius", "50%");
   }
   // format date
   function getFormattedDate(input) {

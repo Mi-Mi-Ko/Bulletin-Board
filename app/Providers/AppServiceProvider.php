@@ -5,6 +5,7 @@ namespace App\Providers;
 use DB;
 use Illuminate\Support\ServiceProvider;
 use Log;
+use \Maatwebsite\Excel\Sheet;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -53,5 +54,13 @@ class AppServiceProvider extends ServiceProvider
                 Log::debug($query);
             }
         );
+
+        Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array $style) {
+            $sheet->getDelegate()->getStyle($cellRange)->applyFromArray($style);
+        });
+
+        Sheet::macro('wrapText', function (Sheet $sheet, string $cellRange) {
+            $sheet->getDelegate()->getStyle($cellRange)->getAlignment()->setWrapText(true);
+        });
     }
 }

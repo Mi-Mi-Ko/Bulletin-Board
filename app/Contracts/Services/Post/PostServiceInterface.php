@@ -7,6 +7,9 @@ interface PostServiceInterface
     //get post list
     public function getPostList();
 
+    //search post list
+    public function searchPostList($request);
+
     //store post
     public function storePost($request);
 
@@ -18,4 +21,7 @@ interface PostServiceInterface
 
     //delete post
     public function deletePost($id);
+
+    //import posts
+    public function importPost($data);
 }

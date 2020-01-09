@@ -22,7 +22,7 @@ Route::get('password/forget', 'Auth\LoginController@showLinkRequestForm')
 Route::post('save-photo', 'User\UserController@save');
 /**
  * User Routes Group
- * Allow Admin Role
+ * Allow For Admin
  */
 Route::group(['middleware' => 'admin'], function () {
     Route::group(['prefix' => 'users'], function () {
@@ -37,7 +37,7 @@ Route::group(['middleware' => 'admin'], function () {
 
 /**
  * User Profile Routes
- * Allow User Role
+ * Allow For User
  */
 Route::group(['middleware' => 'user'], function () {
     Route::group(['prefix' => 'users'], function () {
@@ -48,7 +48,7 @@ Route::group(['middleware' => 'user'], function () {
 
 /**
  * User And Post Routes Group
- * Allow Login User
+ * Allow For Login User
  */
 Route::group(['middleware' => 'login'], function () {
     Route::group(['prefix' => 'users'], function () {
@@ -68,6 +68,8 @@ Route::group(['middleware' => 'login'], function () {
     Route::group(['prefix' => 'posts'], function () {
         Route::get('/', 'Post\PostController@index')
             ->name('posts#index');
+        Route::any('/search', 'Post\PostController@search')
+            ->name('posts#search');
         Route::get('/create', 'Post\PostController@create')
             ->name('posts#create');
         Route::post('/confirm', 'Post\PostController@confirmation')

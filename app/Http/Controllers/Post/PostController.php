@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Post;
 use App\Contracts\Services\Post\PostServiceInterface;
 use App\Exports\PostsExport;
 use App\Http\Controllers\Controller;
+use App\Imports\PostsImport;
 use App\Post;
 use Illuminate\Http\Request;
-use Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 
@@ -17,7 +17,6 @@ class PostController extends Controller
      * Private variable $postService
      */
     private $postService;
-
     /**
      * Create a new controller instance.
      *
@@ -37,6 +36,19 @@ class PostController extends Controller
     {
         $posts = $this->postService->getPostList();
         return view('posts.list', compact('posts'));
+    }
+
+    /**
+     * Display a listing of post.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $this->checkRequest($request);
+        $posts = $this->postService->searchPostList($request->except('_token'));
+        $posts->appends(request()->all())->render();
+        return view('posts.list', compact("posts"));
     }
 
     /**
@@ -139,32 +151,43 @@ class PostController extends Controller
      */
     public function getCsv()
     {
-        //
-        Log::info("Upload view comming");
         return view('posts.upload');
     }
 
     /**
+     * Import post file
      *
-     *
-     * @param
-     * @return
+     * @param Request $request
+     * @return \Illuminate\Support\Collection
      */
     public function import(Request $request)
     {
-        Log::info("Calling import-----");
-        $data['posts'] = $request;
-        Log::info($data);
-        return view('posts.list');
+        $validator_one = $this->validateImportFile($request);
+        if ($validator_one->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator_one);
+        }
+        $rows = Excel::toArray(new PostsImport, $request->file('uploadFile'));
+        foreach ($rows as $key => $row) {
+            $validator_two = Validator::make($row, $this->rules(), $this->validationMessages());
+            if ($validator_two->fails()) {
+                foreach ($validator_two->errors()->messages() as $messages) {
+                    foreach ($messages as $error) {
+                        return redirect()->back()->withInput()->withErrors($error);
+                    }
+                }
+            }
+        }
+        Excel::import(new PostsImport, request()->file('uploadFile'));
+        return redirect('/posts')->with('success', '投稿ファイルを登録しました。');
     }
 
     /**
+     * Download post list
+     *
      * @return \Illuminate\Support\Collection
      */
     public function export()
     {
-        Log::info("Calling export-----");
-        // $this->postService->export();
         return Excel::download(new PostsExport, 'posts.xlsx');
     }
 
@@ -197,4 +220,59 @@ class PostController extends Controller
         ];
         return Validator::make($request->all(), $rules);
     }
+
+    /**
+     * Validate import file request
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function validateImportFile(Request $request)
+    {
+        $rules = [
+            'uploadFile' => 'required|mimes:xls,xlsx,csv',
+        ];
+        return Validator::make($request->all(), $rules);
+    }
+
+    /**
+     * Validate post import file
+     *
+     * @return void
+     */
+    private function rules(): array
+    {
+        return [
+            '*.title' => 'required|max:255',
+            '*.description' => 'required',
+        ];
+    }
+
+    /**
+     * Get custom validation error message
+     *
+     * @return string
+     */
+    private function validationMessages()
+    {
+        return [
+            '*.title.required' => trans('ファイルにタイトルが必要です。'),
+            '*.title.max' => trans('タイトルは255文字を超えることはできません。'),
+            '*.description.required' => trans('ファイルにデスクリプションが必要です。'),
+        ];
+    }
+
+    /**
+     * Check Request key is missing
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function checkRequest($request)
+    {
+        if ($request->missing('title')) {
+            $request["title"] = null;
+        }
+    }
+
 }

@@ -4,8 +4,11 @@ namespace App\Contracts\Dao\User;
 
 interface UserDaoInterface
 {
-    // get user list
+    //get user list
     public function getUserList();
+
+    //search user list
+    public function searchUserList($name, $email, $from, $to);
 
     //store user
     public function storeUser($request);
@@ -18,7 +21,4 @@ interface UserDaoInterface
 
     //delete user
     public function deleteUser($id);
-
-    // search user list
-    public function searchUserList($name, $email, $from, $to);
 }

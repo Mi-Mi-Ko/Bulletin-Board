@@ -20,6 +20,7 @@ class PostsTableSeeder extends Seeder
                     'status' => '1',
                     'create_user_id' => "1",
                     'updated_user_id' => "1",
+                    'created_at' => date("Y-m-d H:i:s"),
                 ],
                 [
                     'title' => 'What is PHP',
@@ -27,6 +28,7 @@ class PostsTableSeeder extends Seeder
                     'status' => '0',
                     'create_user_id' => "1",
                     'updated_user_id' => "1",
+                    'created_at' => date("Y-m-d H:i:s"),
                 ],
                 [
                     'title' => 'What is Java',
@@ -34,6 +36,7 @@ class PostsTableSeeder extends Seeder
                     'status' => '1',
                     'create_user_id' => "1",
                     'updated_user_id' => "1",
+                    'created_at' => date("Y-m-d H:i:s"),
                 ],
             ]
         );
