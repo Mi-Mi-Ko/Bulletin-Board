@@ -11,7 +11,7 @@
       <div class="form-group row justify-content-center">
         <label for="profile" class="col-8 col-form-label"></label>
         <div class="col-4">
-           <input type="hidden" class="form-control" id="profile" name="profile" value="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}">
+          <input type="hidden" class="form-control" id="profile" name="profile" value="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}">
           <img src="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}" alt="Image" width="200" height="150"/>
         </div>
       </div>
@@ -69,6 +69,7 @@
         <div class="col-sm-10 col-md-6">
           <button type="submit" class="btn btn-success">ユーザー登録</button>
           <a onClick="window.history.back()" class="btn btn-primary">キャンセル</a>
+          <a href="{{ url('/users/backInput') }}" class="btn btn-secondary">キャンセル</a>
         </div>
       </div>
     </form>

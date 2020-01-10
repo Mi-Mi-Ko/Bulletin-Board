@@ -49,8 +49,6 @@ class LoginService implements LoginServiceInterface
     public function changePassword($request)
     {
         $request["updated_at"] = date('Y-m-d H:i:s');
-        Log::info('Service=======');
-        Log::info($request);
         $param = ['password' => $request->password, 'updated_at' => $request->updated_at];
         $result = $this->loginDao->changePassword($param);
     }

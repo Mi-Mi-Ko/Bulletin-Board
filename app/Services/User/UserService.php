@@ -44,7 +44,6 @@ class UserService implements UserServiceInterface
      */
     public function searchUserList($request)
     {
-        Log::info("In service");
         $result = $this->userDao->searchUserList($request["name"], $request["email"], $request["from"], $request["to"]);
         return $result;
     }
@@ -72,7 +71,6 @@ class UserService implements UserServiceInterface
      */
     public function getUserById($id)
     {
-        Log::info('gey User by id');
         $result = $this->userDao->getUserById($id);
         return $result;
     }
@@ -84,8 +82,6 @@ class UserService implements UserServiceInterface
      */
     public function updateUser($request, $id)
     {
-        Log::info("updateUser ############################################################");
-        Log::info($request);
         $request["updated_user_id"] = Session::get('LOGIN_USER')->id;
         $request["updated_at"] = date('Y-m-d H:i:s');
         $result = $this->userDao->updateUser($request, $id);

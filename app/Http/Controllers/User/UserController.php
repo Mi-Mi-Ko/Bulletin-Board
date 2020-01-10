@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\User;
 use File;
 use Illuminate\Http\Request;
-use Log;
 use Redirect;
 use Response;
 use Session;
@@ -56,8 +55,6 @@ class UserController extends Controller
     {
         $this->checkRequest($request);
         $users = $this->userService->searchUserList($request->except('_token'));
-        Log::info("Return Data in Controller");
-        Log::info($users);
         $users->appends(request()->all())->render();
         return view('users.list', compact('users'));
     }
@@ -85,18 +82,40 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-        if ($files = $request->file('profile')) {
+        if ($profileInfo = $request->file('profile')) {
             $userId = Session::get('LOGIN_USER')->id;
             $isExit = File::exists(public_path() . "/images/$userId");
             if (!$isExit) {
                 Storage::makeDirectory(public_path() . "/images/$userId");
             }
-            $image = $request->profile->store("public/images/$userId");
             $imageName = $request->profile->getClientOriginalName();
             $request->profile->move(public_path("images/$userId"), $imageName);
         }
         $data['user'] = $request;
+        Session::put('IMAGE', $imageName);
+        Session::put('ID', $userId);
+        Session::put('USER_INPUT_DATA', $request->except('profile'));
         return view('users.confirm', $data);
+    }
+
+    /**
+     * back to user create page with old input
+     *
+     * @return void
+     */
+    public function backUserInput()
+    {
+        $userId = Session::get('ID');
+        $imageName = Session::get('IMAGE');
+        $oldInputData = Session::get('USER_INPUT_DATA');
+
+        $image_path = public_path() . "/images/$userId/" . $imageName;
+        unlink($image_path);
+
+        Session::forget('USER_INPUT_DATA');
+        Session::forget('IMAGE');
+        Session::forget('ID');
+        return redirect('/users/create')->withInput($oldInputData);
     }
 
     /**
@@ -130,14 +149,37 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateConfirmation(Request $request, $id)
+    public function updateConfirmation(Request $request)
     {
         $validator = $this->validateUpdateForm($request);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
+        if ($profileInfo = $request->file('profile')) {
+            $userId = Session::get('LOGIN_USER')->id;
+            $isExit = File::exists(public_path() . "/images/$userId");
+            if (!$isExit) {
+                Storage::makeDirectory(public_path() . "/images/$userId");
+            }
+            $imageName = $request->profile->getClientOriginalName();
+            $request->profile->move(public_path("images/$userId"), $imageName);
+        }
         $data['user'] = $request;
+        Session::put('USER_UPDATE_DATA', $request->except('profile'));
         return view('users.updateConfirm', $data);
+    }
+
+    /**
+     * back to user update page with old input
+     *
+     * @return void
+     */
+    public function backUserUpdate()
+    {
+        $oldUpdateData = Session::get('USER_UPDATE_DATA');
+        Session::forget('USER_UPDATE_DATA');
+        $returnRoute = '/users/' . $oldUpdateData["id"];
+        return redirect($returnRoute)->withInput($oldUpdateData);
     }
 
     /**

@@ -121,8 +121,6 @@ class PostService implements PostServiceInterface
                     );
                 }
             }
-            Log::info("Service======================================>");
-            Log::info($insert_data);
             // if (!empty($insert_data)) {
             //     $result = $this->postDao->importPost($insert_data);
             //     return $result;

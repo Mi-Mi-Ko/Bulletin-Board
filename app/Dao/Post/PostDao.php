@@ -4,7 +4,6 @@ namespace App\Dao\Post;
 
 use App\Contracts\Dao\Post\PostDaoInterface;
 use App\Post;
-use Log;
 
 class PostDao implements PostDaoInterface
 {
@@ -29,12 +28,13 @@ class PostDao implements PostDaoInterface
      */
     public function searchPostList($title)
     {
-        Log::info('In Dao');
-        $postQuery = Post::query();
+        $postQuery = Post::leftjoin('users', function ($leftjoin) {
+            $leftjoin->on('posts.create_user_id', '=', 'users.id');
+        });
+        $postQuery->select('posts.*', 'users.name');
         if ($title) {
             $postQuery->where('title', 'like', '%' . $title . '%');
         }
-
         return $postQuery->paginate(config('constant.PAGINATION_RECORDS'));
     }
 
@@ -46,8 +46,6 @@ class PostDao implements PostDaoInterface
      */
     public function storePost($request)
     {
-        Log::info("Store post");
-        Log::info($request);
         Post::create($request);
     }
 
@@ -93,8 +91,6 @@ class PostDao implements PostDaoInterface
      */
     public function importPost($data)
     {
-        Log::info("PostDao");
-        Log::info($data);
         Post::insert($data);
     }
 }

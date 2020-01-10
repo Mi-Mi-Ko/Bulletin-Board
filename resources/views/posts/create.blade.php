@@ -12,7 +12,7 @@
       <div class="form-group row justify-content-center pt-4">
         <label for="title" class="col-md-2 col-sm-4 col-form-label">タイトル</label>
         <div class="col-md-6 col-sm-6">
-          <input type="text" class="form-control" name="title" placeholder="タイトル">
+          <input type="text" class="form-control" value="{{ old('title') }}" name="title" placeholder="タイトル">
           @if ($errors->has('title'))
             <span class="help-block text-danger">
               <strong>{{ $errors->first('title') }}</strong>
@@ -23,7 +23,7 @@
       <div class="form-group row justify-content-center">
         <label for="description" class="col-md-2 col-sm-4 col-form-label">デスクリプション</label>
         <div class="col-md-6 col-sm-6">
-          <textarea type="text" class="form-control" rows="3" name="description" placeholder="デスクリプション"></textarea>
+          <textarea class="form-control" rows="3" name="description" placeholder="デスクリプション">{{ old('description') }}</textarea>
           @if ($errors->has('description'))
             <span class="help-block text-danger">
               <strong>{{ $errors->first('description') }}</strong>

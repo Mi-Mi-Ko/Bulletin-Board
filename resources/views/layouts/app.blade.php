@@ -186,4 +186,9 @@
       $(this).remove();
     });
   }, 3000);
+  // reset image
+  function clearForm() {
+    $('#previewImage').attr('src', "");
+    $('#previewImage').css("display", "none");
+  }
 </script>

@@ -10,7 +10,7 @@
       @csrf
         <div class="form-group row justify-content-center">
           <label for="profile" class="col-8 col-form-label"></label>
-          <div class="col-4">
+          <div class="col-4 pl-0 mb-2">
             @if($user->profile)
               <input type="hidden" class="form-control" id="profile" name="profile" value="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}">
               <img src="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}" alt="Image" width="200" height="150"/>
@@ -38,11 +38,12 @@
               <select disabled class="form-control">
                 @if ($user->type == 0)
                   <option value="0" selected>管理者</option>
+                  <input type="hidden" id="type" name="type" value="0">
                 @else
                   <option value="1" selected>ユーザー</option>
+                  <input type="hidden" id="type" name="type" value="1">
                 @endif
               </select>
-              <input type="hidden" id="type" name="type" value="{{ $user->type }}">
             </div>
         </div>
         <div class="form-group row justify-content-md-center">
@@ -67,7 +68,7 @@
           <label class="col-sm-2"></label>
           <div class="col-sm-10 col-md-6">
             <button type="submit" class="btn btn-success">ユーザー編集</button>
-            <a onClick="window.history.back()" class="btn btn-primary">キャンセル</a>
+            <a href="{{ url('/users/backUpdate') }}" class="btn btn-secondary">キャンセル</a>
           </div>
         </div>
     </form>

@@ -18,7 +18,7 @@
         {{ csrf_field() }}
         <div class="form-row mb-4">
           <div class="form-group col-md-4">
-            <input type="text" name="title" class="form-control" placeholder="タイトル">
+            <input type="text" name="title" class="form-control" value="{{Request::get('title')}}" placeholder="タイトル">
           </div>
           <div class="form-group col-md-2 text-left">
             <button type="submit" class="btn btn-primary pl-4 pr-4">
@@ -33,8 +33,7 @@
         </div>
       </form>
       <div class="table-responsive">
-        <span class="font-weight-bold">全件: </span>
-        {{ $posts->total()}}
+        <span class="font-weight-bold">全件: {{ $posts->total()}}</span>
         {{ $posts->links() }}
         <table class="table table-bordered table-striped table-hover text-center">
           <thead class="bg-info font-weight-bold">

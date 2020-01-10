@@ -4,7 +4,6 @@ namespace App\Dao\User;
 
 use App\Contracts\Dao\User\UserDaoInterface;
 use App\User;
-use Log;
 
 class UserDao implements UserDaoInterface
 {
@@ -15,7 +14,6 @@ class UserDao implements UserDaoInterface
      */
     public function getUserList()
     {
-
         return User::paginate(config('constant.PAGINATION_RECORDS'));
     }
     /**
@@ -25,7 +23,6 @@ class UserDao implements UserDaoInterface
      */
     public function searchUserList($name, $email, $from, $to)
     {
-        Log::info('In Dao');
         $usersQuery = User::query();
         if ($name) {
             $usersQuery->where('name', 'like', '%' . $name . '%');
@@ -56,7 +53,6 @@ class UserDao implements UserDaoInterface
      */
     public function getUserById($id)
     {
-        Log::info("getUserById in UserDao.php.");
         return User::findOrFail($id);
     }
     /**
@@ -67,8 +63,6 @@ class UserDao implements UserDaoInterface
      */
     public function updateUser($request, $id)
     {
-        Log::info('In Dao Request Data====>');
-        Log::info($request);
         User::whereId($id)->update($request);
     }
     /**

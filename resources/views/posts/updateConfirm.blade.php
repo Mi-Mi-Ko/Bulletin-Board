@@ -42,7 +42,7 @@
       <div class="form-group row justify-content-center">
         <div class="col-md-4">
           <button type="submit" class="btn btn-success">投稿編集</button>
-          <a onClick="window.history.back()" class="btn btn-primary">キャンセル</a>
+          <a href="{{ url('/posts/backUpdate') }}" class="btn btn-secondary">キャンセル</a>
         </div>
       </div>
     </form>

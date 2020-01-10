@@ -9,6 +9,8 @@ use App\Imports\PostsImport;
 use App\Post;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Redirect;
+use Session;
 use Validator;
 
 class PostController extends Controller
@@ -74,7 +76,20 @@ class PostController extends Controller
             return redirect()->back()->withInput()->withErrors($validator);
         }
         $data['posts'] = $request;
+        Session::put('POST_INPUT_DATA', $request->all());
         return view('posts.confirm', $data);
+    }
+
+    /**
+     * back to post create page with old input
+     *
+     * @return void
+     */
+    public function backPostInput()
+    {
+        $oldInputData = Session::get('POST_INPUT_DATA');
+        Session::forget('POST_INPUT_DATA');
+        return redirect('/posts/create')->withInput($oldInputData);
     }
 
     /**
@@ -108,14 +123,28 @@ class PostController extends Controller
      * @param  int  $id
      * @return void
      */
-    public function updateConfirmation(Request $request, $id)
+    public function updateConfirmation(Request $request)
     {
         $validator = $this->validateUpdateForm($request);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
         $data['post'] = $request;
+        Session::put('POST_UPDATE_DATA', $request->all());
         return view('posts.updateConfirm', $data);
+    }
+
+    /**
+     * back to post update page with old input
+     *
+     * @return void
+     */
+    public function backPostUpdate()
+    {
+        $oldUpdateData = Session::get('POST_UPDATE_DATA');
+        Session::forget('POST_UPDATE_DATA');
+        $returnRoute = '/posts/' . $oldUpdateData["id"];
+        return redirect($returnRoute)->withInput($oldUpdateData);
     }
 
     /**
@@ -243,7 +272,7 @@ class PostController extends Controller
     private function rules(): array
     {
         return [
-            '*.title' => 'required|max:255',
+            '*.title' => 'required|max:255|unique:posts',
             '*.description' => 'required',
         ];
     }
@@ -258,6 +287,7 @@ class PostController extends Controller
         return [
             '*.title.required' => trans('ファイルにタイトルが必要です。'),
             '*.title.max' => trans('タイトルは255文字を超えることはできません。'),
+            '*.title.unique' => trans('タイトルは既に存在しています。'),
             '*.description.required' => trans('ファイルにデスクリプションが必要です。'),
         ];
     }

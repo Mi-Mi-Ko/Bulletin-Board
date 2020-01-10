@@ -30,6 +30,8 @@ Route::group(['middleware' => 'admin'], function () {
             ->name('users#create');
         Route::post('/confirm', 'User\UserController@confirmation')
             ->name('users#confirmation');
+        Route::get('/backInput', 'User\UserController@backUserInput')
+            ->name('users#backUserInput');
         Route::post('/', 'User\UserController@store')
             ->name('users#store');
     });
@@ -54,6 +56,8 @@ Route::group(['middleware' => 'login'], function () {
     Route::group(['prefix' => 'users'], function () {
         Route::get('/', 'User\UserController@index')
             ->name('users#index');
+        Route::get('/backUpdate', 'User\UserController@backUserUpdate')
+            ->name('users#backUserUpdate');
         Route::any('/search', 'User\UserController@search')
             ->name('users#search');
         Route::get('/{id}', 'User\UserController@show')
@@ -74,6 +78,10 @@ Route::group(['middleware' => 'login'], function () {
             ->name('posts#create');
         Route::post('/confirm', 'Post\PostController@confirmation')
             ->name('posts#confirmation');
+        Route::get('/backInput', 'Post\PostController@backPostInput')
+            ->name('posts#backPostInput');
+        Route::get('/backUpdate', 'Post\PostController@backPostUpdate')
+            ->name('posts#backPostUpdate');
         Route::post('/', 'Post\PostController@store')
             ->name('posts#store');
         Route::get('/importView', 'Post\PostController@getCsv')

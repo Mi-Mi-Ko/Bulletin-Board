@@ -17,16 +17,16 @@
         {{ csrf_field() }}
         <div class="form-row mb-4">
           <div class="form-group col-md-2">
-            <input type="text" name="name" class="form-control" value="" placeholder="名前">
+            <input type="text" name="name" class="form-control" value="{{Request::get('name')}}" placeholder="名前">
           </div>
           <div class="form-group col-md-2">
-            <input type="text" name="email" class="form-control" value="" placeholder="メールアドレス">
+            <input type="text" name="email" class="form-control" value="{{Request::get('email')}}" placeholder="メールアドレス">
           </div>
           <div class="form-group col-md-2">
-            <input type="text" name="from" class="form-control" value="" placeholder="Created From">
+            <input type="text" name="from" class="form-control" value="{{Request::get('from')}}" placeholder="Created From">
           </div>
           <div class="form-group col-md-2">
-            <input type="text" name="to" class="form-control" value="" placeholder="Created To">
+            <input type="text" name="to" class="form-control" value="{{Request::get('to')}}" placeholder="Created To">
           </div>
           <div class="form-group col-md-2 text-left">
             <button type="submit" class="btn btn-primary pl-4 pr-4">
@@ -39,8 +39,7 @@
         </div>
       </form>
       <div class="table-responsive">
-        <span class="font-weight-bold">全件: </span>
-        {{ $users->total()}}
+        <span class="font-weight-bold">全件: {{ $users->total()}} </span>
         {{ $users->links() }}
         <table class="table table-bordered table-striped table-hover">
           <thead class="bg-info font-weight-bold text-center">
