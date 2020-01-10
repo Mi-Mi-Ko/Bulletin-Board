@@ -3,8 +3,8 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
-    <i class="fas fa-user"></i>
-    ユーザー登録
+    <a href="{{ url('/users') }}"><i class="fas fa-user"></i>ユーザー一覧 </a>
+    <span>/ ユーザー登録</span>
   </div>
   <div class="card-body">
     <form action="{{ route('users#confirmation') }}"  method="POST" enctype="multipart/form-data" id="create-form">
@@ -51,11 +51,24 @@
       <div class="form-group row justify-content-center">
         <label for="type" class="col-md-2 col-sm-4 col-form-label">タイプ</label>
           <div class="col-md-6 col-sm-6">
-            <select class="form-control" name="type" value="{{ old('type') }}">
-              <option value="">タイプ選択</option>
-              <option value="0">管理者</option>
-              <option value="1">ユーザー</option>
-            </select>
+            @if (old('type') != null)
+              <select class="form-control" name="type">
+                <option>タイプ選択</option>
+                @if (old('type') == 0)
+                  <option value="0" selected>管理者</option>
+                  <option value="1"　>ユーザー</option>
+                @else
+                　<option value="0">管理者</option>
+                  <option value="1" selected>ユーザー</option>
+                @endif
+              </select>
+            @else
+              <select class="form-control" name="type">
+                <option value="">タイプ選択</option>
+                <option value="0">管理者</option>
+                <option value="1">ユーザー</option>
+              </select>
+            @endif
             @if ($errors->has('type'))
             <span class="help-block text-danger">
               <strong>{{ $errors->first('type') }}</strong>
@@ -83,13 +96,13 @@
       <div class="form-group row justify-content-center">
         <label for="address" class="col-md-2 col-sm-4 col-form-label">住所</label>
         <div class="col-md-6 col-sm-6">
-          <textarea type="text" class="form-control" rows="3" name="address" placeholder="住所">{{ old('address') }}</textarea>
+          <textarea type="text" class="form-control" rows="3"name="address" placeholder="住所">{{ old('address') }}</textarea>
         </div>
       </div>
       <div class="form-group row justify-content-center">
         <label for="address" class="col-md-2 col-sm-4 col-form-label">プロファイル</label>
         <div class="col-md-6 col-sm-6">
-          <input type="file" class="form-control mb-4" id="profile" onchange="loadPreview(this);" name="profile">
+          <input type="file" class="form-control mb-4" id="profile" name="profile" onchange="loadPreview(this);">
           <img id="previewImage" src="" style="display: none;" width="200" height="150"/>
           @if ($errors->has('profile'))
             <span class="help-block text-danger">
@@ -102,7 +115,7 @@
         <label class="col-md-2 col-sm-4"></label>
         <div class="col-md-6 col-sm-6">
           <button type="submit" class="btn btn-success">ユーザー確認画面へ</button>
-          <button type="reset" class="btn btn-primary">クリア</button>
+          <button type="reset" onClick="clearForm()" class="btn btn-secondary">クリア</button>
         </div>
       </div>
     </form>

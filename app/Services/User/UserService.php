@@ -4,6 +4,8 @@ namespace App\Services\User;
 
 use App\Contracts\Dao\User\UserDaoInterface;
 use App\Contracts\Services\User\UserServiceInterface;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Log;
 use Session;
 
@@ -42,7 +44,6 @@ class UserService implements UserServiceInterface
      */
     public function searchUserList($request)
     {
-        Log::info("In service");
         $result = $this->userDao->searchUserList($request["name"], $request["email"], $request["from"], $request["to"]);
         return $result;
     }
@@ -54,6 +55,8 @@ class UserService implements UserServiceInterface
      */
     public function storeUser($request)
     {
+        $request["password"] = Hash::make($request["password"]);
+        $request["dob"] = Carbon::createFromFormat('Y/m/d', $request["dob"])->format('Y-m-d');
         $request["create_user_id"] = Session::get('LOGIN_USER')->id;
         $request["updated_user_id"] = Session::get('LOGIN_USER')->id;
         $request["created_at"] = date('Y-m-d H:i:s');
@@ -68,7 +71,6 @@ class UserService implements UserServiceInterface
      */
     public function getUserById($id)
     {
-        Log::info('gey User by id');
         $result = $this->userDao->getUserById($id);
         return $result;
     }

@@ -3,7 +3,6 @@
 @section('content')
 <div class="card uper">
   <div class="card-header font-weight-bold">
-    <i class="fas fa-clipboard"></i>
     投稿確認
   </div>
   <div class="card-body">
@@ -24,7 +23,7 @@
       <div class="form-group row justify-content-center">
         <div class="col-md-4">
           <button type="submit" class="btn btn-success">投稿登録</button>
-          <a onClick="window.history.back()" class="btn btn-primary">キャンセル</a>
+          <a href="{{ url('/posts/backInput') }}" class="btn btn-secondary">キャンセル</a>
         </div>
       </div>
     </form>

@@ -39,7 +39,7 @@ return [
     'digits_between' => 'The :attribute must be between :min and :max digits.',
     'dimensions' => 'The :attribute has invalid image dimensions.',
     'distinct' => 'The :attribute field has a duplicate value.',
-    'email' => 'Email Address should be email form.',
+    'email' => 'メールアドレスの形で入力してください。',
     'ends_with' => 'The :attribute must end with one of the following: :values',
     'exists' => 'The selected :attribute is invalid.',
     'file' => 'The :attribute must be a file.',
@@ -131,46 +131,49 @@ return [
 
     'custom' => [
         'email' => [
-            'required' => 'Email address is required.',
-            'unique' => 'Email address must be unique.',
+            'required' => 'メールアドレスが必要です。',
+            'unique' => 'メールアドレスは既に存在しています。',
         ],
         'password' => [
-            'required' => 'Password is required.',
-            'confirmed' => 'Password and Confirm Password must be same.',
-            'regex' => 'Must contain at least 1 Uppercase and 1 Numeric.',
+            'required' => 'パスワードが必要です。',
+            'confirmed' => 'パスワードと認証パスワードが一致していません。',
+            'regex' => '数字番号1つと大文字1つ含まれている形で入力してください。',
         ],
         'current_password' => [
-            'required' => 'Current Password is required.',
+            'required' => '現在パスワードが必要です。',
         ],
         'new_password' => [
-            'required' => 'New Password is required.',
-            'regex' => 'Must contain at least 1 Uppercase and 1 Numeric.',
+            'required' => '新しいパスワードが必要です。',
+            'regex' => '数字番号1つと大文字1つ含まれている形で入力してください。',
         ],
         'password_confirmation' => [
-            'same' => 'New password and Confirm password must be same',
+            'same' => '新しいパスワードと認証パスワードが一致していません。',
         ],
         'name' => [
-            'required' => 'Name is required',
-            'unique' => 'This name is exit.',
+            'required' => '名前が必要です。',
+            'unique' => '名前は既に存在しています。',
         ],
         'dob' => [
-            'date_format' => 'Pleas enter with YYYY/MM/DD format',
-            'required' => 'Dob is required.',
+            'date_format' => 'YYYY/MM/DDの形で入力してください。',
+            'required' => '生年日が必要です。',
         ],
         'profile' => [
-            'required' => 'Profile is required',
-            'mimes' => 'Please upload with (jpeg,jpg,png) extension.',
+            'required' => 'プロファイルをアプロードしてください。',
+            'mimes' => 'jpeg,jpg,pngのファイルタイプで入力してください。',
         ],
         'type' => [
-            'required' => 'Type is required',
+            'required' => 'タイプを選択してください。',
         ],
         'title' => [
-            'required' => 'Title is required.',
-            'max' => 'Title must be less than 255.',
-            'unique' => 'This title is exit.',
+            'required' => 'タイトルが必要です。',
+            'max' => 'タイトルは255文字を超えることはできません。',
+            'unique' => 'タイトルは既に存在しています。',
         ],
         'description' => [
-            'required' => 'Description is requlired.',
+            'required' => 'デスクリプションが必要です。',
+        ],
+        'uploadFile' => [
+            'required' => '投稿ファイルを選択してください。',
         ],
     ],
 

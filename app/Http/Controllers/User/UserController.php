@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use App\User;
 use File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Log;
 use Redirect;
 use Response;
 use Session;
@@ -36,6 +34,7 @@ class UserController extends Controller
     {
         $userService = $service;
     }
+
     /**
      * Display a listing of user.
      *
@@ -43,10 +42,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //getenv('LOCALE')
         $users = $this->userService->getUserList();
-        Log::info("Return Data");
-        Log::info($users);
         return view('users.list', compact('users'));
     }
 
@@ -57,8 +53,9 @@ class UserController extends Controller
      */
     public function search(Request $request)
     {
-        Log::info("In Controller-----");
+        $this->checkRequest($request);
         $users = $this->userService->searchUserList($request->except('_token'));
+        $users->appends(request()->all())->render();
         return view('users.list', compact('users'));
     }
 
@@ -81,36 +78,55 @@ class UserController extends Controller
      */
     public function confirmation(Request $request)
     {
-        Log::info($request);
         $validator = $this->validateInputForm($request);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-        if ($files = $request->file('profile')) {
+        if ($profileInfo = $request->file('profile')) {
             $userId = Session::get('LOGIN_USER')->id;
             $isExit = File::exists(public_path() . "/images/$userId");
             if (!$isExit) {
                 Storage::makeDirectory(public_path() . "/images/$userId");
             }
-            $image = $request->profile->store("public/images/$userId");
             $imageName = $request->profile->getClientOriginalName();
             $request->profile->move(public_path("images/$userId"), $imageName);
         }
         $data['user'] = $request;
+        Session::put('IMAGE', $imageName);
+        Session::put('ID', $userId);
+        Session::put('USER_INPUT_DATA', $request->except('profile'));
         return view('users.confirm', $data);
     }
+
     /**
-     * Store
+     * back to user create page with old input
+     *
+     * @return void
+     */
+    public function backUserInput()
+    {
+        $userId = Session::get('ID');
+        $imageName = Session::get('IMAGE');
+        $oldInputData = Session::get('USER_INPUT_DATA');
+
+        $image_path = public_path() . "/images/$userId/" . $imageName;
+        unlink($image_path);
+
+        Session::forget('USER_INPUT_DATA');
+        Session::forget('IMAGE');
+        Session::forget('ID');
+        return redirect('/users/create')->withInput($oldInputData);
+    }
+
+    /**
+     * Store user
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $request->merge(['password' => Hash::make($request->password)]);
-
         $this->userService->storeUser($request->except('_token'));
-
         return redirect('/users')->with('success', 'ユーザーを登録しました。');
     }
 
@@ -133,14 +149,37 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateConfirmation(Request $request, $id)
+    public function updateConfirmation(Request $request)
     {
         $validator = $this->validateUpdateForm($request);
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
+        if ($profileInfo = $request->file('profile')) {
+            $userId = Session::get('LOGIN_USER')->id;
+            $isExit = File::exists(public_path() . "/images/$userId");
+            if (!$isExit) {
+                Storage::makeDirectory(public_path() . "/images/$userId");
+            }
+            $imageName = $request->profile->getClientOriginalName();
+            $request->profile->move(public_path("images/$userId"), $imageName);
+        }
         $data['user'] = $request;
+        Session::put('USER_UPDATE_DATA', $request->except('profile'));
         return view('users.updateConfirm', $data);
+    }
+
+    /**
+     * back to user update page with old input
+     *
+     * @return void
+     */
+    public function backUserUpdate()
+    {
+        $oldUpdateData = Session::get('USER_UPDATE_DATA');
+        Session::forget('USER_UPDATE_DATA');
+        $returnRoute = '/users/' . $oldUpdateData["id"];
+        return redirect($returnRoute)->withInput($oldUpdateData);
     }
 
     /**
@@ -167,6 +206,7 @@ class UserController extends Controller
         $this->userService->deleteUser($id);
         return redirect('/users')->with('success', 'ユーザーを削除しました。');
     }
+
     /**
      * Display user profile view
      *
@@ -178,6 +218,7 @@ class UserController extends Controller
         $user = $this->userService->getUserById($id);
         return view('users.profile', compact('user'));
     }
+
     /**
      * Validate user input form request
      *
@@ -190,13 +231,14 @@ class UserController extends Controller
             'name' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:8|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
-            'profile' => 'required',
+            'profile' => 'required|mimes:jpeg,jpg,png|max:512000',
             'type' => 'required',
             'dob' => 'required',
-            // 'dob' => 'required|date_format:Y/m/d',
+            'dob' => 'required|date_format:Y/m/d',
         ];
         return Validator::make($request->all(), $rules);
     }
+
     /**
      * Validate user update form request
      *
@@ -208,10 +250,33 @@ class UserController extends Controller
         $rules = [
             'name' => 'required|unique:users,name,' . $request->id,
             'email' => 'required|email|unique:users,email,' . $request->id,
+            'profile' => 'mimes:jpeg,jpg,png|max:512000',
             'type' => 'required',
             'dob' => 'required',
-            // 'dob' => 'required|date_format:Y/m/d',
+            'dob' => 'required|date_format:Y/m/d',
         ];
         return Validator::make($request->all(), $rules);
+    }
+
+    /**
+     * Check Request key is missing
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function checkRequest($request)
+    {
+        if ($request->missing('name')) {
+            $request["name"] = null;
+        }
+        if ($request->missing('email')) {
+            $request["email"] = null;
+        }
+        if ($request->missing('from')) {
+            $request["from"] = null;
+        }
+        if ($request->missing('to')) {
+            $request["to"] = null;
+        }
     }
 }

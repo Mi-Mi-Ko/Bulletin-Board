@@ -2,6 +2,6 @@
 
 return [
     // ERROR MESSAGES
-    'login_error' => 'メールアドレス・パスワードを確認してください。',
-    'no_exist' => 'メールアドレスは存在しません。',
+    'login_error' => 'Confirm Email Address and Password.',
+    'no_exist' => 'Email Address does not exit.',
 ];

@@ -7,6 +7,9 @@ interface UserServiceInterface
     //get user list
     public function getUserList();
 
+    //search user list
+    public function searchUserList($request);
+
     //store user
     public function storeUser($request);
 
@@ -18,7 +21,4 @@ interface UserServiceInterface
 
     //delete user
     public function deleteUser($id);
-
-    //search user list
-    public function searchUserList($request);
 }

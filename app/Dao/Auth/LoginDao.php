@@ -4,7 +4,6 @@ namespace App\Dao\Auth;
 
 use App\Contracts\Dao\Auth\LoginDaoInterface;
 use App\User;
-use Log;
 use Session;
 
 class LoginDao implements LoginDaoInterface
@@ -27,8 +26,6 @@ class LoginDao implements LoginDaoInterface
      */
     public function changePassword($request)
     {
-        Log::info("changePassword=>");
-        Log::info($request);
         User::find(Session::get('LOGIN_USER')->id)->update($request);
     }
 

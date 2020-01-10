@@ -23,6 +23,7 @@ class PostService implements PostServiceInterface
     {
         $this->postDao = $postDao;
     }
+
     /**
      * get post list
      *
@@ -34,6 +35,19 @@ class PostService implements PostServiceInterface
         $result = $this->postDao->getPostList();
         return $result;
     }
+
+    /**
+     * search
+     *
+     * @param Request $request
+     * @return obj [OR] null
+     */
+    public function searchPostList($request)
+    {
+        $result = $this->postDao->searchPostList($request["title"]);
+        return $result;
+    }
+
     /**
      * store post
      *
@@ -48,6 +62,7 @@ class PostService implements PostServiceInterface
         $result = $this->postDao->storePost($request);
         return $result;
     }
+
     /**
      * get post by id
      *
@@ -59,6 +74,7 @@ class PostService implements PostServiceInterface
         $result = $this->postDao->getPostById($id);
         return $result;
     }
+
     /**
      * update post
      *
@@ -72,6 +88,7 @@ class PostService implements PostServiceInterface
         $result = $this->postDao->updatePost($request, $id);
         return $result;
     }
+
     /**
      * delete post
      *
@@ -81,5 +98,34 @@ class PostService implements PostServiceInterface
     public function deletePost($id)
     {
         $result = $this->postDao->deletePost($id);
+    }
+
+    /**
+     * store post import file
+     *
+     * @param Request $request
+     * @return obj [OR] null
+     */
+    public function importPost($data)
+    {
+
+        if ($data->count() > 0) {
+            foreach ($data->toArray() as $key => $value) {
+                foreach ($value as $row) {
+                    $insert_data[] = array(
+                        'Title' => $row['title'],
+                        'Description' => $row['description'],
+                        'CreatedUserId' => Session::get('LOGIN_USER')->id,
+                        'UpdatedUserId' => Session::get('LOGIN_USER')->id,
+                        'CreatedAt' => date('Y-m-d H:i:s'),
+                    );
+                }
+            }
+            // if (!empty($insert_data)) {
+            //     $result = $this->postDao->importPost($insert_data);
+            //     return $result;
+            // }
+        }
+
     }
 }

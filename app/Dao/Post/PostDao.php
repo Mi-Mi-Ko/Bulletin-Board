@@ -4,7 +4,6 @@ namespace App\Dao\Post;
 
 use App\Contracts\Dao\Post\PostDaoInterface;
 use App\Post;
-use Log;
 
 class PostDao implements PostDaoInterface
 {
@@ -19,8 +18,26 @@ class PostDao implements PostDaoInterface
             $leftjoin->on('posts.create_user_id', '=', 'users.id');
         })
             ->select('posts.*', 'users.name')
-            ->paginate(10);
+            ->paginate(config('constant.PAGINATION_RECORDS'));
     }
+
+    /**
+     * Search post list
+     *
+     * @return $postList
+     */
+    public function searchPostList($title)
+    {
+        $postQuery = Post::leftjoin('users', function ($leftjoin) {
+            $leftjoin->on('posts.create_user_id', '=', 'users.id');
+        });
+        $postQuery->select('posts.*', 'users.name');
+        if ($title) {
+            $postQuery->where('title', 'like', '%' . $title . '%');
+        }
+        return $postQuery->paginate(config('constant.PAGINATION_RECORDS'));
+    }
+
     /**
      * Store post
      *
@@ -29,10 +46,9 @@ class PostDao implements PostDaoInterface
      */
     public function storePost($request)
     {
-        Log::info("Store post");
-        Log::info($request);
         Post::create($request);
     }
+
     /**
      * Get Post by id
      *
@@ -43,6 +59,7 @@ class PostDao implements PostDaoInterface
         $post = Post::findOrFail($id);
         return $post;
     }
+
     /**
      * Update post
      *
@@ -53,6 +70,7 @@ class PostDao implements PostDaoInterface
     {
         Post::whereId($id)->update($request);
     }
+
     /**
      * Delete post
      *
@@ -63,5 +81,16 @@ class PostDao implements PostDaoInterface
     {
         $post = Post::findOrFail($id);
         $post->delete();
+    }
+
+    /**
+     * Store post import file
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function importPost($data)
+    {
+        Post::insert($data);
     }
 }
