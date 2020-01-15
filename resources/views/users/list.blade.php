@@ -125,13 +125,6 @@
           </div>
           <div class="modal-body">
             <form>
-              <!-- <div class="form-group row">
-            <div class="col-4">
-              <img id="profile" class="border" alt="Image" width="100" height="100"/>
-            </div>
-            <div class="col-8 text-right">
-            </div>
-          </div> -->
               <div class="form-group row">
                 <div class="col-4">
                   <label for="userNamae" class="col-form-label">名前:</label>
