@@ -17,6 +17,11 @@ class Post extends Model
         'updated_at',
         'deleted_at',
     ];
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = [
         'created_at',
         'updated_at',

@@ -4,6 +4,7 @@ namespace App\Dao\User;
 
 use App\Contracts\Dao\User\UserDaoInterface;
 use App\User;
+use DB;
 
 class UserDao implements UserDaoInterface
 {
@@ -14,8 +15,23 @@ class UserDao implements UserDaoInterface
      */
     public function getUserList()
     {
-        return User::paginate(config('constant.PAGINATION_RECORDS'));
+        // return User::paginate(config('constant.PAGINATION_RECORDS'));
+
+        $createdUser = User::query()
+            ->select('users.name', 'users.id as cId')
+            ->join('users as b', function ($join) {
+                $join->on('users.id', '=', 'b.create_user_id');
+            });
+
+        return User::query()
+            ->joinSub($createdUser, 'created_User', function ($join) {
+                $join->on('users.create_user_id', '=', 'created_User.cId');
+            })
+            ->groupBy('users.id')
+            ->select('users.id', 'users.name', 'users.email', 'users.profile', 'created_User.name as create_user_name', 'users.phone', 'users.dob', 'users.address', 'users.created_at', 'users.updated_at')
+            ->paginate(config('constant.PAGINATION_RECORDS'));
     }
+
     /**
      * Search user list
      *
@@ -23,19 +39,33 @@ class UserDao implements UserDaoInterface
      */
     public function searchUserList($name, $email, $from, $to)
     {
-        $usersQuery = User::query();
+        $createdUser = User::query()
+            ->select('users.name', 'users.id as cId')
+            ->join('users as b', function ($join) {
+                $join->on('users.id', '=', 'b.create_user_id');
+            });
+
+        $searchUser = User::query()
+            ->joinSub($createdUser, 'created_User', function ($join) {
+                $join->on('users.create_user_id', '=', 'created_User.cId');
+            })
+            ->select('users.id', 'users.name', 'users.email', 'users.profile', 'created_User.name as create_user_name', 'users.phone', 'users.dob', 'users.address', 'users.created_at', 'users.updated_at');
+
         if ($name) {
-            $usersQuery->where('name', 'like', '%' . $name . '%');
+            $searchUser->where('users.name', 'like', '%' . $name . '%');
         }
         if ($email) {
-            $usersQuery->where('email', $email);
+            $searchUser->where('users.email', $email);
         }
         if ($from && $to) {
-            $usersQuery->whereBetween('created_at', [$from, $to]);
+            $searchUser->whereBetween('users.created_at', [$from, $to]);
         }
 
-        return $usersQuery->paginate(config('constant.PAGINATION_RECORDS'));
+        $searchUser->groupBy('users.id');
+
+        return $searchUser->paginate(config('constant.PAGINATION_RECORDS'));
     }
+
     /**
      * Store user
      *
@@ -46,6 +76,7 @@ class UserDao implements UserDaoInterface
     {
         return User::create($request);
     }
+
     /**
      * Get User by id
      *
@@ -55,6 +86,7 @@ class UserDao implements UserDaoInterface
     {
         return User::findOrFail($id);
     }
+
     /**
      * Update user
      *
@@ -65,6 +97,7 @@ class UserDao implements UserDaoInterface
     {
         User::whereId($id)->update($request);
     }
+
     /**
      * Delete post
      *

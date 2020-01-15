@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use DB;
 use Illuminate\Support\ServiceProvider;
-use Log;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use \Maatwebsite\Excel\Sheet;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,14 +16,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('App\Contracts\Services\Auth\LoginServiceInterface', 'App\Services\Auth\LoginService');
-        $this->app->bind('App\Contracts\Dao\Auth\LoginDaoInterface', 'App\Dao\Auth\LoginDao');
         // Dao Registration
+        $this->app->bind('App\Contracts\Dao\Auth\LoginDaoInterface', 'App\Dao\Auth\LoginDao');
         $this->app->bind('App\Contracts\Dao\Auth\AuthDaoInterface', 'App\Dao\Auth\AuthDao');
         $this->app->bind('App\Contracts\Dao\User\UserDaoInterface', 'App\Dao\User\UserDao');
         $this->app->bind('App\Contracts\Dao\Post\PostDaoInterface', 'App\Dao\Post\PostDao');
 
         // Business logic registration
+        $this->app->bind('App\Contracts\Services\Auth\LoginServiceInterface', 'App\Services\Auth\LoginService');
         $this->app->bind('App\Contracts\Services\Auth\AuthServiceInterface', 'App\Services\Auth\AuthService');
         $this->app->bind('App\Contracts\Services\User\UserServiceInterface', 'App\Services\User\UserService');
         $this->app->bind('App\Contracts\Services\Post\PostServiceInterface', 'App\Services\Post\PostService');

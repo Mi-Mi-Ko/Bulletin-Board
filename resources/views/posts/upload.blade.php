@@ -12,7 +12,7 @@
       <div class="col-md-6 alert alert-danger pb-0">
         <ul>
           @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
+          <li>{{ $error }}</li>
           @endforeach
         </ul>
       </div>

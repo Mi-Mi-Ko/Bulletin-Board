@@ -4,14 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Contracts\Services\User\UserServiceInterface;
 use App\Http\Controllers\Controller;
-use App\User;
-use File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
-use Redirect;
-use Response;
-use Session;
-use Storage;
-use Validator;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -25,14 +22,6 @@ class UserController extends Controller
     public function __construct(UserServiceInterface $userService)
     {
         $this->userService = $userService;
-    }
-    public function getUserService()
-    {
-        return $userService;
-    }
-    public function setUserService($service)
-    {
-        $userService = $service;
     }
 
     /**

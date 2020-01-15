@@ -6,8 +6,7 @@ use App\Contracts\Dao\User\UserDaoInterface;
 use App\Contracts\Services\User\UserServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Log;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class UserService implements UserServiceInterface
 {
@@ -25,6 +24,7 @@ class UserService implements UserServiceInterface
     {
         $this->userDao = $userDao;
     }
+
     /**
      * login
      *
@@ -36,6 +36,7 @@ class UserService implements UserServiceInterface
         $result = $this->userDao->getUserList();
         return $result;
     }
+
     /**
      * search
      *
@@ -47,6 +48,7 @@ class UserService implements UserServiceInterface
         $result = $this->userDao->searchUserList($request["name"], $request["email"], $request["from"], $request["to"]);
         return $result;
     }
+
     /**
      * store user
      *
@@ -63,6 +65,7 @@ class UserService implements UserServiceInterface
         $result = $this->userDao->storeUser($request);
         return $result;
     }
+
     /**
      * get user by id
      *
@@ -74,6 +77,7 @@ class UserService implements UserServiceInterface
         $result = $this->userDao->getUserById($id);
         return $result;
     }
+
     /**
      * update user
      *
@@ -87,6 +91,7 @@ class UserService implements UserServiceInterface
         $result = $this->userDao->updateUser($request, $id);
         return $result;
     }
+
     /**
      * delete user
      *
@@ -95,6 +100,6 @@ class UserService implements UserServiceInterface
      */
     public function deleteUser($id)
     {
-        $result = $this->userDao->deleteUser($id);
+        $this->userDao->deleteUser($id);
     }
 }

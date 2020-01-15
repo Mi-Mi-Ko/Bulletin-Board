@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Contracts\Services\Auth\LoginServiceInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Log;
-use Session;
-use Validator;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
