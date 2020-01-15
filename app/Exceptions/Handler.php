@@ -7,7 +7,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
-use Log;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
@@ -53,11 +52,8 @@ class Handler extends ExceptionHandler
             $view = 'errors.500';
             $status = $message = null;
             if ($this->isHttpException($exception)) {
-                Log::info("isHttpException");
                 $status = $exception->getStatusCode();
                 $message = $exception->getMessage();
-                Log::info("$status");
-                Log::info("$message");
             }
             if ($status == null) {
                 $status = 500;
