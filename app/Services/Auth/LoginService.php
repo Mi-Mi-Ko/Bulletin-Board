@@ -4,8 +4,7 @@ namespace App\Services\Auth;
 
 use App\Contracts\Dao\Auth\LoginDaoInterface;
 use App\Contracts\Services\Auth\LoginServiceInterface;
-use Hash;
-use Log;
+use Illuminate\Support\Facades\Hash;
 
 class LoginService implements LoginServiceInterface
 {

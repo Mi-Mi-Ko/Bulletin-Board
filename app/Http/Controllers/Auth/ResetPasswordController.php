@@ -7,8 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Rules\MatchOldPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Log;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class ResetPasswordController extends Controller
 {
@@ -26,6 +25,7 @@ class ResetPasswordController extends Controller
     {
         $this->loginService = $loginService;
     }
+
     /**
      * Show change password form
      *
@@ -36,6 +36,12 @@ class ResetPasswordController extends Controller
         return view('auth.password.change');
     }
 
+    /**
+     * Change password input form request
+     *
+     * @param Request $request
+     * @return void
+     */
     public function change(Request $request)
     {
         $validator = $this->validateInputForm($request);
@@ -46,6 +52,7 @@ class ResetPasswordController extends Controller
         $this->loginService->changePassword($request);
         return redirect('/users')->with('success', 'パスワードを更新しました。');
     }
+
     /**
      * Validate change password input form request
      *
@@ -61,5 +68,4 @@ class ResetPasswordController extends Controller
         ];
         return Validator::make($request->all(), $rules);
     }
-
 }

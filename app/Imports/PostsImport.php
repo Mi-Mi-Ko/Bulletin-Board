@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\Post;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class PostsImport implements ToModel, WithHeadingRow
 {

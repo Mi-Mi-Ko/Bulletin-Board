@@ -7,17 +7,17 @@
   </div>
   <div class="card-body">
     <form method="post" action="{{ route('posts#store') }}">
-    @csrf
+      @csrf
       <div class="form-group row justify-content-center pt-4">
         <label for="title" class="col-md-2 col-4 col-form-label">タイトル</label>
         <div class="col-md-6 col-8">
-          <input type="text" readonly class="form-control-plaintext" value="{{ $posts->title }}" name="title" >
+          <input type="text" readonly class="form-control-plaintext" value="{{ $posts->title }}" name="title">
         </div>
       </div>
       <div class="form-group row justify-content-center">
         <label for="description" class="col-md-2 col-4 col-form-label">デスクリプション</label>
         <div class="col-md-6 col-8">
-          <textarea type="text" readonly class="form-control-plaintext" rows="3" name="description" >{{ $posts->description }}</textarea>
+          <textarea type="text" readonly class="form-control-plaintext" rows="3" name="description">{{ $posts->description }}</textarea>
         </div>
       </div>
       <div class="form-group row justify-content-center">

@@ -3,8 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Route;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class User
 {
@@ -19,11 +18,10 @@ class User
     {
         if (Session::has('LOGIN_USER')) {
             $type = Session::get('LOGIN_USER')->type;
-            $currentRoute = Route::getRoutes()->match($request)->getName();
             if ($type == 1) {
                 return $next($request);
             } else {
-                return redirect(route('login'));
+                return response()->view('errors.404');
             }
         }
     }

@@ -6,12 +6,10 @@ use App\Contracts\Services\Post\PostServiceInterface;
 use App\Exports\PostsExport;
 use App\Http\Controllers\Controller;
 use App\Imports\PostsImport;
-use App\Post;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use Redirect;
-use Session;
-use Validator;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -304,5 +302,4 @@ class PostController extends Controller
             $request["title"] = null;
         }
     }
-
 }

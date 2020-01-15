@@ -7,16 +7,16 @@
     <span>/ ユーザー登録</span>
   </div>
   <div class="card-body">
-    <form action="{{ route('users#confirmation') }}"  method="POST" enctype="multipart/form-data" id="create-form">
+    <form action="{{ route('users#confirmation') }}" method="POST" enctype="multipart/form-data" id="create-form">
       @csrf
       <div class="form-group row justify-content-center pt-4">
         <label for="name" class="col-md-2 col-sm-4 col-form-label">名前</label>
         <div class="col-md-6 col-sm-6">
           <input type="text" class="form-control" value="{{ old('name') }}" name="name" placeholder="名前">
           @if ($errors->has('name'))
-            <span class="help-block text-danger">
-              <strong>{{ $errors->first('name') }}</strong>
-            </span>
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('name') }}</strong>
+          </span>
           @endif
         </div>
       </div>
@@ -25,9 +25,9 @@
         <div class="col-md-6 col-sm-6">
           <input type="email" class="form-control" value="{{ old('email') }}" name="email" placeholder="メールアドレス">
           @if ($errors->has('email'))
-            <span class="help-block text-danger">
-              <strong>{{ $errors->first('email') }}</strong>
-            </span>
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('email') }}</strong>
+          </span>
           @endif
         </div>
       </div>
@@ -36,9 +36,9 @@
         <div class="col-md-6 col-sm-6">
           <input type="password" class="form-control" value="{{ old('password') }}" name="password" placeholder="パスワード">
           @if ($errors->has('password'))
-            <span class="help-block text-danger">
-              <strong>{{ $errors->first('password') }}</strong>
-            </span>
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('password') }}</strong>
+          </span>
           @endif
         </div>
       </div>
@@ -50,31 +50,31 @@
       </div>
       <div class="form-group row justify-content-center">
         <label for="type" class="col-md-2 col-sm-4 col-form-label">タイプ</label>
-          <div class="col-md-6 col-sm-6">
-            @if (old('type') != null)
-              <select class="form-control" name="type">
-                <option>タイプ選択</option>
-                @if (old('type') == 0)
-                  <option value="0" selected>管理者</option>
-                  <option value="1"　>ユーザー</option>
-                @else
-                　<option value="0">管理者</option>
-                  <option value="1" selected>ユーザー</option>
-                @endif
-              </select>
+        <div class="col-md-6 col-sm-6">
+          @if (old('type') != null)
+          <select class="form-control" name="type">
+            <option>タイプ選択</option>
+            @if (old('type') == 0)
+            <option value="0" selected>管理者</option>
+            <option value="1" 　>ユーザー</option>
             @else
-              <select class="form-control" name="type">
-                <option value="">タイプ選択</option>
-                <option value="0">管理者</option>
-                <option value="1">ユーザー</option>
-              </select>
+            　<option value="0">管理者</option>
+            <option value="1" selected>ユーザー</option>
             @endif
-            @if ($errors->has('type'))
-            <span class="help-block text-danger">
-              <strong>{{ $errors->first('type') }}</strong>
-            </span>
-            @endif
-          </div>
+          </select>
+          @else
+          <select class="form-control" name="type">
+            <option value="">タイプ選択</option>
+            <option value="0">管理者</option>
+            <option value="1">ユーザー</option>
+          </select>
+          @endif
+          @if ($errors->has('type'))
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('type') }}</strong>
+          </span>
+          @endif
+        </div>
       </div>
       <div class="form-group row justify-content-center">
         <label for="phone" class="col-md-2 col-sm-4 col-form-label">電話番号</label>
@@ -87,27 +87,27 @@
         <div class="col-md-6 col-sm-6">
           <input type="text" class="form-control" format="yyyy/mm/dd" value="{{ old('dob') }}" name="dob" placeholder="生年日">
           @if ($errors->has('dob'))
-            <span class="help-block text-danger">
-              <strong>{{ $errors->first('dob') }}</strong>
-            </span>
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('dob') }}</strong>
+          </span>
           @endif
         </div>
       </div>
       <div class="form-group row justify-content-center">
         <label for="address" class="col-md-2 col-sm-4 col-form-label">住所</label>
         <div class="col-md-6 col-sm-6">
-          <textarea type="text" class="form-control" rows="3"name="address" placeholder="住所">{{ old('address') }}</textarea>
+          <textarea type="text" class="form-control" rows="3" name="address" placeholder="住所">{{ old('address') }}</textarea>
         </div>
       </div>
       <div class="form-group row justify-content-center">
         <label for="address" class="col-md-2 col-sm-4 col-form-label">プロファイル</label>
         <div class="col-md-6 col-sm-6">
           <input type="file" class="form-control mb-4" id="profile" name="profile" onchange="loadPreview(this);">
-          <img id="previewImage" src="" style="display: none;" width="200" height="150"/>
+          <img id="previewImage" src="" style="display: none;" width="200" height="150" />
           @if ($errors->has('profile'))
-            <span class="help-block text-danger">
-              <strong>{{ $errors->first('profile') }}</strong>
-            </span>
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('profile') }}</strong>
+          </span>
           @endif
         </div>
       </div>

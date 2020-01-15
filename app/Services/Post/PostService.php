@@ -4,8 +4,7 @@ namespace App\Services\Post;
 
 use App\Contracts\Dao\Post\PostDaoInterface;
 use App\Contracts\Services\Post\PostServiceInterface;
-use App\Post;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class PostService implements PostServiceInterface
 {
@@ -97,35 +96,6 @@ class PostService implements PostServiceInterface
      */
     public function deletePost($id)
     {
-        $result = $this->postDao->deletePost($id);
-    }
-
-    /**
-     * store post import file
-     *
-     * @param Request $request
-     * @return obj [OR] null
-     */
-    public function importPost($data)
-    {
-
-        if ($data->count() > 0) {
-            foreach ($data->toArray() as $key => $value) {
-                foreach ($value as $row) {
-                    $insert_data[] = array(
-                        'Title' => $row['title'],
-                        'Description' => $row['description'],
-                        'CreatedUserId' => Session::get('LOGIN_USER')->id,
-                        'UpdatedUserId' => Session::get('LOGIN_USER')->id,
-                        'CreatedAt' => date('Y-m-d H:i:s'),
-                    );
-                }
-            }
-            // if (!empty($insert_data)) {
-            //     $result = $this->postDao->importPost($insert_data);
-            //     return $result;
-            // }
-        }
-
+        $this->postDao->deletePost($id);
     }
 }

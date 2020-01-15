@@ -21,7 +21,4 @@ interface PostDaoInterface
 
     //delete post
     public function deletePost($id);
-
-    //import posts
-    public function importPost($data);
 }
