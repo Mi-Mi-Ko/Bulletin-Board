@@ -25,7 +25,7 @@
 
 <body class="app-body">
   <div id="app">
-    @if(Request::path() === '/' || Request::path() === 'login')
+    @if (Request::path() === '/' || Request::path() === 'login')
     <nav class="navbar navbar-expand-md navbar-light shadow-sm">
       @else
       <nav class="navbar navbar-expand-md navbar-light shadow-sm navbar-margin">
@@ -57,7 +57,7 @@
           @endif
         </div>
       </nav>
-      @if(Request::path() === '/' || Request::path() === 'login')
+      @if (Request::path() === '/' || Request::path() === 'login')
       @else
       <div class="sidebar">
         @if (Session::has('LOGIN_USER'))
@@ -95,7 +95,7 @@
         @endif
       </div>
       @endif
-      @if(Request::path() === '/' || Request::path() === 'login')
+      @if (Request::path() === '/' || Request::path() === 'login')
       <div class="content pt-4">
         <div class="container m-auto">
           @else
@@ -106,6 +106,8 @@
             </div>
           </div>
         </div>
+    </nav>
+  </div>
 </body>
 
 </html>

@@ -22,8 +22,8 @@ class PostsExport implements FromCollection, WithHeadings, WithMapping, WithEven
         })
             ->select('posts.title', 'posts.description', 'posts.created_at', 'users.name')
             ->get();
-
     }
+
     /**
      * @return array
      */
@@ -36,6 +36,7 @@ class PostsExport implements FromCollection, WithHeadings, WithMapping, WithEven
             '投稿した日',
         ];
     }
+
     /**
      * @return array
      */
@@ -48,6 +49,7 @@ class PostsExport implements FromCollection, WithHeadings, WithMapping, WithEven
             Carbon::parse($posts->created_at)->format('Y-m-d'),
         ];
     }
+
     /**
      * @return array
      */

@@ -11,9 +11,9 @@
       <div class="form-group row justify-content-center">
         <label for="profile" class="col-8 col-form-label"></label>
         <div class="col-4 pl-0 mb-2">
-          @if($user->profile)
-          <input type="hidden" class="form-control" id="profile" name="profile" value="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}">
-          <img src="{{url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName())}}" alt="Image" width="200" height="150" />
+          @if ($user->profile)
+          <input type="hidden" class="form-control" id="profile" name="profile" value="{{ url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName()) }}">
+          <img src="{{ url('/images/' . Session::get('LOGIN_USER')->id . '/'. $user->profile->getClientOriginalName()) }}" alt="Image" width="200" height="150" />
           @else
           <img src="{{ $user->hiddenProfile }}" alt="Image" width="200" height="150" />
           <input type="hidden" id="profile" name="profile" value="{{ $user->hiddenProfile }}">

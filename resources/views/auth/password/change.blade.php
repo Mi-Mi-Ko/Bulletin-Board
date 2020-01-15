@@ -13,9 +13,9 @@
         <div class="col-md-6 col-8">
           <input type="password" class="form-control" value="{{ old('current_password') }}" name="current_password">
           @if ($errors->has('current_password'))
-              <span class="help-block text-danger">
-                  <strong>{{ $errors->first('current_password') }}</strong>
-              </span>
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('current_password') }}</strong>
+          </span>
           @endif
         </div>
       </div>
@@ -24,9 +24,9 @@
         <div class="col-md-6 col-8">
           <input type="password" class="form-control" value="{{ old('new_password') }}" name="new_password" autocomplete="current-password">
           @if ($errors->has('new_password'))
-              <span class="help-block text-danger">
-                  <strong>{{ $errors->first('new_password') }}</strong>
-              </span>
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('new_password') }}</strong>
+          </span>
           @endif
         </div>
       </div>
@@ -35,9 +35,9 @@
         <div class="col-md-6 col-8">
           <input type="password" class="form-control" value="{{ old('password_confirmation') }}" name="password_confirmation" autocomplete="current-password">
           @if ($errors->has('password_confirmation'))
-              <span class="help-block text-danger">
-                  <strong>{{ $errors->first('password_confirmation') }}</strong>
-              </span>
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('password_confirmation') }}</strong>
+          </span>
           @endif
         </div>
       </div>
