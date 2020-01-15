@@ -9,13 +9,13 @@
 }
 
 .navbar {
-  margin-left: 0;
-  z-index: 10;
-  background-color: #f8fafc;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  margin-left: 0;
+  z-index: 10;
+  background-color: #f8fafc;
 }
 
 .navbar-margin {
@@ -23,20 +23,20 @@
 }
 
 .sidebar {
-  height: 100%;
-  width: 15%;
   position: fixed;
-  z-index: 1;
   top: 0;
   left: 0;
+  width: 15%;
+  height: 100%;
+  z-index: 1;
   background: #2f353a;
 }
 
 .content {
+  position: relative;
+  top: 50px;
   margin-left: 0;
   clear: both;
-  top: 50px;
-  position: relative;
 }
 
 .content-margin {
@@ -45,18 +45,18 @@
 
 ul li a {
   display: block;
-  font-size: 15px;
   color: #fff;
+  font-size: 15px;
   cursor: pointer;
  }
 
  ul li a:hover {
-  background-color:#20a8d8;
   color: aqua;
+  background-color:#20a8d8;
  }
 
  .active {
-    background-color: dimgray;
+  background-color: dimgray;
  }
 
 .pageNotFound {
@@ -65,10 +65,10 @@ ul li a {
 }
 
 .pageNotFound .first-title {
-  font-size: 1.5em;
-  letter-spacing: 2px;
-  font-weight: bold;
   margin: 0;
+  font-size: 1.5em;
+  font-weight: bold;
+  letter-spacing: 2px;
 }
 
 .pageNotFound .second-title {

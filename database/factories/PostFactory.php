@@ -1,6 +1,7 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
 use App\Post;
 use Faker\Generator as Faker;
 
@@ -11,5 +12,8 @@ $factory->define(Post::class, function (Faker $faker) {
         'status' => '0',
         'create_user_id' => "2",
         'updated_user_id' => "2",
+        'created_at' => date("Y-m-d H:i:s"),
+        'updated_at' => date("Y-m-d H:i:s"),
+        'deleted_at' => date("Y-m-d H:i:s"),
     ];
 });

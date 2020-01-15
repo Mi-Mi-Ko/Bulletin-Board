@@ -8,7 +8,7 @@
   </div>
   <div class="card-body">
     <div class="uper">
-      @if(session()->get('success'))
+      @if (session()->get('success'))
       <div class="alert alert-success" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         {{ session()->get('success') }}
@@ -18,7 +18,7 @@
         {{ csrf_field() }}
         <div class="form-row mb-4">
           <div class="form-group col-md-4">
-            <input type="text" name="title" class="form-control" value="{{Request::get('title')}}" placeholder="タイトル">
+            <input type="text" name="title" class="form-control" value="{{ Request::get('title') }}" placeholder="タイトル">
           </div>
           <div class="form-group col-md-2 text-left">
             <button type="submit" class="btn btn-primary pl-4 pr-4">
@@ -26,14 +26,14 @@
             </button>
           </div>
           <div class="form-group col-md-6 text-right">
-            <a href="{{ route('posts#getCsv')}}" class="btn btn-primary">アップロード</a>
-            <a href="{{ route('posts#export')}}" class="btn btn-primary">ダウンロード</a>
-            <a href="{{ route('posts#create')}}" class="btn btn-primary">投稿登録画面へ</a>
+            <a href="{{ route('posts#getCsv') }}" class="btn btn-primary">アップロード</a>
+            <a href="{{ route('posts#export') }}" class="btn btn-primary">ダウンロード</a>
+            <a href="{{ route('posts#create') }}" class="btn btn-primary">投稿登録画面へ</a>
           </div>
         </div>
       </form>
       <div class="table-responsive">
-        <span class="font-weight-bold">全件: {{ $posts->total()}}</span>
+        <span class="font-weight-bold">全件: {{ $posts->total() }}</span>
         {{ $posts->links() }}
         <table class="table table-bordered table-striped table-hover text-center">
           <thead class="bg-info font-weight-bold">
@@ -64,7 +64,7 @@
                 <a href="{{ route('posts#update', $post->id) }}" class="btn btn-info">
                   <i class="fas fa-edit"></i>編集
                 </a>
-                <a href="javascript:;" data-toggle="modal" onclick="deletePostData({{$post}})" data-target="#postDeleteModal" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>削除
+                <a href="javascript:;" data-toggle="modal" onclick="deletePostData({{ $post }})" data-target="#postDeleteModal" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>削除
                 </a>
               </td>
             </tr>
@@ -93,7 +93,7 @@
             </div>
             <div class="modal-footer border-0 mt-4 justify-content-center">
               <button type="button" class="btn btn-success" data-dismiss="modal">いいえ</button>
-              <button type="submit" class="btn btn-danger" 　onclick="postDeletFormSubmit()">はい</button>
+              <button type="submit" class="btn btn-danger" onclick="postDeletFormSubmit()">はい</button>
             </div>
           </div>
         </form>

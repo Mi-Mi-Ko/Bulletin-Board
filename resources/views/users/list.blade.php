@@ -8,7 +8,7 @@
   </div>
   <div class="card-body">
     <div class="uper">
-      @if(session()->get('success'))
+      @if (session()->get('success'))
       <div class="alert alert-success">
         {{ session()->get('success') }}
       </div><br />
@@ -17,16 +17,16 @@
         {{ csrf_field() }}
         <div class="form-row mb-4">
           <div class="form-group col-md-2">
-            <input type="text" name="name" class="form-control" value="{{Request::get('name')}}" placeholder="名前">
+            <input type="text" name="name" class="form-control" value="{{ Request::get('name') }}" placeholder="名前">
           </div>
           <div class="form-group col-md-2">
-            <input type="text" name="email" class="form-control" value="{{Request::get('email')}}" placeholder="メールアドレス">
+            <input type="text" name="email" class="form-control" value="{{ Request::get('email') }}" placeholder="メールアドレス">
           </div>
           <div class="form-group col-md-2">
-            <input type="text" name="from" class="form-control" value="{{Request::get('from')}}" placeholder="Created From">
+            <input type="text" name="from" class="form-control" value="{{ Request::get('from') }}" placeholder="Created From">
           </div>
           <div class="form-group col-md-2">
-            <input type="text" name="to" class="form-control" value="{{Request::get('to')}}" placeholder="Created To">
+            <input type="text" name="to" class="form-control" value="{{ Request::get('to') }}" placeholder="Created To">
           </div>
           <div class="form-group col-md-2 text-left">
             <button type="submit" class="btn btn-primary pl-4 pr-4">
@@ -39,7 +39,7 @@
         </div>
       </form>
       <div class="table-responsive">
-        <span class="font-weight-bold">全件: {{ $users->total()}} </span>
+        <span class="font-weight-bold">全件: {{ $users->total() }} </span>
         {{ $users->links() }}
         <table class="table table-bordered table-striped table-hover">
           <thead class="bg-info font-weight-bold text-center">
@@ -59,7 +59,7 @@
             @foreach($users as $user)
             <tr>
               <td>
-                <a href="javascript:;" data-toggle="modal" onclick="viewUserData({{$user}})" data-target="#userDetailModal">
+                <a href="javascript:;" data-toggle="modal" onclick="viewUserData({{ $user }})" data-target="#userDetailModal">
                   {{ $user->name }}
                 </a>
               </td>
@@ -79,15 +79,13 @@
                   <i class="fas fa-edit"></i>
                   編集
                 </a>
-                <a href="javascript:;" data-toggle="modal" onclick="deleteUserData({{$user}})" data-target="#userDeleteModal" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>削除
+                <a href="javascript:;" data-toggle="modal" onclick="deleteUserData({{ $user }})" data-target="#userDeleteModal" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>削除
                 </a>
               </td>
             </tr>
             @endforeach
           </tbody>
         </table>
-      </div>
-      <div>
       </div>
     </div>
     <div class="modal fade" id="userDeleteModal" tabindex="-1" role="dialog" aria-labelledby="userDeleteModalLabel" aria-hidden="true">

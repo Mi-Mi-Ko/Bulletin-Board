@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UsersTableSeeder extends Seeder
 {
@@ -15,7 +16,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert(
             [
                 [
-                    'name' => "Mi Mi Ko(Designium Team)",
+                    'name' => "Mi Mi Ko",
                     'email' => "scm.mimiko@gmail.com",
                     'password' => bcrypt('12345678A'),
                     'profile' => "aaa",
