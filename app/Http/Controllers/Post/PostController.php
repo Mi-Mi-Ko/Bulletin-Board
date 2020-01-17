@@ -194,7 +194,7 @@ class PostController extends Controller
             return redirect()->back()->withInput()->withErrors($validator_one);
         }
         $rows = Excel::toArray(new PostsImport, $request->file('uploadFile'));
-        foreach ($rows as $key => $row) {
+        foreach ($rows as $row) {
             $validator_two = Validator::make($row, $this->rules(), $this->validationMessages());
             if ($validator_two->fails()) {
                 foreach ($validator_two->errors()->messages() as $messages) {
@@ -271,7 +271,7 @@ class PostController extends Controller
     {
         return [
             '*.title' => 'required|max:255|unique:posts',
-            '*.description' => 'required',
+            '*.description' => 'required|max:255',
         ];
     }
 
@@ -287,6 +287,7 @@ class PostController extends Controller
             '*.title.max' => trans('タイトルは255文字を超えることはできません。'),
             '*.title.unique' => trans('タイトルは既に存在しています。'),
             '*.description.required' => trans('ファイルにデスクリプションが必要です。'),
+            '*.description.max' => trans('デスクリプションは255文字を超えることはできません。'),
         ];
     }
 
