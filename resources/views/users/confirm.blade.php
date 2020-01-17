@@ -68,7 +68,6 @@
         <label class="col-sm-2"></label>
         <div class="col-sm-10 col-md-6">
           <button type="submit" class="btn btn-success">ユーザー登録</button>
-          <a onClick="window.history.back()" class="btn btn-primary">キャンセル</a>
           <a href="{{ url('/users/backInput') }}" class="btn btn-secondary">キャンセル</a>
         </div>
       </div>

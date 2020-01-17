@@ -7,7 +7,7 @@
     <span>/ ユーザー登録</span>
   </div>
   <div class="card-body">
-    <form action="{{ route('users#confirmation') }}" method="POST" enctype="multipart/form-data" id="create-form">
+    <form action="{{ route('users#confirmation') }}" method="POST" enctype="multipart/form-data" id="create-form" novalidate>
       @csrf
       <div class="form-group row justify-content-center pt-4">
         <label for="name" class="col-md-2 col-sm-4 col-form-label">名前</label>
@@ -80,6 +80,11 @@
         <label for="phone" class="col-md-2 col-sm-4 col-form-label">電話番号</label>
         <div class="col-md-6 col-sm-6">
           <input type="text" class="form-control" value="{{ old('phone') }}" name="phone" placeholder="電話番号">
+          @if ($errors->has('phone'))
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('phone') }}</strong>
+          </span>
+          @endif
         </div>
       </div>
       <div class="form-group row justify-content-center">
@@ -97,12 +102,17 @@
         <label for="address" class="col-md-2 col-sm-4 col-form-label">住所</label>
         <div class="col-md-6 col-sm-6">
           <textarea type="text" class="form-control" rows="3" name="address" placeholder="住所">{{ old('address') }}</textarea>
+          @if ($errors->has('address'))
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('address') }}</strong>
+          </span>
+          @endif
         </div>
       </div>
       <div class="form-group row justify-content-center">
         <label for="address" class="col-md-2 col-sm-4 col-form-label">プロファイル</label>
         <div class="col-md-6 col-sm-6">
-          <input type="file" class="form-control mb-4" id="profile" name="profile" onchange="loadPreview(this);">
+          <input type="file" class="form-control mb-4" id="profile" name="profile" accept=".png,.jpg,jpeg" onchange="loadPreview(this);">
           <img id="previewImage" src="" style="display: none;" width="200" height="150" />
           @if ($errors->has('profile'))
           <span class="help-block text-danger">

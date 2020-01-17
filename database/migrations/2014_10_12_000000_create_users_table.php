@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->integer('updated_user_id')->unsigned();
             $table->foreign('create_user_id')->references('id')->on('users');
             $table->foreign('updated_user_id')->references('id')->on('users');
-            $table->integer('deleted_user_id');
+            $table->integer('deleted_user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

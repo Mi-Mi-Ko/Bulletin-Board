@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Route;
 /**
  * Login Routes
  */
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', 'Auth\LoginController@showLogin')
+    ->name('showLogin');
+
 Route::group(['prefix' => 'login'], function () {
     Route::get('/', 'Auth\LoginController@showLogin')
         ->name('showLogin');
@@ -15,13 +15,6 @@ Route::group(['prefix' => 'login'], function () {
         ->name('login');
 });
 
-/**
- * Forget Password Routes
- */
-Route::get('password/forget', 'Auth\LoginController@showLinkRequestForm')
-    ->name('password.request');
-
-Route::post('save-photo', 'User\UserController@save');
 /**
  * User Routes Group
  * Allow For Admin

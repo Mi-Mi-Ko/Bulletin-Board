@@ -228,7 +228,7 @@ class PostController extends Controller
     {
         $rules = [
             'title' => 'required|max:255|unique:posts',
-            'description' => 'required',
+            'description' => 'required|max:255',
         ];
         return Validator::make($request->all(), $rules);
     }
@@ -243,7 +243,7 @@ class PostController extends Controller
     {
         $rules = [
             'title' => 'required|max:255|unique:posts,title,' . $request->id,
-            'description' => 'required',
+            'description' => 'required|max:255',
         ];
         return Validator::make($request->all(), $rules);
     }
@@ -257,7 +257,7 @@ class PostController extends Controller
     private function validateImportFile(Request $request)
     {
         $rules = [
-            'uploadFile' => 'required|mimes:xls,xlsx,csv',
+            'uploadFile' => 'required|mimes:xls,xlsx',
         ];
         return Validator::make($request->all(), $rules);
     }

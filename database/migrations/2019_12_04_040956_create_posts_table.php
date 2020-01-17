@@ -20,8 +20,8 @@ class CreatePostsTable extends Migration
             $table->integer('status')->default(1);
             $table->integer('create_user_id')->unsigned();
             $table->integer('updated_user_id')->unsigned();
-            $table->foreign('create_user_id')->references('id')->on('users');
-            $table->foreign('updated_user_id')->references('id')->on('users');
+            $table->foreign('create_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('updated_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('deleted_user_id')->nullable();
             $table->timestamps();
             $table->softDeletes()->nullable();

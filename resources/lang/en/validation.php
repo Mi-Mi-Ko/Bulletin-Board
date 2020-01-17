@@ -156,10 +156,13 @@ return [
         'dob' => [
             'date_format' => 'Pleas enter with YYYY/MM/DD format',
             'required' => 'Dob is required.',
+            'after' => 'The dob must be a date after 1940/01/01.',
+            'before' => 'The dob must be a date before 2011/01/01.',
         ],
         'profile' => [
             'required' => 'Profile is required',
             'mimes' => 'Please upload with (jpeg,jpg,png) extension.',
+            'max' => 'Profile may not be greater than 1000 kilobytes.',
         ],
         'type' => [
             'required' => 'Type is required',
@@ -171,6 +174,7 @@ return [
         ],
         'description' => [
             'required' => 'Description is requlired.',
+            'max' => 'Description must be less than 255.',
         ],
     ],
 

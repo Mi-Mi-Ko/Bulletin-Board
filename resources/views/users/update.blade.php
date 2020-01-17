@@ -88,6 +88,11 @@
           @else
           <input type="text" class="form-control" name="phone" value="{{ $user->phone }}" placeholder="電話番号">
           @endif
+          @if ($errors->has('phone'))
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('phone') }}</strong>
+          </span>
+          @endif
         </div>
       </div>
       <div class="form-group row justify-content-center justify-content-center">
@@ -113,12 +118,17 @@
           @else
           <textarea class="form-control" rows="3" justify-content-centers="3" name="address" placeholder="住所">{{ $user->address }}</textarea>
           @endif
+          @if ($errors->has('address'))
+          <span class="help-block text-danger">
+            <strong>{{ $errors->first('address') }}</strong>
+          </span>
+          @endif
         </div>
       </div>
       <div class="form-group row justify-content-center">
         <label for="address" class="col-md-2 col-sm-4 col-form-label">プロファイル</label>
         <div class="col-md-6 col-sm-6">
-          <input type="file" class="form-control mb-4" id="profile" onchange="loadPreview(this);" name="profile">
+          <input type="file" class="form-control mb-4" id="profile" name="profile" accept=".png,.jpg,jpeg" onchange="loadPreview(this);">
           @if ($errors->has('profile'))
           <span class="help-block text-danger">
             <strong>{{ $errors->first('profile') }}</strong>
