@@ -32,6 +32,9 @@ class LoginController extends Controller
      */
     public function showLogin()
     {
+        if (Session::has('LOGIN_USER')) {
+            Session::forget('LOGIN_USER');
+        }
         return view('auth.login');
     }
 

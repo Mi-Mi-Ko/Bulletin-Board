@@ -16,12 +16,17 @@ class PostsImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        return new Post([
-            'title' => $row['title'],
-            'description' => $row['description'],
-            'create_user_id' => Session::get('LOGIN_USER')->id,
-            'updated_user_id' => Session::get('LOGIN_USER')->id,
-            'created_at' => date('Y-m-d H:i:s'),
-        ]);
+        $duplicateCount = Post::query()
+            ->where('title', '=',  $row['title'])
+            ->count();
+        if ($duplicateCount == 0) {
+            return new Post([
+                'title' => $row['title'],
+                'description' => $row['description'],
+                'create_user_id' => Session::get('LOGIN_USER')->id,
+                'updated_user_id' => Session::get('LOGIN_USER')->id,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+        }
     }
 }

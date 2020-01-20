@@ -61,11 +61,13 @@
               <td> {{ $post->created_at->format('Y/m/d') }} </td>
               @endif
               <td>
+                @if (Session::get('LOGIN_USER')->id == $post->create_user_id || Session::get('LOGIN_USER')->type == 0)
                 <a href="{{ route('posts#update', $post->id) }}" class="btn btn-info">
                   <i class="fas fa-edit"></i>編集
                 </a>
                 <a href="javascript:;" data-toggle="modal" onclick="deletePostData({{ $post }})" data-target="#postDeleteModal" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>削除
                 </a>
+                @endif
               </td>
             </tr>
             @endforeach

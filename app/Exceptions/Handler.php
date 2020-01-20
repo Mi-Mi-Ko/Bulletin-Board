@@ -51,13 +51,13 @@ class Handler extends ExceptionHandler
         } else {
             $view = 'errors.500';
             $status = $message = null;
-            if ($this->isHttpException($exception)) {
-                $status = $exception->getStatusCode();
-                $message = $exception->getMessage();
-            }
+            // if ($this->isHttpException($exception)) {
+            //     $status = $exception->getStatusCode();
+            //     $message = $exception->getMessage();
+            // }
             if ($status == null) {
                 $status = 500;
-                $message = "";
+                $message = "処理中にDBエラーが発生しています。";
             }
             $msg = [
                 'error' => $status,

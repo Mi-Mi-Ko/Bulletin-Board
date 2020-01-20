@@ -4,7 +4,7 @@ namespace App\Dao\Auth;
 
 use App\Contracts\Dao\Auth\LoginDaoInterface;
 use App\User;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class LoginDao implements LoginDaoInterface
 {
@@ -28,5 +28,4 @@ class LoginDao implements LoginDaoInterface
     {
         User::find(Session::get('LOGIN_USER')->id)->update($request);
     }
-
 }

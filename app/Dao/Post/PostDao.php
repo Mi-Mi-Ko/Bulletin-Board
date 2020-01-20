@@ -4,6 +4,7 @@ namespace App\Dao\Post;
 
 use App\Contracts\Dao\Post\PostDaoInterface;
 use App\Post;
+use Illuminate\Support\Facades\Session;
 
 class PostDao implements PostDaoInterface
 {
@@ -14,11 +15,26 @@ class PostDao implements PostDaoInterface
      */
     public function getPostList()
     {
-        return Post::leftjoin('users', function ($leftjoin) {
-            $leftjoin->on('posts.create_user_id', '=', 'users.id');
-        })
-            ->select('posts.*', 'users.name')
-            ->paginate(config('constant.PAGINATION_RECORDS'));
+        if (Session::get('LOGIN_USER')->type == 0) {
+            $postQuery = Post::leftjoin('users', function ($leftjoin) {
+                $leftjoin->on('posts.create_user_id', '=', 'users.id');
+            });
+            $postQuery->select('posts.*', 'users.name', 'users.type');
+            return $postQuery->paginate(config('constant.PAGINATION_RECORDS'));
+        } else {
+            $postQuery = Post::leftjoin('users', function ($leftjoin) {
+                $leftjoin->on('posts.create_user_id', '=', 'users.id');
+            });
+            $postQuery->select('posts.*', 'users.name', 'users.type');
+            $postQuery->whereNotIn('posts.id', function ($q) {
+                $q->select('id')
+                    ->where('status', '=',  0)
+                    ->where('create_user_id', '<>',  Session::get('LOGIN_USER')->id)
+                    ->from('posts');
+            });
+
+            return $postQuery->paginate(config('constant.PAGINATION_RECORDS'));
+        }
     }
 
     /**
@@ -28,14 +44,31 @@ class PostDao implements PostDaoInterface
      */
     public function searchPostList($title)
     {
-        $postQuery = Post::leftjoin('users', function ($leftjoin) {
-            $leftjoin->on('posts.create_user_id', '=', 'users.id');
-        });
-        $postQuery->select('posts.*', 'users.name');
-        if ($title) {
-            $postQuery->where('title', 'like', '%' . $title . '%');
+        if (Session::get('LOGIN_USER')->type == 0) {
+            $postQuery = Post::leftjoin('users', function ($leftjoin) {
+                $leftjoin->on('posts.create_user_id', '=', 'users.id');
+            });
+            $postQuery->select('posts.*', 'users.name', 'users.type');
+            if ($title) {
+                $postQuery->where('title', 'like', '%' . $title . '%');
+            }
+            return $postQuery->paginate(config('constant.PAGINATION_RECORDS'));
+        } else {
+            $postQuery = Post::leftjoin('users', function ($leftjoin) {
+                $leftjoin->on('posts.create_user_id', '=', 'users.id');
+            });
+            $postQuery->select('posts.*', 'users.name', 'users.type');
+            $postQuery->whereNotIn('posts.id', function ($q) {
+                $q->select('id')
+                    ->where('status', '=',  0)
+                    ->where('create_user_id', '<>',  Session::get('LOGIN_USER')->id)
+                    ->from('posts');
+            });
+            if ($title) {
+                $postQuery->where('title', 'like', '%' . $title . '%');
+            }
+            return $postQuery->paginate(config('constant.PAGINATION_RECORDS'));
         }
-        return $postQuery->paginate(config('constant.PAGINATION_RECORDS'));
     }
 
     /**

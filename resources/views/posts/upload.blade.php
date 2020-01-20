@@ -22,7 +22,7 @@
       @csrf
       <div class="form-group row justify-content-center pt-4">
         <div class="col-md-6 col-8">
-          <input type="file" class="form-control" name="uploadFile" id="uploadFile">
+          <input type="file" class="form-control" name="uploadFile" id="uploadFile" accept=".xls,.xlsx">
         </div>
       </div>
       <div class="form-group row justify-content-center pt-2">

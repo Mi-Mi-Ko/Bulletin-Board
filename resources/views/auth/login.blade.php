@@ -51,17 +51,8 @@
               </div>
             </div>
           </div>
-          <div class="form-group row justify-content-center">
-            <div class="col-md-6 offset-md-4 mb-2">
-              @if (Route::has('password.request'))
-              <a class="btn btn-link p-0 mb-1" href="{{ route('password.request') }}">
-                {{ __('forget password?') }}
-              </a>
-              @endif
-            </div>
-          </div>
           <div class="form-group row justify-content-center mb-0">
-            <div class="col-md-6 offset-md-4 mb-2">
+            <div class="col-md-8 offset-md-4 mb-2">
               <button type="submit" class="btn btn-primary">
                 {{ __('ログイン') }}
               </button>

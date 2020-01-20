@@ -34,7 +34,9 @@
             </button>
           </div>
           <div class="form-group col-md-2 text-right">
+            @if (Session::get('LOGIN_USER')->type == 0)
             <a href="{{ route('users#create') }}" class="btn btn-primary">ユーザー登録画面へ</a>
+            @endif
           </div>
         </div>
       </form>
@@ -75,12 +77,23 @@
               <td> {{ $user->updated_at->format('Y/m/d') }} </td>
               @endif
               <td>
+                @if (Session::get('LOGIN_USER')->type == 0)
                 <a href="{{ route('users#show', $user->id) }}" class="btn btn-info">
                   <i class="fas fa-edit"></i>
                   編集
                 </a>
                 <a href="javascript:;" data-toggle="modal" onclick="deleteUserData({{ $user }})" data-target="#userDeleteModal" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>削除
                 </a>
+                @else
+                @if (Session::get('LOGIN_USER')->id === $user->id)
+                <a href="{{ route('users#show', $user->id) }}" class="btn btn-info">
+                  <i class="fas fa-edit"></i>
+                  編集
+                </a>
+                <a href="javascript:;" data-toggle="modal" onclick="deleteUserData({{ $user }})" data-target="#userDeleteModal" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i>削除
+                </a>
+                @endif
+                @endif
               </td>
             </tr>
             @endforeach

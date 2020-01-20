@@ -71,7 +71,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-        if ($profileInfo = $request->file('profile')) {
+        if ($request->file('profile')) {
             $userId = Session::get('LOGIN_USER')->id;
             $isExit = File::exists(public_path() . "/images/$userId");
             if (!$isExit) {
@@ -144,7 +144,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
-        if ($profileInfo = $request->file('profile')) {
+        if ($request->file('profile')) {
             $userId = Session::get('LOGIN_USER')->id;
             $isExit = File::exists(public_path() . "/images/$userId");
             if (!$isExit) {
@@ -217,13 +217,14 @@ class UserController extends Controller
     private function validateInputForm(Request $request)
     {
         $rules = [
-            'name' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:8|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
-            'profile' => 'required|mimes:jpeg,jpg,png|max:512000',
+            'name' => 'required|max:50|unique:users',
+            'email' => 'required|email|max:50|unique:users',
+            'phone' => 'required|numeric|regex:/(0)[0-9]/|digits_between:8,11',
+            'password' => 'required|min:8|max:25|confirmed|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
+            'profile' => 'required|image|mimes:jpeg,jpg,png|max:1024',
             'type' => 'required',
-            'dob' => 'required',
-            'dob' => 'required|date_format:Y/m/d',
+            'dob' => 'required|after:01/01/1940|before:01/01/2011|date_format:Y/m/d',
+            'address' => 'max:255',
         ];
         return Validator::make($request->all(), $rules);
     }
@@ -237,12 +238,13 @@ class UserController extends Controller
     private function validateUpdateForm(Request $request)
     {
         $rules = [
-            'name' => 'required|unique:users,name,' . $request->id,
-            'email' => 'required|email|unique:users,email,' . $request->id,
-            'profile' => 'mimes:jpeg,jpg,png|max:512000',
+            'name' => 'required|max:50|unique:users,name,' . $request->id,
+            'email' => 'required|email|max:50|unique:users,email,' . $request->id,
+            'phone' => 'required|numeric|regex:/(0)[0-9]/|digits_between:8,11',
+            'profile' => 'image|mimes:jpeg,jpg,png|max:1024',
             'type' => 'required',
-            'dob' => 'required',
-            'dob' => 'required|date_format:Y/m/d',
+            'dob' => 'required|after:01/01/1940|before:01/01/2011|date_format:Y/m/d',
+            'address' => 'max:255',
         ];
         return Validator::make($request->all(), $rules);
     }
