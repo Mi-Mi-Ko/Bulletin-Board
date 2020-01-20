@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Illuminate\Support\Facades\Session;
 
 class PostsExport implements FromCollection, WithHeadings, WithMapping, WithEvents
 {
@@ -17,11 +18,25 @@ class PostsExport implements FromCollection, WithHeadings, WithMapping, WithEven
      */
     public function collection()
     {
-        return Post::leftjoin('users', function ($leftjoin) {
-            $leftjoin->on('posts.create_user_id', '=', 'users.id');
-        })
-            ->select('posts.title', 'posts.description', 'posts.created_at', 'users.name')
-            ->get();
+        if (Session::get('LOGIN_USER')->type == 0) {
+            return Post::leftjoin('users', function ($leftjoin) {
+                $leftjoin->on('posts.create_user_id', '=', 'users.id');
+            })
+                ->select('posts.title', 'posts.description', 'posts.created_at', 'users.name')
+                ->get();
+        } else {
+            return Post::leftjoin('users', function ($leftjoin) {
+                $leftjoin->on('posts.create_user_id', '=', 'users.id');
+            })
+                ->select('posts.title', 'posts.description', 'posts.created_at', 'users.name')
+                ->whereNotIn('posts.id', function ($q) {
+                    $q->select('id')
+                        ->where('status', '=',  0)
+                        ->where('create_user_id', '<>',  Session::get('LOGIN_USER')->id)
+                        ->from('posts');
+                })
+                ->get();
+        }
     }
 
     /**
