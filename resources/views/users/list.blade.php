@@ -118,7 +118,7 @@
               よろしいですか？
             </div>
             <div class="modal-footer border-0 mt-4 justify-content-center">
-              <button type="button" class="btn btn-success" data-dismiss="modal">いいえ</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">いいえ</button>
               <button type="submit" class="btn btn-danger" 　onclick="userDeletFormSubmit()">はい</button>
             </div>
           </div>
