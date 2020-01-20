@@ -34,6 +34,7 @@ class PostController extends Controller
      */
     public function index()
     {
+        Session::forget('title');
         $posts = $this->postService->getPostList();
         return view('posts.list', compact('posts'));
     }
@@ -301,6 +302,8 @@ class PostController extends Controller
     {
         if ($request->missing('title')) {
             $request["title"] = null;
+        } else {
+            Session::put('title', $request["title"]);
         }
     }
 }

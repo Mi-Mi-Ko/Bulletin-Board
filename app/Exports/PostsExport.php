@@ -18,14 +18,21 @@ class PostsExport implements FromCollection, WithHeadings, WithMapping, WithEven
      */
     public function collection()
     {
+        $title = null;
+        if (Session::get('title')) {
+            $title = Session::get('title');
+        }
         if (Session::get('LOGIN_USER')->type == 0) {
-            return Post::leftjoin('users', function ($leftjoin) {
+            $postQuery = Post::leftjoin('users', function ($leftjoin) {
                 $leftjoin->on('posts.create_user_id', '=', 'users.id');
             })
-                ->select('posts.title', 'posts.description', 'posts.created_at', 'users.name')
-                ->get();
+                ->select('posts.title', 'posts.description', 'posts.created_at', 'users.name');
+            if ($title) {
+                $postQuery->where('posts.title', 'like', '%' . $title . '%');
+            };
+            return $postQuery->get();
         } else {
-            return Post::leftjoin('users', function ($leftjoin) {
+            $postQuery = Post::leftjoin('users', function ($leftjoin) {
                 $leftjoin->on('posts.create_user_id', '=', 'users.id');
             })
                 ->select('posts.title', 'posts.description', 'posts.created_at', 'users.name')
@@ -34,8 +41,11 @@ class PostsExport implements FromCollection, WithHeadings, WithMapping, WithEven
                         ->where('status', '=',  0)
                         ->where('create_user_id', '<>',  Session::get('LOGIN_USER')->id)
                         ->from('posts');
-                })
-                ->get();
+                });
+            if ($title) {
+                $postQuery->where('posts.title', 'like', '%' . $title . '%');
+            };
+            return $postQuery->get();
         }
     }
 
