@@ -105,3 +105,10 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
             ->name('logout');
     });
 });
+
+Route::group(['middleware' => 'login'], function () {
+    Route::group(['prefix' => 'posts'], function () {
+        Route::get('/export', 'Post\PostController@export')
+            ->name('posts#export');
+    });
+});
